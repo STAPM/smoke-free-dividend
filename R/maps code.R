@@ -69,3 +69,4 @@ ggplot(data = merge) +
        fill = "Mean Weekly Spend") +
   scale_fill_viridis_d()
 
+#+ scale_fill_gradient(low = "white", high = "red", na.value = "white")
