@@ -2,7 +2,7 @@
 
 ## (3) Calculate mean weekly expenditure by upper-tier local authority
 
-toolkit_clean <- readRDS(paste0(intdatDir,"/toolkit_clean"))
+toolkit_clean <- readRDS(paste0(intdatDir,"/toolkit_clean.rds"))
 
 mean_spend_la <- smkfreediv::CalcWeekSpend(data = toolkit_clean,
                                            strat_vars = c("UTLAcode","UTLAname"))
