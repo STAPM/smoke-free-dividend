@@ -1,0 +1,15 @@
+
+rawdatDir <- "data_input"
+if(!dir.exists(here::here(rawdatDir))) {dir.create(here::here(rawdatDir))}
+
+intdatDir <- "data_input"
+if(!dir.exists(here::here(intdatDir))) {dir.create(here::here(intdatDir))}
+
+outputDir <- "output"
+if(!dir.exists(here::here(outputDir))) {dir.create(here::here(outputDir))}
+
+outlaDir <- "output/local authority"
+if(!dir.exists(here::here(outlaDir))) {dir.create(here::here(outlaDir))}
+
+outgorDir <- "output/government office region"
+if(!dir.exists(here::here(outgorDir))) {dir.create(here::here(outgorDir))}
