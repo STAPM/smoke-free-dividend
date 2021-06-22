@@ -1,23 +1,13 @@
+### The aim of this code is to use the smkfreediv functions to make the
+### smokefree dividend calculations
+
+data <- readRDS(paste0(Dir[1],"/toolkit_clean.rds"))
 
 
-## (3) Calculate mean weekly expenditure by upper-tier local authority
+la_results <- smkfreediv::CalcDividend_la_sim(data,
+                                              upshift = 1.57151042,
+                                              div = 0.93,
+                                              n_sim = 10000,
+                                              seed = 202)
 
-toolkit_clean <- readRDS(paste0(intdatDir,"/toolkit_clean.rds"))
-
-mean_spend_la <- smkfreediv::CalcWeekSpend(data = toolkit_clean,
-                                           strat_vars = c("UTLAcode","UTLAname"))
-
-mean_spend_la <- mean_spend_la[order(UTLAname)]
-
-## (4) Grab the income data
-
-income <- smkfreediv::GetIncome(income_var = 3)
-
-## (5) Use the output of (3) and (4) to calculate the smoke free dividend for
-##     each local authority.
-
-div_la <- CalcDividend_la(profiles = smkfreediv::tobacco_profiles,
-                          clean_income = income,
-                          clean_expenditure = mean_spend_la,
-                          upshift = 1.57151042,
-                          div = 0.93)
+saveRDS(la_results,paste0(Dir[2],"/results_local_authority.rds"))

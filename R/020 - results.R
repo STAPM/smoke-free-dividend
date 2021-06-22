@@ -1,32 +1,78 @@
-library(tidyverse)
-library(rgeos)
-library(rgdal)
-library(maptools)
+### The aim of this code is to produce results tables and plots from the
+### local authority level analysis
 
-### shape file downloaded from:
+library(smkfreediv)
+library(ggplot2)
+library(ggthemes)
 
-## https://geoportal.statistics.gov.uk/datasets/local-authority-districts-december-2019-boundaries-uk-bfc/explore?location=55.172187%2C-3.274222%2C6.00&showTable=true
+div_la <- readRDS(paste0(Dir[2],"/results_local_authority.rds"))
 
-## on 21/06/2021
+############
+## CORRELATION plots
 
-shp <- readOGR('data_input/maps/local_authorities_2019/Local_Authority_Districts_(December_2019)_Boundaries_UK_BFC.shp')
-shp <- fortify(shp, region = 'lad19cd')
+geog <- merge(smkfreediv::la_gor_lookup, smkfreediv::localauthorities, by = c("LAcode","LAname"))
+geog <- unique(geog[,c("GORcode",  "GORname",  "UTLAcode", "UTLAname")])
 
-#### code to show that there are 317 local authorities in England
-#### in this shapefile data - so these are LTLA
-#shp_dat <- data.table(shp)
-#shp_dat <- unique(shp_dat[,"id"])
-#shp_dat <- shp_dat[substring(id,1,1) == "E",]
+plot_data <- merge(div_la, geog, by = "UTLAcode")
 
-### merge the mapping data to the shape file
+## plot prevalence against income
+
+ggplot(plot_data) +
+  aes(x = income/1000, y = smk_prev) +
+  geom_point() +
+  geom_smooth(method='lm', se = F, color='turquoise4', linetype = 5) +
+  theme_minimal() +
+  labs(x = "Average Income (£000s)",
+       y = "Smoking Prevalence (%)",
+       title = "",
+       color = "Region") +
+  scale_y_continuous(breaks = seq(6,26,2), minor_breaks = NULL) +
+  scale_x_continuous(breaks = seq(5,45,5), minor_breaks = NULL) +
+  scale_colour_viridis_d()
+
+## plot prevalence against income, colour by region
+
+ggplot(plot_data) +
+  aes(x = income/1000, y = smk_prev , color = GORname) +
+  geom_point() +
+  geom_smooth(method='lm', se = F, color='black', linetype = 5) +
+  theme_minimal() +
+  labs(x = "Average Income (£000s)",
+       y = "Smoking Prevalence (%)",
+       title = "",
+       color = "Region") +
+  scale_y_continuous(breaks = seq(6,26,2), minor_breaks = NULL) +
+  scale_x_continuous(breaks = seq(5,45,5), minor_breaks = NULL) +
+  scale_colour_viridis_d()
+
+## as above, but allow for a regression line in each region
+
+ggplot(plot_data) +
+  aes(x = income/1000, y = smk_prev , color = GORname, linetype = GORname) +
+  geom_point() +
+  geom_smooth(method='lm', se = F, color='black') +
+  theme_minimal() +
+  labs(x = "Average Income (£000s)",
+       y = "Smoking Prevalence (%)",
+       title = "",
+       color = "Region",
+       linetype = "Region") +
+  scale_y_continuous(breaks = seq(6,26,2), minor_breaks = NULL) +
+  scale_x_continuous(breaks = seq(5,45,5), minor_breaks = NULL) +
+  scale_colour_viridis_d()
+
+############
+## HEAT MAPS
 
 # merge UTLA level variables to U/L mapping data
-data_mapping_merge <- merge(div_la, smkfreediv::localauthorities,
-                            by = c("UTLAcode","UTLAname"))
+
+data_mapping_merge <- merge(div_la, smkfreediv::localauthorities, by = c("UTLAcode","UTLAname"))
 
 # merge all to the shapefile
-merge <- merge(data_mapping_merge, shp,
-               by.x = "LAcode", by.y = "id", all.y = F)
+
+shape <- readRDS(paste0(Dir[1],"/shapefile_la.rds"))
+
+merge <- merge(data_mapping_merge, shape, by.x = "LAcode", by.y = "id", all.y = F)
 merge <- arrange(merge,order)
 
 ### plot
