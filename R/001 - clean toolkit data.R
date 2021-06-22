@@ -12,5 +12,5 @@ toolkit_raw <- readRDS(paste0(rawdatDir,"/STS_data_raw.rds"))
 toolkit_clean <- smkfreediv::CleanToolkit(data = toolkit_raw,
                                           start_month = 90,
                                           end_month = 160)
-saveRDS(toolkit_clean, paste0(intdatDir,"/toolkit_clean"))
+saveRDS(toolkit_clean, paste0(intdatDir,"/toolkit_clean.rds"))
 rm(toolkit_raw)
