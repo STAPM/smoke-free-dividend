@@ -20,6 +20,4 @@ div_la <- CalcDividend_la(profiles = smkfreediv::tobacco_profiles,
                           clean_income = income,
                           clean_expenditure = mean_spend_la,
                           upshift = 1.57151042,
-                          div = 0.93,
-                          reps = 200,
-                          seed = 2021)
+                          div = 0.93)

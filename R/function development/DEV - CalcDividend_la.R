@@ -1,0 +1,112 @@
+CalcDividend_la_dev <- function(profiles = smkfreediv::tobacco_profiles,
+                                clean_income ,
+                                clean_expenditure = mean_spend_la,
+                                upshift = 1.57151042,
+                                div = 0.93) {
+
+  ## grab the tobacco profiles and merge to mean expenditure
+
+  # make Buckinghamshire match between the two datasets
+  profiles[UTLAname == "Buckinghamshire UA", UTLAname := "Buckinghamshire"]
+  clean_expenditure[UTLAcode == "E10000002", UTLAcode := "E06000060"]
+
+  # fix mis-match of Bristol naming
+  profiles[UTLAcode == "E06000023", UTLAname := "Bristol"]
+  clean_expenditure[UTLAcode == "E06000023", UTLAname := "Bristol"]
+
+  # fix mis-match of Kingston upon Hull naming
+  profiles[UTLAcode == "E06000010", UTLAname := "Kingston upon Hull"]
+  clean_expenditure[UTLAcode == "E06000010", UTLAname := "Kingston upon Hull"]
+
+  # fix mis-match of Herefordshire naming
+  profiles[UTLAcode == "E06000019", UTLAname := "Herefordshire"]
+  clean_expenditure[UTLAcode == "E06000019", UTLAname := "Herefordshire"]
+
+  merge <- merge(profiles, clean_expenditure, by = c("UTLAcode","UTLAname"), all = T)
+
+  merge <- merge[order(UTLAname),]
+
+  ### merge the income data to the two merged datasets
+
+  # make Buckinghamshire match between the two datasets
+  clean_income[UTLAname == "Buckinghamshire UA", UTLAname := "Buckinghamshire"]
+  clean_income[UTLAcode == "E10000002", UTLAcode := "E06000060"]
+
+  # fix mis-match of Bristol naming
+  clean_income[UTLAcode == "E06000023", UTLAname := "Bristol"]
+
+  # fix mis-match of Kingston upon Hull naming
+  clean_income[UTLAcode == "E06000010", UTLAname := "Kingston upon Hull"]
+
+  # fix mis-match of Herefordshire naming
+  clean_income[UTLAcode == "E06000019", UTLAname := "Herefordshire"]
+
+  merged_all <- merge(merge, clean_income, by = c("UTLAcode","UTLAname"), all = T)
+
+  merged_all <- merged_all[order(UTLAname),]
+
+  #################################################################
+  ## Deterministic - calculate upshifting spending and dividend ###
+
+  det <- copy(merged_all)
+
+  det[, total_wk_exp := round((n_smokers * mean_week_spend)/1000)]
+  det[, total_annual_exp := round((n_smokers * mean_week_spend * 52)/1000000)]
+
+  det[, total_wk_exp_up := round((n_smokers * mean_week_spend * upshift)/1000)]
+  det[, total_annual_exp_up := round((n_smokers * mean_week_spend * 52  * upshift)/1000000)]
+
+  det[, dividend := total_annual_exp_up * div]
+
+  det[, c("smk_prev_uci", "smk_prev_lci", "smk_prev_se","income_sim",
+          "n_smokers_uci","n_smokers_lci", "n_smokers_se",
+          "se_week_spend", "population", "sample_tkit") := NULL]
+
+    ##################################################################
+    ## Probabilistic - draw parameters from normal distributions #####
+
+    prob <- copy(merged_all)
+
+    ## generate probabilistic variables for
+    # 1) number of smokers
+    prob[!is.na(n_smokers),
+        prob_n_smokers := rnorm(1,mean = n_smokers, sd = n_smokers_se) ,
+        by = "UTLAcode"]
+
+    # 2) smoking prevalence
+    prob[!is.na(smk_prev),
+         prob_smk_prev := rnorm(1,mean = smk_prev, sd = smk_prev_se) ,
+         by = "UTLAcode"]
+
+    # 3) mean weekly spend
+    # small hack - if NA standard deviation for only one observations, set SE = MEAN
+    prob[!is.na(mean_week_spend) & is.na(se_week_spend), se_week_spend := mean_week_spend]
+    prob[!is.na(mean_week_spend),
+         prob_mean_week_spend := rnorm(1,mean = mean_week_spend, sd = se_week_spend) ,
+         by = "UTLAcode"]
+
+    # 4) income
+    prob[, prob_income := income_sim]
+
+    ### repeat upshifting/dividend calculations with the
+    ### probabilistically drawn values
+
+    prob[, prob_total_wk_exp := round((prob_n_smokers * prob_mean_week_spend)/1000)]
+    prob[, prob_total_annual_exp := round((prob_n_smokers * prob_mean_week_spend * 52)/1000000)]
+
+    prob[, prob_total_wk_exp_up := round((prob_n_smokers * prob_mean_week_spend * upshift)/1000)]
+    prob[, prob_total_annual_exp_up := round((prob_n_smokers * prob_mean_week_spend * 52  * upshift)/1000000)]
+
+    prob[, prob_dividend := prob_total_annual_exp_up * div]
+
+    prob[, c("smk_prev", "smk_prev_uci", "smk_prev_lci", "smk_prev_se",
+             "n_smokers", "n_smokers_uci","n_smokers_lci", "n_smokers_se",
+             "se_week_spend", "mean_week_spend","sample_tkit",
+             "pop_n", "population", "income_sim", "income") := NULL]
+
+    ### merge
+
+    data_out <- merge(det, prob, by = c("UTLAcode","UTLAname"))
+
+  return(data_out)
+}
