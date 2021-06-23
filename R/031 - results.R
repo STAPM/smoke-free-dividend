@@ -3,7 +3,6 @@
 
 library(smkfreediv)
 library(ggplot2)
-library(ggthemes)
 
 div_la <- readRDS(paste0(Dir[2],"/results_local_authority.rds"))
 
@@ -65,7 +64,7 @@ ggplot(plot_data) +
 ggplot(plot_data) +
   aes(x = income/1000, y = mean_week_spend_up) +
   geom_point() +
-  geom_smooth(method='loess', se = F, color='turquoise4', linetype = 5) +
+  geom_smooth(method='lm', se = F, color='turquoise4', linetype = 5) +
   theme_minimal() +
   labs(x = "Average Income (£000s)",
        y = "Mean Weekly Spend (£)",
@@ -82,7 +81,7 @@ ggplot(plot_data) +
   geom_smooth(method='lm', se = F, color='turquoise4', linetype = 5) +
   theme_minimal() +
   labs(x = "Average Income (£000s)",
-       y = "Mean Spend as % of Income",
+       y = "Mean Spend as % of Disposable Income",
        title = "",
        color = "Region") +
   scale_y_continuous(breaks = seq(0,100,1), minor_breaks = NULL) +
