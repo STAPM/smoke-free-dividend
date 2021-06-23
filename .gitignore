@@ -5,3 +5,5 @@
 *.rds
 *.sav
 SF Dividend.xlsx
+templates/*
+output/summary_table.xlsx*
