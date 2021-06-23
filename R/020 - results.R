@@ -20,22 +20,21 @@ plot_data <- merge(div_la, geog, by = "UTLAcode")
 ggplot(plot_data) +
   aes(x = income/1000, y = smk_prev) +
   geom_point() +
-  geom_smooth(method='lm', se = F, color='turquoise4', linetype = 5) +
+  geom_smooth(method='loess', se = F, color='turquoise4', linetype = 5) +
   theme_minimal() +
   labs(x = "Average Income (£000s)",
        y = "Smoking Prevalence (%)",
        title = "",
        color = "Region") +
   scale_y_continuous(breaks = seq(6,26,2), minor_breaks = NULL) +
-  scale_x_continuous(breaks = seq(5,45,5), minor_breaks = NULL) +
-  scale_colour_viridis_d()
+  scale_x_continuous(breaks = seq(5,45,5), minor_breaks = NULL)
 
 ## plot prevalence against income, colour by region
 
 ggplot(plot_data) +
   aes(x = income/1000, y = smk_prev , color = GORname) +
   geom_point() +
-  geom_smooth(method='lm', se = F, color='black', linetype = 5) +
+  geom_smooth(method='loess', se = F, color='black', linetype = 5) +
   theme_minimal() +
   labs(x = "Average Income (£000s)",
        y = "Smoking Prevalence (%)",
@@ -60,6 +59,34 @@ ggplot(plot_data) +
   scale_y_continuous(breaks = seq(6,26,2), minor_breaks = NULL) +
   scale_x_continuous(breaks = seq(5,45,5), minor_breaks = NULL) +
   scale_colour_viridis_d()
+
+## plot mean weekly spend (upshifted) against income
+
+ggplot(plot_data) +
+  aes(x = income/1000, y = mean_week_spend_up) +
+  geom_point() +
+  geom_smooth(method='loess', se = F, color='turquoise4', linetype = 5) +
+  theme_minimal() +
+  labs(x = "Average Income (£000s)",
+       y = "Mean Weekly Spend (£)",
+       title = "",
+       color = "Region") +
+  scale_y_continuous(breaks = seq(20,70,5), minor_breaks = NULL) +
+  scale_x_continuous(breaks = seq(5,45,5), minor_breaks = NULL)
+
+## plot spend % of income (upshifted) against income
+
+ggplot(plot_data) +
+  aes(x = income/1000, y = spend_prop_up*100) +
+  geom_point() +
+  geom_smooth(method='lm', se = F, color='turquoise4', linetype = 5) +
+  theme_minimal() +
+  labs(x = "Average Income (£000s)",
+       y = "Mean Spend as % of Income",
+       title = "",
+       color = "Region") +
+  scale_y_continuous(breaks = seq(0,100,1), minor_breaks = NULL) +
+  scale_x_continuous(breaks = seq(5,45,5), minor_breaks = NULL)
 
 ############
 ## HEAT MAPS
