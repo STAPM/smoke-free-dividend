@@ -2,8 +2,7 @@
 ### full workflow for the smoke free dividend analysis.
 rm(list = ls())
 
-### ----------- Setup -------------- ###
-
+### ----- (0) Setup -------------- ###
 data <- "omni174_39.1_65.2cot_31.3a_25.4s_recodes_60.5sa.sav" # data
 version <- "1.0.0"            # smkfreediv package version to use
 user <- "djmorris1989"        # GitLab user name for package installation
@@ -15,14 +14,17 @@ library(smkfreediv)
 library(data.table)
 library(tidyverse)
 
-### --------- Data Cleaning -------- ###
+### ----- (1) Data Cleaning -------- ###
 source("R/011 - clean toolkit data.R")
 source("R/012 - read and clean shapefiles.R")
 
-### ----- Run the Analysis --------- ###
+### ----- (2) Run the Analysis --------- ###
 source("R/021 - local authority analysis.R")
 
-### ----- Results Processing ------- ###
-source("R/031 - results.R")
+### ----- (3) Results Processing ------- ###
+source("R/031 - local authority results.R")
 
+source("R/035 - local authority results tables.R")
+
+### ----- (4) Markdowns ------- ###
 
