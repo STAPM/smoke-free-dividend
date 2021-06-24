@@ -1,20 +1,57 @@
-### The aim of this code is to produce results tables and plots from the
-### local authority level analysis
+---
+title: "smoke free dividend results"
+date: "`r format(Sys.Date(), format = '%B %Y')`"
+output:
+  bookdown::word_document2:
+    toc: false
+editor_options: 
+  chunk_output_type: console
+---
 
-library(smkfreediv)
-library(ggplot2)
 
-div_la <- readRDS(paste0(Dir[2],"/results_local_authority.rds"))
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
 
-############
-## CORRELATION plots
+suppressPackageStartupMessages(library(here))
+suppressPackageStartupMessages(library(data.table))
+suppressPackageStartupMessages(library(tidyverse))
+suppressPackageStartupMessages(library(stringr))
+suppressPackageStartupMessages(library(cowplot))
+suppressPackageStartupMessages(library(readxl))
+suppressPackageStartupMessages(library(flextable))
+suppressPackageStartupMessages(library(magrittr))
+suppressPackageStartupMessages(library(knitr))
+suppressPackageStartupMessages(library(smkfreediv))
+
+```
+
+```{r data_prep, include = FALSE}
+
+#### for correlation plots 
+div_la <- readRDS("intermediate_data/results_local_authority.rds")
 
 geog <- merge(smkfreediv::la_gor_lookup, smkfreediv::localauthorities, by = c("LAcode","LAname"))
 geog <- unique(geog[,c("GORcode",  "GORname",  "UTLAcode", "UTLAname")])
 
 plot_data <- merge(div_la, geog, by = "UTLAcode")
 
-## plot prevalence against income
+############
+## HEAT MAPS
+
+# merge UTLA level variables to U/L mapping data
+
+data_mapping_merge <- merge(div_la, smkfreediv::localauthorities, by = c("UTLAcode","UTLAname"))
+
+# merge all to the shapefile
+
+shape <- readRDS("input_data/shapefile_la.rds")
+
+map_data <- merge(data_mapping_merge, shape, by.x = "LAcode", by.y = "id", all.y = F)
+map_data <- arrange(map_data,order)
+```
+
+
+```{r inc_smkprev, echo = FALSE, warning = FALSE, message = FALSE,  fig.asp = 0.8, fig.width = 6}
 
 ggplot(plot_data) +
   aes(x = income/1000, y = smk_prev) +
@@ -27,9 +64,11 @@ ggplot(plot_data) +
        color = "Region") +
   scale_y_continuous(breaks = seq(6,26,2), minor_breaks = NULL) +
   scale_x_continuous(breaks = seq(5,45,5), minor_breaks = NULL)
-ggsave("output/local authority/corr_smkprev_income.pdf")
 
-## plot prevalence against income, colour by region
+```
+
+
+```{r inc_smkprev_byregion, echo = FALSE, warning = FALSE, message = FALSE, fig.asp = 0.8, fig.width = 6}
 
 ggplot(plot_data) +
   aes(x = income/1000, y = smk_prev , color = GORname) +
@@ -43,9 +82,11 @@ ggplot(plot_data) +
   scale_y_continuous(breaks = seq(6,26,2), minor_breaks = NULL) +
   scale_x_continuous(breaks = seq(5,45,5), minor_breaks = NULL) +
   scale_colour_viridis_d()
-ggsave("output/local authority/corr_smkprev_income_byregion.pdf")
 
-## as above, but allow for a regression line in each region
+```
+
+
+```{r inc_smkprev_byregion_reg, echo = FALSE, warning = FALSE, message = FALSE, fig.asp = 0.8, fig.width = 6}
 
 ggplot(plot_data) +
   aes(x = income/1000, y = smk_prev , color = GORname, linetype = GORname) +
@@ -60,8 +101,11 @@ ggplot(plot_data) +
   scale_y_continuous(breaks = seq(6,26,2), minor_breaks = NULL) +
   scale_x_continuous(breaks = seq(5,45,5), minor_breaks = NULL) +
   scale_colour_viridis_d()
-ggsave("output/local authority/corr_smkprev_income_byregion_regs.pdf")
 
+```
+
+
+```{r , echo = FALSE, warning = FALSE, message = FALSE, fig.asp = 0.8, fig.width = 6}
 ## plot mean weekly spend (upshifted) against income
 
 ggplot(plot_data) +
@@ -75,8 +119,9 @@ ggplot(plot_data) +
        color = "Region") +
   scale_y_continuous(breaks = seq(20,70,5), minor_breaks = NULL) +
   scale_x_continuous(breaks = seq(5,45,5), minor_breaks = NULL)
-ggsave("output/local authority/corr_meanspend_income.pdf")
+```
 
+```{r , echo = FALSE, warning = FALSE, message = FALSE, fig.asp = 0.8, fig.width = 6}
 ## plot spend % of income (upshifted) against income
 
 ggplot(plot_data) +
@@ -90,25 +135,12 @@ ggplot(plot_data) +
        color = "Region") +
   scale_y_continuous(breaks = seq(0,100,1), minor_breaks = NULL) +
   scale_x_continuous(breaks = seq(5,45,5), minor_breaks = NULL)
-ggsave("output/local authority/corr_propspend_income.pdf")
+```
 
-############
-## HEAT MAPS
+```{r , echo = FALSE, warning = FALSE, message = FALSE, fig.asp = 0.8, fig.width = 6}
+### plot heat map by smoking prevalence 
 
-# merge UTLA level variables to U/L mapping data
-
-data_mapping_merge <- merge(div_la, smkfreediv::localauthorities, by = c("UTLAcode","UTLAname"))
-
-# merge all to the shapefile
-
-shape <- readRDS(paste0(Dir[1],"/shapefile_la.rds"))
-
-merge <- merge(data_mapping_merge, shape, by.x = "LAcode", by.y = "id", all.y = F)
-merge <- arrange(merge,order)
-
-### plot by smoking prevalence
-
-ggplot(data = merge) +
+ggplot(data = map_data) +
   aes(x = long,
       y = lat,
       group = group,
@@ -122,14 +154,14 @@ ggplot(data = merge) +
                             "18-20%",
                             "Over 20%"))) +
   geom_polygon() + coord_equal() + theme_void() +
-  labs(title = ' ',
-       subtitle = ' ',
-       fill = "Prevalence") +
+  labs(fill = "Smoking Prevalence") +
   scale_fill_viridis_d()
+```
 
-## plot by expenditure
+```{r , echo = FALSE, warning = FALSE, message = FALSE, fig.asp = 0.8, fig.width = 6}
+### plot heat map by expenditure 
 
-ggplot(data = merge) +
+ggplot(data = map_data) +
   aes(x = long,
       y = lat,
       group = group,
@@ -143,9 +175,7 @@ ggplot(data = merge) +
                             "£30 - £35",
                             "Over £35"))) +
   geom_polygon() + coord_equal() + theme_void() +
-  labs(title = 'Weekly Tobacco Expenditure by Local Authority',
-       subtitle = 'England, 2014-2019',
-       fill = "Mean Weekly Spend") +
+  labs(fill = "Mean Weekly Spend") +
   scale_fill_viridis_d()
 
-#+ scale_fill_gradient(low = "white", high = "red", na.value = "white")
+```

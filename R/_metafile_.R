@@ -28,3 +28,4 @@ source("R/035 - local authority results tables.R")
 
 ### ----- (4) Markdowns ------- ###
 
+source("R/040 - render markdowns.R")
