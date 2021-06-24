@@ -19,7 +19,7 @@ plot_data <- merge(div_la, geog, by = "UTLAcode")
 ggplot(plot_data) +
   aes(x = income/1000, y = smk_prev) +
   geom_point() +
-  geom_smooth(method='loess', se = F, color='turquoise4', linetype = 5) +
+  geom_smooth(method='lm', se = F, color='turquoise4', linetype = 5) +
   theme_minimal() +
   labs(x = "Average Income (£000s)",
        y = "Smoking Prevalence (%)",
