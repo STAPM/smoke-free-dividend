@@ -78,6 +78,43 @@ openxlsx::writeData(wb,
                     startCol = 5,
                     startRow = 3)
 
+##################################
+###  fill in average income
+
+x <- as.vector(as.matrix( round(la_results[,"income"],2 )))
+
+openxlsx::writeData(wb,
+                    sheet = "Local Authorities",
+                    x = x,
+                    startCol = 6,
+                    startRow = 3)
+
+# create confidence intervals
+
+la_results[, lci := round(income - 1.96*income_sd,2)]
+la_results[, uci := round(income + 1.96*income_sd,2)]
+la_results[, ci := paste0("[",lci," - ",uci,"]")]
+la_results[is.na(income), ci := ""]
+
+x <- as.vector(as.matrix( la_results[,"ci"]))
+
+openxlsx::writeData(wb,
+                    sheet = "Local Authorities",
+                    x = x,
+                    startCol = 7,
+                    startRow = 3)
+
+# create deciles
+
+la_results[, decile := ntile(income,10)]
+x <- as.vector(as.matrix( la_results[,"decile"]))
+
+openxlsx::writeData(wb,
+                    sheet = "Local Authorities",
+                    x = x,
+                    startCol = 8,
+                    startRow = 3)
+
 ###########################
 ## save out the workbook ##
 
