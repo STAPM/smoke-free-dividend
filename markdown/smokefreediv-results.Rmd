@@ -48,6 +48,7 @@ shape <- readRDS("input_data/shapefile_la.rds")
 
 map_data <- merge(data_mapping_merge, shape, by.x = "LAcode", by.y = "id", all.y = F)
 map_data <- arrange(map_data,order)
+
 ```
 
 

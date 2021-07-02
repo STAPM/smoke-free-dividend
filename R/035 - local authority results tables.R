@@ -115,6 +115,154 @@ openxlsx::writeData(wb,
                     startCol = 8,
                     startRow = 3)
 
+##################################
+###  fill in smoking prevalence
+
+x <- as.vector(as.matrix( round(la_results[,"smk_prev"],2 )))
+
+openxlsx::writeData(wb,
+                    sheet = "Local Authorities",
+                    x = x,
+                    startCol = 9,
+                    startRow = 3)
+
+# create confidence intervals
+
+la_results[, lci := round(smk_prev - 1.96*smk_prev_sd,2)]
+la_results[, uci := round(smk_prev + 1.96*smk_prev_sd,2)]
+la_results[, ci := paste0("[",lci," - ",uci,"]")]
+la_results[is.na(smk_prev), ci := ""]
+
+x <- as.vector(as.matrix( la_results[,"ci"]))
+
+openxlsx::writeData(wb,
+                    sheet = "Local Authorities",
+                    x = x,
+                    startCol = 10,
+                    startRow = 3)
+
+# create deciles
+
+la_results[, decile := ntile(smk_prev,10)]
+x <- as.vector(as.matrix( la_results[,"decile"]))
+
+openxlsx::writeData(wb,
+                    sheet = "Local Authorities",
+                    x = x,
+                    startCol = 11,
+                    startRow = 3)
+
+##################################
+###  fill in number of smokers
+
+x <- as.vector(as.matrix( round(la_results[,"n_smokers"],2 )))
+
+openxlsx::writeData(wb,
+                    sheet = "Local Authorities",
+                    x = x,
+                    startCol = 12,
+                    startRow = 3)
+
+# create confidence intervals
+
+la_results[, lci := round(n_smokers - 1.96*n_smokers_sd,2)]
+la_results[, uci := round(n_smokers + 1.96*n_smokers_sd,2)]
+la_results[, ci := paste0("[",lci," - ",uci,"]")]
+la_results[is.na(n_smokers), ci := ""]
+
+x <- as.vector(as.matrix( la_results[,"ci"]))
+
+openxlsx::writeData(wb,
+                    sheet = "Local Authorities",
+                    x = x,
+                    startCol = 13,
+                    startRow = 3)
+
+##################################
+###  fill in total annual expenditure
+
+la_results[is.nan(total_annual_exp), total_annual_exp := NA]
+x <- as.vector(as.matrix( round(la_results[,"total_annual_exp"],2 )))
+
+openxlsx::writeData(wb,
+                    sheet = "Local Authorities",
+                    x = x,
+                    startCol = 14,
+                    startRow = 3)
+
+# create confidence intervals
+
+la_results[, lci := round(total_annual_exp - 1.96*total_annual_exp_sd,2)]
+la_results[, uci := round(total_annual_exp + 1.96*total_annual_exp_sd,2)]
+la_results[, ci := paste0("[",lci," - ",uci,"]")]
+la_results[is.na(total_annual_exp), ci := ""]
+
+x <- as.vector(as.matrix( la_results[,"ci"]))
+
+openxlsx::writeData(wb,
+                    sheet = "Local Authorities",
+                    x = x,
+                    startCol = 15,
+                    startRow = 3)
+
+##################################
+###  fill in percentage of income spent on tobacco
+
+la_results[is.nan(spend_prop), spend_prop := NA]
+x <- as.vector(as.matrix( 100*round(la_results[,"spend_prop"],4 )))
+
+openxlsx::writeData(wb,
+                    sheet = "Local Authorities",
+                    x = x,
+                    startCol = 16,
+                    startRow = 3)
+
+# create confidence intervals
+
+la_results[, lci := 100*round(spend_prop - 1.96*spend_prop_sd,4)]
+la_results[, uci := 100*round(spend_prop + 1.96*spend_prop_sd,4)]
+la_results[, ci := paste0("[",lci,"% - ",uci,"%]")]
+la_results[is.na(spend_prop), ci := ""]
+
+x <- as.vector(as.matrix( la_results[,"ci"]))
+
+openxlsx::writeData(wb,
+                    sheet = "Local Authorities",
+                    x = x,
+                    startCol = 17,
+                    startRow = 3)
+
+la_results[,c("lci", "uci", "ci") := NULL]
+
+#############################################
+###  fill in mean weekly spending (upshifted)
+
+la_results[is.nan(mean_week_spend_up), mean_week_spend_up := NA]
+x <- as.vector(as.matrix( round(la_results[,"mean_week_spend_up"],2 )))
+
+openxlsx::writeData(wb,
+                    sheet = "Local Authorities",
+                    x = x,
+                    startCol = 18,
+                    startRow = 3)
+
+# create confidence intervals
+
+la_results[, lci := round(mean_week_spend_up - 1.96*mean_week_spend_up_sd,2)]
+la_results[, uci := round(mean_week_spend_up + 1.96*mean_week_spend_up_sd,2)]
+la_results[, ci := paste0("[",lci," - ",uci,"]")]
+la_results[is.na(mean_week_spend_up), ci := ""]
+
+x <- as.vector(as.matrix( la_results[,"ci"]))
+
+openxlsx::writeData(wb,
+                    sheet = "Local Authorities",
+                    x = x,
+                    startCol = 19,
+                    startRow = 3)
+
+
+
 ###########################
 ## save out the workbook ##
 

@@ -129,10 +129,11 @@ ggplot(data = merge) +
 
 ## plot by expenditure
 
-ggplot(data = merge) +
-  aes(x = long,
-      y = lat,
-      group = group,
+choropleth <- merge
+choropleth$text <- with(choropleth, paste0(UTLAname,": £", round(mean_week_spend_up,2) ))
+
+p <- ggplot(data = choropleth) +
+  aes(x = long, y = lat, group = group, text = text,
       fill = cut(mean_week_spend,
                  breaks = c(0,20,22,25,28,30,35,100),
                  labels = c("Under £20",
@@ -141,11 +142,14 @@ ggplot(data = merge) +
                             "£25 - £28",
                             "£28 - £30",
                             "£30 - £35",
-                            "Over £35"))) +
-  geom_polygon() + coord_equal() + theme_void() +
+                            "Over £35")) ) +
+  geom_polygon() +
+  coord_equal() +
+  theme_void() +
   labs(title = 'Weekly Tobacco Expenditure by Local Authority',
        subtitle = 'England, 2014-2019',
        fill = "Mean Weekly Spend") +
   scale_fill_viridis_d()
 
-#+ scale_fill_gradient(low = "white", high = "red", na.value = "white")
+
+plotly::ggplotly(p, tooltip = "text")
