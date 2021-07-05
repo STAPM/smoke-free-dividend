@@ -12,7 +12,6 @@ source("R/002 - create directories.R")
 
 library(smkfreediv)
 library(data.table)
-library(tidyverse)
 
 ### ----- (1) Data Cleaning -------- ###
 source("R/011 - clean toolkit data.R")

@@ -9,24 +9,32 @@ div_la <- readRDS(paste0(Dir[2],"/results_local_authority.rds"))
 ############
 ## CORRELATION plots
 
-geog <- merge(smkfreediv::la_gor_lookup, smkfreediv::localauthorities, by = c("LAcode","LAname"))
-geog <- unique(geog[,c("GORcode",  "GORname",  "UTLAcode", "UTLAname")])
 
-plot_data <- merge(div_la, geog, by = "UTLAcode")
+plot_data <- copy(div_la)
 
 ## plot prevalence against income
 
+
+plot_data$text <- with(plot_data,
+                       paste0("Local Authority: ", UTLAname,
+                              "<br>Average Income: £", round(income),
+                              "<br>Smoking Prevalence: ",round(smk_prev,2),"%") )
+
+plotly::ggplotly(
+
 ggplot(plot_data) +
-  aes(x = income/1000, y = smk_prev) +
-  geom_point() +
-  geom_smooth(method='lm', se = F, color='turquoise4', linetype = 5) +
+  aes(x = income/1000, y = smk_prev, text = text) +
+  geom_point(color='navy') +
+  geom_smooth(method='lm', se = F, linetype = 5, na.rm = T) +
   theme_minimal() +
   labs(x = "Average Income (£000s)",
        y = "Smoking Prevalence (%)",
        title = "",
        color = "Region") +
   scale_y_continuous(breaks = seq(6,26,2), minor_breaks = NULL) +
-  scale_x_continuous(breaks = seq(5,45,5), minor_breaks = NULL)
+  scale_x_continuous(breaks = seq(5,45,5), minor_breaks = NULL) , tooltip = c("text")
+
+)
 ggsave("output/local authority/corr_smkprev_income.pdf")
 
 ## plot prevalence against income, colour by region
