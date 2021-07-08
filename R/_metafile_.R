@@ -4,7 +4,7 @@ rm(list = ls())
 
 ### ----- (0) Setup -------------- ###
 data <- "omni174_39.1_65.2cot_31.3a_25.4s_recodes_60.5sa.sav" # data
-version <- "1.0.0"            # smkfreediv package version to use
+version <- "1.0.3"            # smkfreediv package version to use
 user <- "djmorris1989"        # GitLab user name for package installation
 
 source("R/001 - package installation.R")

@@ -2,13 +2,12 @@
 
 # obtain the currently installed version of the package
 
-if (!require("smkfreediv",character.only = TRUE) == FALSE) {
+if (!("smkfreediv" %in% installed.packages() )) {
+  installed_version = "NULL"
+} else {
   installed_version = as.character(packageVersion("smkfreediv")[1])
   detach("package:smkfreediv")
-} else {
-  installed_version = NA
 }
-
 
 
 # install the required version, if this is not the one which is installed
