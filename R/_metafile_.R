@@ -18,6 +18,7 @@ source("R/011 - clean toolkit data.R")
 source("R/012 - read and clean shapefiles.R")
 
 ### ----- (2) Run the Analysis --------- ###
+source("R/020 - estimate the upshift.R")
 source("R/021 - local authority analysis.R")
 
 ### ----- (3) Results Processing ------- ###

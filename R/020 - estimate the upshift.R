@@ -9,3 +9,7 @@ upshift <- smkfreediv::CalcUpshift(data = data)
 upshift_HR <- smkfreediv::CalcUpshift(data = data,
                                       LCFS = TRUE)
 
+# gather into a vector
+
+upshift_vec <- c(1.57151042, upshift, upshift_HR)
+
