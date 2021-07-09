@@ -11,5 +11,6 @@ upshift_HR <- smkfreediv::CalcUpshift(data = data,
 
 # gather into a vector
 
-upshift_vec <- c(1.57151042, upshift, upshift_HR)
+upshift_vec <- c(1, 1.57151042, upshift, upshift_HR)
 
+rm(upshift, upshift_HR)
