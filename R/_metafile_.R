@@ -7,8 +7,8 @@ data <- "omni174_39.1_65.2cot_31.3a_25.4s_recodes_60.5sa.sav" # data
 version <- "1.0.3"            # smkfreediv package version to use
 user <- "djmorris1989"        # GitLab user name for package installation
 
-source("R/001 - package installation.R")
-source("R/002 - create directories.R")
+source("R/000 - create directories.R")
+#source("R/001 - package installation.R")
 
 library(smkfreediv)
 library(data.table)
