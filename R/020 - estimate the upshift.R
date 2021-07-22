@@ -3,14 +3,36 @@
 
 data <- readRDS(paste0(Dir[1],"/toolkit_clean.rds"))
 
-# calculate mean weekly expenditure by local authority
+# (1) Howard Reed parameters compared to the Toolkit estimates
+
 upshift <- smkfreediv::CalcUpshift(data = data)
+
+# (2) Howard Reed parameters compared to LCFS (i.e. reproduce
+#     the upshift factor estimated by Howard)
 
 upshift_HR <- smkfreediv::CalcUpshift(data = data,
                                       LCFS = TRUE)
 
-# gather into a vector
+# (3) As (1) but use the price from the ONS time series
 
-upshift_vec <- c(1, 1.57151042, upshift, upshift_HR)
+price <- as.numeric(smkfreediv::price_cigs[year == 2018 & month == 12,"price"])
 
-rm(upshift, upshift_HR)
+upshift_alt_price <- smkfreediv::CalcUpshift(data = data,
+                                             price_fm = price)
+
+# gather into a vector, including no upshift, and the PHE upshift
+
+upshift_vec <- c(1, 1.57151042, upshift, upshift_alt_price, upshift_HR)
+
+param <- 1:length(upshift_vec)
+
+upshift_vec_out <- data.table(param, upshift_vec)
+
+setnames(upshift_vec_out, names(upshift_vec_out), c("id","upshift"))
+
+write.csv(upshift_vec_out,
+          paste0(Dir[3],"/upshift_parameters.csv"),
+          row.names = FALSE)
+
+rm(upshift, upshift_HR, upshift_alt_price, price, upshift_vec_out, param)
+
