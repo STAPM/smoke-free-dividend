@@ -7,7 +7,7 @@ n_sim <- 20000
 
 for (j in 1:length(upshift_vec)) {
 
-  cat(crayon::red("Simulation for Upshift Parameter ",j," of ",length(upshift_vec),"\n"))
+  cat(crayon::yellow("Simulation for Upshift Parameter ",j," of ",length(upshift_vec),"\n"))
 
 la_results <- smkfreediv::CalcDividend_la_sim(data,
                                               upshift = upshift_vec[j],
