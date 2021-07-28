@@ -21,24 +21,35 @@ library(dplyr)
 ## Read in the results of the analysis
 ## Merge
 
-results <- readRDS(paste0(Dir[2],"/results_local_authority.rds"))
-codes <- readxl::read_excel(path = "templates/template.xlsx",
-                            sheet = "Local Authorities",
-                            range = "A2:A150")
-setDT(codes)
-setnames(codes,names(codes),c("UTLAcode"))
-codes[UTLAcode == "E10000002", UTLAcode := "E06000060"]
+results <- readRDS(paste0(Dir[2],"/results_local_authority_1.rds"))
+la_results <- results[order(UTLAname)]
 
-la_results <- merge(codes, results, by = c("UTLAcode"))
-la_results <- la_results[order(UTLAname)]
-
-rm(codes, results)
+rm(results)
 
 ############################################
 ## Store results in the workbook template ##
 
 # load the template workbook
-wb <- openxlsx::loadWorkbook("templates/template.xlsx")
+wb <- openxlsx::loadWorkbook("templates/results_template.xlsx")
+
+##################################
+### fill in local authorities ####
+
+UTLAname <- as.vector(as.matrix(la_results[,"UTLAname"]))
+UTLAcode <- as.vector(as.matrix(la_results[,"UTLAcode"]))
+
+openxlsx::writeData(wb,
+                    sheet = "LA data",
+                    x = UTLAcode,
+                    startCol = 1,
+                    startRow = 3)
+
+openxlsx::writeData(wb,
+                    sheet = "LA data",
+                    x = UTLAname,
+                    startCol = 2,
+                    startRow = 3)
+
 
 ##################################
 ###  fill in mean weekly spending
@@ -47,25 +58,25 @@ la_results[is.nan(mean_week_spend), mean_week_spend := NA]
 x <- as.vector(as.matrix( round(la_results[,"mean_week_spend"],2 )))
 
 openxlsx::writeData(wb,
-                    sheet = "Local Authorities",
+                    sheet = "LA data",
                     x = x,
                     startCol = 3,
                     startRow = 3)
 
 # create confidence intervals
 
-la_results[, lci := round(mean_week_spend - 1.96*mean_week_spend_sd,2)]
-la_results[, uci := round(mean_week_spend + 1.96*mean_week_spend_sd,2)]
-la_results[, ci := paste0("[",lci," - ",uci,"]")]
-la_results[is.na(mean_week_spend), ci := ""]
+#la_results[, lci := round(mean_week_spend - 1.96*mean_week_spend_sd,2)]
+#la_results[, uci := round(mean_week_spend + 1.96*mean_week_spend_sd,2)]
+#la_results[, ci := paste0("[",lci," - ",uci,"]")]
+#la_results[is.na(mean_week_spend), ci := ""]
 
-x <- as.vector(as.matrix( la_results[,"ci"]))
+#x <- as.vector(as.matrix( la_results[,"ci"]))
 
-openxlsx::writeData(wb,
-                    sheet = "Local Authorities",
-                    x = x,
-                    startCol = 4,
-                    startRow = 3)
+#openxlsx::writeData(wb,
+#                    sheet = "Local Authorities",
+#                    x = x,
+#                    startCol = 4,
+#                    startRow = 3)
 
 # create deciles
 
@@ -73,9 +84,9 @@ la_results[, decile := ntile(mean_week_spend,10)]
 x <- as.vector(as.matrix( la_results[,"decile"]))
 
 openxlsx::writeData(wb,
-                    sheet = "Local Authorities",
+                    sheet = "LA data",
                     x = x,
-                    startCol = 5,
+                    startCol = 4,
                     startRow = 3)
 
 ##################################
@@ -84,24 +95,9 @@ openxlsx::writeData(wb,
 x <- as.vector(as.matrix( round(la_results[,"income"],2 )))
 
 openxlsx::writeData(wb,
-                    sheet = "Local Authorities",
+                    sheet = "LA data",
                     x = x,
-                    startCol = 6,
-                    startRow = 3)
-
-# create confidence intervals
-
-la_results[, lci := round(income - 1.96*income_sd,2)]
-la_results[, uci := round(income + 1.96*income_sd,2)]
-la_results[, ci := paste0("[",lci," - ",uci,"]")]
-la_results[is.na(income), ci := ""]
-
-x <- as.vector(as.matrix( la_results[,"ci"]))
-
-openxlsx::writeData(wb,
-                    sheet = "Local Authorities",
-                    x = x,
-                    startCol = 7,
+                    startCol = 5,
                     startRow = 3)
 
 # create deciles
@@ -110,9 +106,9 @@ la_results[, decile := ntile(income,10)]
 x <- as.vector(as.matrix( la_results[,"decile"]))
 
 openxlsx::writeData(wb,
-                    sheet = "Local Authorities",
+                    sheet = "LA data",
                     x = x,
-                    startCol = 8,
+                    startCol = 6,
                     startRow = 3)
 
 ##################################
@@ -121,24 +117,9 @@ openxlsx::writeData(wb,
 x <- as.vector(as.matrix( round(la_results[,"smk_prev"],2 )))
 
 openxlsx::writeData(wb,
-                    sheet = "Local Authorities",
+                    sheet = "LA data",
                     x = x,
-                    startCol = 9,
-                    startRow = 3)
-
-# create confidence intervals
-
-la_results[, lci := round(smk_prev - 1.96*smk_prev_sd,2)]
-la_results[, uci := round(smk_prev + 1.96*smk_prev_sd,2)]
-la_results[, ci := paste0("[",lci," - ",uci,"]")]
-la_results[is.na(smk_prev), ci := ""]
-
-x <- as.vector(as.matrix( la_results[,"ci"]))
-
-openxlsx::writeData(wb,
-                    sheet = "Local Authorities",
-                    x = x,
-                    startCol = 10,
+                    startCol = 7,
                     startRow = 3)
 
 # create deciles
@@ -147,9 +128,9 @@ la_results[, decile := ntile(smk_prev,10)]
 x <- as.vector(as.matrix( la_results[,"decile"]))
 
 openxlsx::writeData(wb,
-                    sheet = "Local Authorities",
+                    sheet = "LA data",
                     x = x,
-                    startCol = 11,
+                    startCol = 8,
                     startRow = 3)
 
 ##################################
@@ -158,51 +139,45 @@ openxlsx::writeData(wb,
 x <- as.vector(as.matrix( round(la_results[,"n_smokers"],2 )))
 
 openxlsx::writeData(wb,
-                    sheet = "Local Authorities",
+                    sheet = "LA data",
                     x = x,
-                    startCol = 12,
+                    startCol = 9,
                     startRow = 3)
 
-# create confidence intervals
+##################################
+###  fill in total weekly expenditure
 
-la_results[, lci := round(n_smokers - 1.96*n_smokers_sd,2)]
-la_results[, uci := round(n_smokers + 1.96*n_smokers_sd,2)]
-la_results[, ci := paste0("[",lci," - ",uci,"]")]
-la_results[is.na(n_smokers), ci := ""]
-
-x <- as.vector(as.matrix( la_results[,"ci"]))
+la_results[is.nan(total_wk_exp), total_wk_exp := NA]
+x <- as.vector(as.matrix( la_results[,"total_wk_exp"]))
 
 openxlsx::writeData(wb,
-                    sheet = "Local Authorities",
+                    sheet = "LA data",
                     x = x,
-                    startCol = 13,
+                    startCol = 10,
                     startRow = 3)
 
 ##################################
 ###  fill in total annual expenditure
 
 la_results[is.nan(total_annual_exp), total_annual_exp := NA]
-x <- as.vector(as.matrix( round(la_results[,"total_annual_exp"],2 )))
+x <- as.vector(as.matrix( round(la_results[,"total_annual_exp"],3)))
 
 openxlsx::writeData(wb,
-                    sheet = "Local Authorities",
+                    sheet = "LA data",
                     x = x,
-                    startCol = 14,
+                    startCol = 11,
                     startRow = 3)
 
-# create confidence intervals
+##################################
+###  fill in average weekly income
 
-la_results[, lci := round(total_annual_exp - 1.96*total_annual_exp_sd,2)]
-la_results[, uci := round(total_annual_exp + 1.96*total_annual_exp_sd,2)]
-la_results[, ci := paste0("[",lci," - ",uci,"]")]
-la_results[is.na(total_annual_exp), ci := ""]
-
-x <- as.vector(as.matrix( la_results[,"ci"]))
+x <- as.vector(as.matrix(la_results[,"income"] ))/52
+x <- round(x)
 
 openxlsx::writeData(wb,
-                    sheet = "Local Authorities",
+                    sheet = "LA data",
                     x = x,
-                    startCol = 15,
+                    startCol = 12,
                     startRow = 3)
 
 ##################################
@@ -212,55 +187,21 @@ la_results[is.nan(spend_prop), spend_prop := NA]
 x <- as.vector(as.matrix( 100*round(la_results[,"spend_prop"],4 )))
 
 openxlsx::writeData(wb,
-                    sheet = "Local Authorities",
+                    sheet = "LA data",
                     x = x,
-                    startCol = 16,
+                    startCol = 13,
                     startRow = 3)
 
-# create confidence intervals
+# create deciles
 
-la_results[, lci := 100*round(spend_prop - 1.96*spend_prop_sd,4)]
-la_results[, uci := 100*round(spend_prop + 1.96*spend_prop_sd,4)]
-la_results[, ci := paste0("[",lci,"% - ",uci,"%]")]
-la_results[is.na(spend_prop), ci := ""]
-
-x <- as.vector(as.matrix( la_results[,"ci"]))
+la_results[, decile := ntile(spend_prop,10)]
+x <- as.vector(as.matrix( la_results[,"decile"]))
 
 openxlsx::writeData(wb,
-                    sheet = "Local Authorities",
+                    sheet = "LA data",
                     x = x,
-                    startCol = 17,
+                    startCol = 14,
                     startRow = 3)
-
-la_results[,c("lci", "uci", "ci") := NULL]
-
-#############################################
-###  fill in mean weekly spending (upshifted)
-
-la_results[is.nan(mean_week_spend_up), mean_week_spend_up := NA]
-x <- as.vector(as.matrix( round(la_results[,"mean_week_spend_up"],2 )))
-
-openxlsx::writeData(wb,
-                    sheet = "Local Authorities",
-                    x = x,
-                    startCol = 18,
-                    startRow = 3)
-
-# create confidence intervals
-
-la_results[, lci := round(mean_week_spend_up - 1.96*mean_week_spend_up_sd,2)]
-la_results[, uci := round(mean_week_spend_up + 1.96*mean_week_spend_up_sd,2)]
-la_results[, ci := paste0("[",lci," - ",uci,"]")]
-la_results[is.na(mean_week_spend_up), ci := ""]
-
-x <- as.vector(as.matrix( la_results[,"ci"]))
-
-openxlsx::writeData(wb,
-                    sheet = "Local Authorities",
-                    x = x,
-                    startCol = 19,
-                    startRow = 3)
-
 
 
 ###########################
