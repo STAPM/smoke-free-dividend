@@ -22,9 +22,10 @@ source("R/020 - estimate the upshift.R")
 source("R/021 - local authority analysis.R")
 
 ### ----- (3) Results Processing ------- ###
-source("R/031 - local authority results.R")
+source("R/031 - results plots.R")
+source("R/032 - results heat map plots.R")
 
-source("R/035 - local authority results tables.R")
+source("R/035 - results tables local authority.R")
 
 ### ----- (4) Markdowns ------- ###
 
