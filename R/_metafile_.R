@@ -28,5 +28,4 @@ source("R/032 - results heat map plots.R")
 source("R/035 - results tables local authority.R")
 
 ### ----- (4) Markdowns ------- ###
-
 source("R/040 - render markdowns.R")
