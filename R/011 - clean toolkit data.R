@@ -6,7 +6,7 @@ memory.limit(size=16339) # so work laptop can read the data
 ##                        part of the code need only be run once.
 
 toolkit_raw <- smkfreediv::ReadToolkit(path = paste0(Dir[1],"/"),
-                                       data = data,
+                                       data = data_file,
                                        save = TRUE,
                                        name = "STS_data_raw")
 
