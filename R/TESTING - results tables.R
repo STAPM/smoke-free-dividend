@@ -24,18 +24,49 @@ for (i in 1:length(upshift_vec)) {
   # load the template workbook
   wb <- openxlsx::loadWorkbook("templates/results_template.xlsx")
 
-  all   <- as.vector(as.matrix(exp[,"mean_week_spend"]))
-  grade <- as.vector(as.matrix(exp_grade[,"mean_week_spend"]))
-  sex   <- as.vector(as.matrix(exp_sex[,"mean_week_spend"]))
-  age   <- as.vector(as.matrix(exp_age[,"mean_week_spend"]))
+  #############################
 
-  wk_spend <- c(all, grade, sex, age)
-  wk_spend <- round(wk_spend, 2)
+  results <- readRDS(paste0(Dir[2],"/results_local_authority_",i,".rds"))
+  top_la_results <- results[order(-spend_prop)]
+  top_la_results <- top_la_results[1:10,]
+
+  rm(results)
+
+  reg <- as.vector(as.matrix(regions[,"UTLAname"]))
+  mean <- as.vector(as.matrix(regions[,"mean_week_spend"]))
+  prop <- as.vector(as.matrix(regions[,"spend_prop"]))
+  tot_exp <- as.vector(as.matrix(regions[,"total_annual_exp"]))
+  tot_div <- as.vector(as.matrix(regions[,"dividend"]))
+
 
   openxlsx::writeData(wb,
-                      sheet = "Average Tobacco Spend",
-                      x = wk_spend,
+                      sheet = "Expenditure % of Income LA",
+                      x = reg,
+                      startCol = 1,
+                      startRow = 3)
+
+  openxlsx::writeData(wb,
+                      sheet = "Expenditure % of Income LA",
+                      x = mean,
+                      startCol = 2,
+                      startRow = 3)
+
+  openxlsx::writeData(wb,
+                      sheet = "Expenditure % of Income LA",
+                      x = prop,
                       startCol = 3,
+                      startRow = 3)
+
+  openxlsx::writeData(wb,
+                      sheet = "Expenditure % of Income LA",
+                      x = tot_exp,
+                      startCol = 4,
+                      startRow = 3)
+
+  openxlsx::writeData(wb,
+                      sheet = "Expenditure % of Income LA",
+                      x = tot_div,
+                      startCol = 5,
                       startRow = 3)
 
   ###########################

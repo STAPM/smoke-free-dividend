@@ -243,6 +243,105 @@ openxlsx::writeData(wb,
                     startCol = 3,
                     startRow = 3)
 
+### --------------- Expenditure % of Income Tab -------------- ###
+
+results <- readRDS(paste0(Dir[2],"/results_local_authority_",i,".rds"))
+la_results <- results[order(UTLAname)]
+
+merge <- merge(results, smkfreediv::utla_gor_lookup, by = "UTLAname")
+
+rm(results)
+
+regions <- merge[, .(mean = mean(mean_week_spend, na.rm = TRUE),
+                     prop = mean(spend_prop, na.rm = TRUE),
+                     tot_exp = sum(total_annual_exp, na.rm = TRUE),
+                     tot_div = sum(dividend, na.rm = TRUE)),
+                 by = "region"]
+
+regions <- regions[order(region),]
+
+reg <- as.vector(as.matrix(regions[,"region"]))
+mean <- round(as.vector(as.matrix(regions[,"mean"])) , 2)
+prop <- round(as.vector(as.matrix(regions[,"prop"])) , 4)*100
+tot_exp <-  round(as.vector(as.matrix(regions[,"tot_exp"])) , 3)
+tot_div <-  round(as.vector(as.matrix(regions[,"tot_div"])) , 3)
+
+
+openxlsx::writeData(wb,
+                    sheet = "Expenditure % of Income",
+                    x = reg,
+                    startCol = 1,
+                    startRow = 3)
+
+openxlsx::writeData(wb,
+                    sheet = "Expenditure % of Income",
+                    x = mean,
+                    startCol = 2,
+                    startRow = 3)
+
+openxlsx::writeData(wb,
+                    sheet = "Expenditure % of Income",
+                    x = prop,
+                    startCol = 3,
+                    startRow = 3)
+
+openxlsx::writeData(wb,
+                    sheet = "Expenditure % of Income",
+                    x = tot_exp,
+                    startCol = 4,
+                    startRow = 3)
+
+openxlsx::writeData(wb,
+                    sheet = "Expenditure % of Income",
+                    x = tot_div,
+                    startCol = 5,
+                    startRow = 3)
+
+### --------------- Expenditure % of Income  LAs Tab -------------- ###
+
+results <- readRDS(paste0(Dir[2],"/results_local_authority_",i,".rds"))
+top_la_results <- results[order(-spend_prop)]
+top_la_results <- top_la_results[1:10,]
+
+rm(results)
+
+reg <- as.vector(as.matrix(top_la_results[,"UTLAname"]))
+mean <- round(as.vector(as.matrix(top_la_results[,"mean_week_spend"])) , 2)
+prop <- round(as.vector(as.matrix(top_la_results[,"spend_prop"])) , 4)*100
+tot_exp <- round(as.vector(as.matrix(top_la_results[,"total_annual_exp"])) , 3)
+tot_div <- round(as.vector(as.matrix(top_la_results[,"dividend"])) , 3)
+
+
+openxlsx::writeData(wb,
+                    sheet = "Expenditure % of Income LA",
+                    x = reg,
+                    startCol = 1,
+                    startRow = 3)
+
+openxlsx::writeData(wb,
+                    sheet = "Expenditure % of Income LA",
+                    x = mean,
+                    startCol = 2,
+                    startRow = 3)
+
+openxlsx::writeData(wb,
+                    sheet = "Expenditure % of Income LA",
+                    x = prop,
+                    startCol = 3,
+                    startRow = 3)
+
+openxlsx::writeData(wb,
+                    sheet = "Expenditure % of Income LA",
+                    x = tot_exp,
+                    startCol = 4,
+                    startRow = 3)
+
+openxlsx::writeData(wb,
+                    sheet = "Expenditure % of Income LA",
+                    x = tot_div,
+                    startCol = 5,
+                    startRow = 3)
+
 ###########################
 ## save out the workbook ##
 
