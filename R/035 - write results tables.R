@@ -19,18 +19,41 @@ library(dplyr)
 ############################################
 ## Read in the local authorities that are in the PHE spreadsheet template
 ## Read in the results of the analysis
-## Merge
 
-results <- readRDS(paste0(Dir[2],"/results_local_authority_1.rds"))
+for (i in 1:length(upshift_vec)) {
+
+### read in local authority results data
+
+results <- readRDS(paste0(Dir[2],"/results_local_authority_",i,".rds"))
 la_results <- results[order(UTLAname)]
 
 rm(results)
+
+### read in weekly spend by demographics data
+
+exp <-       read.csv(paste0(Dir[2],"/weekly_spend_all.csv"))
+exp_age <-   read.csv(paste0(Dir[2],"/weekly_spend_age.csv"))
+exp_sex <-   read.csv(paste0(Dir[2],"/weekly_spend_sex.csv"))
+exp_grade <- read.csv(paste0(Dir[2],"/weekly_spend_grade.csv"))
+
+setDT(exp) ; setDT(exp_age) ; setDT(exp_sex) ; setDT(exp_grade)
+
+exp <- exp[upshift == i,]
+exp_age <- exp_age[upshift == i,]
+exp_sex <- exp_sex[upshift == i,]
+exp_grade <- exp_grade[upshift == i,]
 
 ############################################
 ## Store results in the workbook template ##
 
 # load the template workbook
 wb <- openxlsx::loadWorkbook("templates/results_template.xlsx")
+
+
+
+
+### ----------------- LA Data Tab --------------- ###
+
 
 ##################################
 ### fill in local authorities ####
@@ -204,7 +227,25 @@ openxlsx::writeData(wb,
                     startRow = 3)
 
 
+### ----------------- Average Tobacco Spend Tab --------------- ###
+
+all   <- as.vector(as.matrix(exp[,"mean_week_spend"]))
+grade <- as.vector(as.matrix(exp_grade[,"mean_week_spend"]))
+sex   <- as.vector(as.matrix(exp_sex[,"mean_week_spend"]))
+age   <- as.vector(as.matrix(exp_age[,"mean_week_spend"]))
+
+wk_spend <- c(all, grade, sex, age)
+wk_spend <- round(wk_spend, 2)
+
+openxlsx::writeData(wb,
+                    sheet = "Average Tobacco Spend",
+                    x = wk_spend,
+                    startCol = 3,
+                    startRow = 3)
+
 ###########################
 ## save out the workbook ##
 
-saveWorkbook(wb,"output/summary_table.xlsx", overwrite = T)
+saveWorkbook(wb,paste0("output/summary_table_",i,".xlsx"), overwrite = T)
+
+}
