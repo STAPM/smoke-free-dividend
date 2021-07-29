@@ -7,7 +7,8 @@
 
 toolkit_raw <- smkfreediv::ReadToolkit(path = paste0(Dir[1],"/"),
                                        data = data,
-                                       save = TRUE)
+                                       save = TRUE,
+                                       name = "STS_data_raw")
 
 ## (2) Clean the data, retain only needed variables and waves, and save the
 ##     cleaned data back to the raw inputs folder
