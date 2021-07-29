@@ -4,5 +4,4 @@
 .Ruserdata
 *.rds
 *.sav
-SF Dividend.xlsx
 output/summary_table.xlsx*
