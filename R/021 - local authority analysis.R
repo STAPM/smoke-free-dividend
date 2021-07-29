@@ -3,7 +3,7 @@
 
 data <- readRDS(paste0(Dir[1],"/toolkit_clean.rds"))
 
-n_sim <- 20000
+n_sim <- 1000
 
 for (j in 1:length(upshift_vec)) {
 
