@@ -1,7 +1,7 @@
 ## The aim of this code is to read in the raw toolkit data from .sav format, clean, and save
 ## out a filtered/cleaned dataset in .rds format ready for analysis.
 
-
+memory.limit(size=16339) # so work laptop can read the data
 ## (1) Read in the data - save an RDS data file to the data input folder so this
 ##                        part of the code need only be run once.
 
