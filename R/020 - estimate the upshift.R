@@ -22,7 +22,10 @@ upshift_alt_price <- smkfreediv::CalcUpshift(data = data,
 
 # gather into a vector, including no upshift, and the PHE upshift
 
-upshift_vec <- c(1, 1.57151042, upshift, upshift_alt_price, upshift_HR)
+upshift_vec <- c(1, 1.57151042,
+                 as.numeric(upshift[["upshift"]]),
+                 as.numeric(upshift_alt_price[["upshift"]]),
+                 as.numeric(upshift_HR[["upshift"]]) )
 
 param <- 1:length(upshift_vec)
 
@@ -32,6 +35,18 @@ setnames(upshift_vec_out, names(upshift_vec_out), c("id","upshift"))
 
 write.csv(upshift_vec_out,
           paste0(Dir[3],"/upshift_parameters.csv"),
+          row.names = FALSE)
+
+write.csv(upshift,
+          paste0(Dir[3],"/upshift_calcs_3.csv"),
+          row.names = FALSE)
+
+write.csv(upshift_alt_price,
+          paste0(Dir[3],"/upshift_calcs_4.csv"),
+          row.names = FALSE)
+
+write.csv(upshift_HR,
+          paste0(Dir[3],"/upshift_calcs_5.csv"),
           row.names = FALSE)
 
 rm(upshift, upshift_HR, upshift_alt_price, price, upshift_vec_out, param)

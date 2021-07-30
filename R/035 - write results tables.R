@@ -49,7 +49,117 @@ exp_grade <- exp_grade[upshift == i,]
 # load the template workbook
 wb <- openxlsx::loadWorkbook("templates/results_template.xlsx")
 
+### ---------------- Upshift Calcs Tab ---------- ###
 
+if (i %in% 3:5) {
+calcs <-  read.csv(paste0(Dir[3],"/upshift_calcs_",i,".csv"))
+setDT(calcs)
+
+openxlsx::writeData(wb,
+                    sheet = "Upshift Calcs",
+                    x = as.numeric(calcs[,"tot_duty_fm"]),
+                    startCol = 3,
+                    startRow = 4)
+
+openxlsx::writeData(wb,
+                    sheet = "Upshift Calcs",
+                    x = round( as.numeric(calcs[,"price_fm"]) , 2),
+                    startCol = 3,
+                    startRow = 5)
+
+openxlsx::writeData(wb,
+                    sheet = "Upshift Calcs",
+                    x = round( as.numeric(calcs[,"avt"]) , 2),
+                    startCol = 3,
+                    startRow = 6)
+
+openxlsx::writeData(wb,
+                    sheet = "Upshift Calcs",
+                    x = round( as.numeric(calcs[,"duty_fm"]) , 2),
+                    startCol = 3,
+                    startRow = 7)
+
+openxlsx::writeData(wb,
+                    sheet = "Upshift Calcs",
+                    x = round( as.numeric(calcs[,"total_excise_per_pack"]) , 2),
+                    startCol = 3,
+                    startRow = 8)
+
+openxlsx::writeData(wb,
+                    sheet = "Upshift Calcs",
+                    x = round( as.numeric(calcs[,"excise_pct_fm"])  , 4)*100,
+                    startCol = 3,
+                    startRow = 9)
+
+openxlsx::writeData(wb,
+                    sheet = "Upshift Calcs",
+                    x = round( as.numeric(calcs[,"tot_spend_fm"]) ),
+                    startCol = 3,
+                    startRow = 10)
+
+
+openxlsx::writeData(wb,
+                    sheet = "Upshift Calcs",
+                    x = as.numeric(calcs[,"tot_duty_ryo"]),
+                    startCol = 5,
+                    startRow = 4)
+
+openxlsx::writeData(wb,
+                    sheet = "Upshift Calcs",
+                    x = round( as.numeric(calcs[,"price_ryo"]) , 2),
+                    startCol = 5,
+                    startRow = 5)
+
+openxlsx::writeData(wb,
+                    sheet = "Upshift Calcs",
+                    x = round( as.numeric(calcs[,"price_ryo_d"]) , 2),
+                    startCol = 5,
+                    startRow = 7)
+
+openxlsx::writeData(wb,
+                    sheet = "Upshift Calcs",
+                    x = round( as.numeric(calcs[,"duty_ryo"]) , 2),
+                    startCol = 5,
+                    startRow = 8)
+
+openxlsx::writeData(wb,
+                    sheet = "Upshift Calcs",
+                    x = round( as.numeric(calcs[,"excise_pct_ryo"]) , 4)*100 ,
+                    startCol = 5,
+                    startRow = 9)
+
+openxlsx::writeData(wb,
+                    sheet = "Upshift Calcs",
+                    x = round( as.numeric(calcs[,"tot_spend_ryo"]) ),
+                    startCol = 5,
+                    startRow = 10)
+
+
+
+
+openxlsx::writeData(wb,
+                    sheet = "Upshift Calcs",
+                    x = round( as.numeric(calcs[,"total_annual_spend_hmrc"]) ),
+                    startCol = 6,
+                    startRow = 11)
+
+openxlsx::writeData(wb,
+                    sheet = "Upshift Calcs",
+                    x = round( as.numeric(calcs[,"total_annual_spend_surv"]) ),
+                    startCol = 6,
+                    startRow = 14)
+
+
+
+
+openxlsx::writeData(wb,
+                    sheet = "Upshift Calcs",
+                    x = round( as.numeric(calcs[,"upshift"]) , 3),
+                    startCol = 3,
+                    startRow = 17)
+
+
+}
 
 
 ### ----------------- LA Data Tab --------------- ###

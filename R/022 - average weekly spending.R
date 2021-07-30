@@ -34,9 +34,6 @@ for (i in 1:length(upshift_vec)) {
   assign(paste0("exp_sex_",i), exp_sex)
   assign(paste0("exp_grade_",i), exp_grade)
 
-  #saveRDS(la_results,paste0(Dir[2],"/results_local_authority_",j,".rds"))
-
-  #rm(la_results)
 }
 
 exp <- rbindlist(list(exp_1, exp_2, exp_3, exp_4, exp_5))
@@ -53,3 +50,5 @@ write.csv(exp,       paste0(Dir[2],"/weekly_spend_all.csv"))
 write.csv(exp_age,   paste0(Dir[2],"/weekly_spend_age.csv"))
 write.csv(exp_sex,   paste0(Dir[2],"/weekly_spend_sex.csv"))
 write.csv(exp_grade, paste0(Dir[2],"/weekly_spend_grade.csv"))
+
+rm(exp, exp_age, exp_grade, exp_sex, data)
