@@ -58,81 +58,108 @@ setDT(calcs)
 openxlsx::writeData(wb,
                     sheet = "Upshift Calcs",
                     x = as.numeric(calcs[,"tot_duty_fm"]),
-                    startCol = 3,
+                    startCol = 4,
                     startRow = 4)
 
 openxlsx::writeData(wb,
                     sheet = "Upshift Calcs",
                     x = round( as.numeric(calcs[,"price_fm"]) , 2),
-                    startCol = 3,
+                    startCol = 4,
                     startRow = 5)
 
 openxlsx::writeData(wb,
                     sheet = "Upshift Calcs",
-                    x = round( as.numeric(calcs[,"avt"]) , 2),
-                    startCol = 3,
+                    x = round( as.numeric(calcs[,"avt_rate"]) , 3),
+                    startCol = 4,
                     startRow = 6)
 
 openxlsx::writeData(wb,
                     sheet = "Upshift Calcs",
-                    x = round( as.numeric(calcs[,"duty_fm"]) , 2),
-                    startCol = 3,
+                    x = round( as.numeric(calcs[,"avt"]) , 2),
+                    startCol = 4,
                     startRow = 7)
 
 openxlsx::writeData(wb,
                     sheet = "Upshift Calcs",
-                    x = round( as.numeric(calcs[,"total_excise_per_pack"]) , 2),
-                    startCol = 3,
+                    x = round( as.numeric(calcs[,"duty_fm"]) , 2),
+                    startCol = 4,
                     startRow = 8)
 
 openxlsx::writeData(wb,
                     sheet = "Upshift Calcs",
-                    x = round( as.numeric(calcs[,"excise_pct_fm"])  , 4)*100,
-                    startCol = 3,
+                    x = round( as.numeric(calcs[,"duty_fm_pp"]) , 2),
+                    startCol = 4,
                     startRow = 9)
+
+
+openxlsx::writeData(wb,
+                    sheet = "Upshift Calcs",
+                    x = round( as.numeric(calcs[,"total_excise_per_pack"]) , 2),
+                    startCol = 4,
+                    startRow = 10)
+
+openxlsx::writeData(wb,
+                    sheet = "Upshift Calcs",
+                    x = round( as.numeric(calcs[,"excise_pct_fm"])  , 4),
+                    startCol = 4,
+                    startRow = 11)
 
 openxlsx::writeData(wb,
                     sheet = "Upshift Calcs",
                     x = round( as.numeric(calcs[,"tot_spend_fm"]) ),
-                    startCol = 3,
-                    startRow = 10)
+                    startCol = 4,
+                    startRow = 12)
+
+
 
 
 openxlsx::writeData(wb,
                     sheet = "Upshift Calcs",
                     x = as.numeric(calcs[,"tot_duty_ryo"]),
-                    startCol = 5,
+                    startCol = 7,
                     startRow = 4)
 
 openxlsx::writeData(wb,
                     sheet = "Upshift Calcs",
                     x = round( as.numeric(calcs[,"price_ryo"]) , 2),
-                    startCol = 5,
+                    startCol = 7,
                     startRow = 5)
 
 openxlsx::writeData(wb,
                     sheet = "Upshift Calcs",
+                    x = round( as.numeric(calcs[,"deflator"]) , 2),
+                    startCol = 7,
+                    startRow = 6)
+
+openxlsx::writeData(wb,
+                    sheet = "Upshift Calcs",
                     x = round( as.numeric(calcs[,"price_ryo_d"]) , 2),
-                    startCol = 5,
+                    startCol = 7,
                     startRow = 7)
 
 openxlsx::writeData(wb,
                     sheet = "Upshift Calcs",
                     x = round( as.numeric(calcs[,"duty_ryo"]) , 2),
-                    startCol = 5,
+                    startCol = 7,
                     startRow = 8)
 
 openxlsx::writeData(wb,
                     sheet = "Upshift Calcs",
-                    x = round( as.numeric(calcs[,"excise_pct_ryo"]) , 4)*100 ,
-                    startCol = 5,
+                    x = round( as.numeric(calcs[,"duty_ryo_pp"]) , 2),
+                    startCol = 7,
                     startRow = 9)
 
 openxlsx::writeData(wb,
                     sheet = "Upshift Calcs",
-                    x = round( as.numeric(calcs[,"tot_spend_ryo"]) ),
-                    startCol = 5,
+                    x = round( as.numeric(calcs[,"excise_pct_ryo"]) , 4) ,
+                    startCol = 7,
                     startRow = 10)
+
+openxlsx::writeData(wb,
+                    sheet = "Upshift Calcs",
+                    x = round( as.numeric(calcs[,"tot_spend_ryo"]) ),
+                    startCol = 7,
+                    startRow = 11)
 
 
 
@@ -140,14 +167,24 @@ openxlsx::writeData(wb,
 openxlsx::writeData(wb,
                     sheet = "Upshift Calcs",
                     x = round( as.numeric(calcs[,"total_annual_spend_hmrc"]) ),
-                    startCol = 6,
-                    startRow = 11)
+                    startCol = 8,
+                    startRow = 13)
 
 openxlsx::writeData(wb,
                     sheet = "Upshift Calcs",
                     x = round( as.numeric(calcs[,"total_annual_spend_surv"]) ),
-                    startCol = 6,
-                    startRow = 14)
+                    startCol = 8,
+                    startRow = 16)
+
+
+
+
+openxlsx::writeData(wb,
+                    sheet = "Upshift Calcs",
+                    x = paste0(calcs[1,"svy_data"]) ,
+                    startCol = 3,
+                    startRow = 17)
+
 
 
 
@@ -156,7 +193,7 @@ openxlsx::writeData(wb,
                     sheet = "Upshift Calcs",
                     x = round( as.numeric(calcs[,"upshift"]) , 3),
                     startCol = 3,
-                    startRow = 17)
+                    startRow = 19)
 
 
 }

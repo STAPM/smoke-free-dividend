@@ -12,6 +12,10 @@ source("R/000 - create directories.R")
 
 library(smkfreediv)
 library(data.table)
+library(tidyverse)
+library(rgeos)
+library(rgdal)
+library(maptools)
 
 ### ----- (1) Data Cleaning -------- ###
 source("R/011 - clean toolkit data.R")
