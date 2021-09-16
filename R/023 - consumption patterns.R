@@ -15,4 +15,12 @@ means <- data[, .(mean_cigs_fm = weighted.mean(cigs_perday_fm, w = Aweight0 ,na.
 
 means <- means[order(UTLAname),]
 
+
+means[is.nan(mean_cigs_fm), mean_cigs_fm := NA]
+means[is.nan(mean_cigs_ryo), mean_cigs_ryo := NA]
+means[is.nan(mean_cigs_tot), mean_cigs_tot := NA]
+means[is.nan(mean_ryoperc), mean_ryoperc := NA]
+means[is.nan(prop_fm), prop_fm := NA]
+means[is.nan(prop_ryo), prop_ryo := NA]
+
 saveRDS(means,paste0(Dir[2],"/results_consumption.rds"))
