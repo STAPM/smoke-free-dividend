@@ -51,3 +51,4 @@ write.csv(upshift_HR,
 
 rm(upshift, upshift_HR, upshift_alt_price, price, upshift_vec_out, param)
 
+saveRDS(upshift_vec,paste0(Dir[2],"/upshift_param_vectors.rds"))

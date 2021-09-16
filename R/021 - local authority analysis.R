@@ -1,7 +1,10 @@
 ### The aim of this code is to use the smkfreediv functions to make the
 ### smokefree dividend calculations. Loop over different values of upshift
+### parameter
 
 data <- readRDS(paste0(Dir[1],"/toolkit_clean.rds"))
+
+upshift_vec <- readRDS(paste0(Dir[2],"/upshift_param_vectors.rds"))
 
 n_sim <- 10000
 
