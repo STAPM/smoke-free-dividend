@@ -17,8 +17,13 @@ library(openxlsx)
 library(dplyr)
 
 ############################################
-## Read in the local authorities that are in the PHE spreadsheet template
 ## Read in the results of the analysis
+
+cons <- readRDS(paste0(Dir[2],"/results_consumption.rds"))
+
+upshift_vec <- readRDS(paste0(Dir[2],"/upshift_param_vectors.rds"))
+
+## loop over upshift parameters
 
 for (i in 1:length(upshift_vec)) {
 
@@ -373,6 +378,79 @@ openxlsx::writeData(wb,
                     startCol = 14,
                     startRow = 3)
 
+### ----------------- Consumption Tab --------------- ###
+
+### fill in local authorities ####
+
+UTLAname <- as.vector(as.matrix(la_results[,"UTLAname"]))
+UTLAcode <- as.vector(as.matrix(la_results[,"UTLAcode"]))
+
+openxlsx::writeData(wb,
+                    sheet = "Consumption",
+                    x = UTLAcode,
+                    startCol = 1,
+                    startRow = 3)
+
+openxlsx::writeData(wb,
+                    sheet = "Consumption",
+                    x = UTLAname,
+                    startCol = 2,
+                    startRow = 3)
+
+
+## Average Daily FM
+x <- as.vector(as.matrix( cons[,"mean_cigs_fm"]))
+
+openxlsx::writeData(wb,
+                    sheet = "Consumption",
+                    x = x,
+                    startCol = 3,
+                    startRow = 3)
+
+## Average Daily RYO
+x <- as.vector(as.matrix( cons[,"mean_cigs_ryo"]))
+
+openxlsx::writeData(wb,
+                    sheet = "Consumption",
+                    x = x,
+                    startCol = 4,
+                    startRow = 3)
+
+## Average Daily Total
+x <- as.vector(as.matrix( cons[,"mean_cigs_tot"]))
+
+openxlsx::writeData(wb,
+                    sheet = "Consumption",
+                    x = x,
+                    startCol = 5,
+                    startRow = 3)
+
+## Average % of Cigs RYO
+x <- as.vector(as.matrix( cons[,"mean_ryoperc"]))
+
+openxlsx::writeData(wb,
+                    sheet = "Consumption",
+                    x = x,
+                    startCol = 6,
+                    startRow = 3)
+
+## % of Smokers who smoke FM
+x <- as.vector(as.matrix( cons[,"prop_fm"]))
+
+openxlsx::writeData(wb,
+                    sheet = "Consumption",
+                    x = x,
+                    startCol = 7,
+                    startRow = 3)
+
+## % of Smokers who smoke RYO
+x <- as.vector(as.matrix( cons[,"prop_ryo"]))
+
+openxlsx::writeData(wb,
+                    sheet = "Consumption",
+                    x = x,
+                    startCol = 8,
+                    startRow = 3)
 
 ### ----------------- Average Tobacco Spend Tab --------------- ###
 
