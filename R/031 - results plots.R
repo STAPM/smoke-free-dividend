@@ -19,25 +19,20 @@ cons_plots$text <- with(cons_plots,
 
 ## income / average total tobacco consumption
 
-plotly::ggplotly(
-
   ggplot(cons_plots) +
-    aes(x = income/1000, y = mean_cigs_tot, text = text) +
+    aes(x = income/1000, y = mean_cigs_tot) +
     geom_point(color='navy') +
+    geom_smooth(method='lm', se = F, color='turquoise4', linetype = 5) +
     theme_minimal() +
     labs(x = "Average Income (£000s)",
          y = "Average Daily Cigarette Consumption (FM + RYO)",
          title = "",
          color = "Region") +
     scale_y_continuous(breaks = seq(3,26,1), minor_breaks = NULL) +
-    scale_x_continuous(breaks = seq(5,45,2)) , tooltip = c("text")
-
-)
+    scale_x_continuous(breaks = seq(5,45,2))
+  ggsave("output/consumption_avgtot_inc.png")
 
 ## income / average FM tobacco consumption
-
-
-plotly::ggplotly(
 
   ggplot(cons_plots) +
     aes(x = income/1000, y = mean_cigs_fm, text = text) +
@@ -48,9 +43,7 @@ plotly::ggplotly(
          title = "",
          color = "Region") +
     scale_y_continuous(breaks = seq(3,26,1), minor_breaks = NULL) +
-    scale_x_continuous(breaks = seq(5,45,2)) , tooltip = c("text")
-
-)
+    scale_x_continuous(breaks = seq(5,45,2))
 
 ## income / average RYO tobacco consumption
 
