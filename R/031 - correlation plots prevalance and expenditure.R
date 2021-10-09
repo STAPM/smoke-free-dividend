@@ -89,7 +89,22 @@ ggsave("output/corr_smkprev_income_byregion_regs.png")
 ##########################################
 ## CORRELATION PLOTS - SPENDING/INCOME
 
-ggplot(plot_data) +
+## read in the sample size from the mean expenditure calculations
+sampsize <- read.csv(paste0(Dir[2],"/weekly_spend_la.csv"))
+setDT(sampsize)
+sampsize <- sampsize[upshift == 1,c("UTLAname","sample_tkit")]
+
+exp_plot_data <- merge(plot_data, sampsize, by = "UTLAname")
+
+
+## restrict the plots to local authorities with at least 5 observations
+
+low_obs <- exp_plot_data[sample_tkit < 5,c("UTLAname","sample_tkit","mean_week_spend")]
+write.csv(low_obs, paste0(Dir[3],"/low_obs_toolkit_LAs.csv"))
+
+exp_plot_data <- exp_plot_data[sample_tkit >= 5,]
+
+ggplot(exp_plot_data) +
   aes(x = income/1000, y = mean_week_spend) +
   geom_point() +
   geom_smooth(method='lm', se = F, color='turquoise4', linetype = 5) +
@@ -97,14 +112,16 @@ ggplot(plot_data) +
   labs(x = "Average Income (£000s)",
        y = "Mean Weekly Spend (£)",
        title = "",
-       color = "Region") +
-  scale_y_continuous(breaks = seq(20,140,5), minor_breaks = NULL) +
+       color = "Region",
+       caption = "Note: Plot restricted to local authorities with 5 or more observations (smokers) in the toolkit data") +
+  scale_y_continuous(breaks = seq(0,140,5), minor_breaks = NULL) +
   scale_x_continuous(breaks = seq(5,45,5), minor_breaks = NULL)
+
 ggsave("output/corr_meanspend_income.png")
 
 ## plot spend % of income (upshifted) against income
 
-ggplot(plot_data) +
+ggplot(exp_plot_data) +
   aes(x = income/1000, y = spend_prop*100) +
   geom_point() +
   geom_smooth(method='lm', se = F, color='turquoise4', linetype = 5) +
@@ -112,7 +129,8 @@ ggplot(plot_data) +
   labs(x = "Average Income (£000s)",
        y = "Mean Spend as % of Disposable Income",
        title = "",
-       color = "Region") +
+       color = "Region",
+       caption = "Plot restricted to local authorities with 5 or more observations (smokers) in the toolkit data") +
   scale_y_continuous(breaks = seq(0,100,1), minor_breaks = NULL) +
   scale_x_continuous(breaks = seq(5,45,5), minor_breaks = NULL)
 ggsave("output/corr_propspend_income.png")
