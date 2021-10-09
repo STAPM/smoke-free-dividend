@@ -11,7 +11,8 @@ upshift <- smkfreediv::CalcUpshift(data = data)
 #     the upshift factor estimated by Howard)
 
 upshift_HR <- smkfreediv::CalcUpshift(data = data,
-                                      LCFS = TRUE)
+                                      LCFS = TRUE,
+                                      adjust = FALSE)
 
 # (3) As (1) but use the price from the ONS time series
 
