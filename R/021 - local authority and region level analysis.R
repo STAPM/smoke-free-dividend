@@ -6,7 +6,7 @@ data <- readRDS(paste0(Dir[1],"/toolkit_clean.rds"))
 
 upshift_vec <- readRDS(paste0(Dir[2],"/upshift_param_vectors.rds"))
 
-n_sim <- 10000
+n_sim <- 100
 
 ########### LOCAL AUTHORITY LEVEL #############
 

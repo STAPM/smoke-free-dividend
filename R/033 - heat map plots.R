@@ -4,7 +4,7 @@
 library(smkfreediv)
 library(ggplot2)
 
-div_la <- readRDS(paste0(Dir[2],"/results_local_authority.rds"))
+div_la <- readRDS(paste0(Dir[2],"/results_local_authority_",4,".rds"))
 
 ############
 ## HEAT MAPS
@@ -61,8 +61,8 @@ data_mapping_merge <- unique(data_mapping_merge)
 
 ## check shapefile and results file local authorities match properly 1:1 for 317 LAs
 
-#shape <- readRDS(paste0(Dir[1],"/shapefile_la.rds"))
-#setDT(shape)
+shape <- readRDS(paste0(Dir[1],"/shapefile_la.rds"))
+setDT(shape)
 #shape_test <- shape[substring(id, 1, 1) == "E",]
 #shape_test <- data.frame(unique(shape[,"id"]))
 #setDT(shape_test)
@@ -120,7 +120,7 @@ ggplot(data = merge) +
   labs(title = ' ',
        subtitle = ' ',
        fill = "Annual Income") +
-  scale_fill_viridis_d()
+  scale_colour_viridis_b()
 
 ## plot by expenditure
 
