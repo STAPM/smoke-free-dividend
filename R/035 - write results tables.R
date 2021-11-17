@@ -481,11 +481,11 @@ regions <- merge[, .(mean = mean(mean_week_spend, na.rm = TRUE),
                      prop = mean(spend_prop, na.rm = TRUE),
                      tot_exp = sum(total_annual_exp, na.rm = TRUE),
                      tot_div = sum(dividend, na.rm = TRUE)),
-                 by = "region"]
+                 by = "gor"]
 
-regions <- regions[order(region),]
+regions <- regions[order(gor),]
 
-reg <- as.vector(as.matrix(regions[,"region"]))
+reg <- as.vector(as.matrix(regions[,"gor"]))
 mean <- round(as.vector(as.matrix(regions[,"mean"])) , 2)
 prop <- round(as.vector(as.matrix(regions[,"prop"])) , 4)*100
 tot_exp <-  round(as.vector(as.matrix(regions[,"tot_exp"])) , 3)

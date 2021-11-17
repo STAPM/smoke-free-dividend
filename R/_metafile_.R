@@ -13,9 +13,9 @@ source("R/000 - create directories.R")
 library(smkfreediv)
 library(data.table)
 library(tidyverse)
-library(rgeos)
-library(rgdal)
-library(maptools)
+library(rgeos)      # map packages
+library(rgdal)      # map packages
+library(maptools)   # map packages
 
 ### ----- (1) Data Cleaning -------- ###
 source("R/011 - clean toolkit data.R")
@@ -23,7 +23,7 @@ source("R/012 - read and clean shapefiles.R")
 
 ### ----- (2) Run the Analysis --------- ###
 source("R/020 - estimate the upshift.R")
-source("R/021 - local authority analysis.R")
+source("R/021 - local authority and region level analysis.R")
 source("R/022 - average weekly spending.R")
 source("R/023 - consumption patterns.R")
 
