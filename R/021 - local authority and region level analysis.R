@@ -4,44 +4,38 @@
 
 data <- readRDS(paste0(Dir[1],"/toolkit_clean.rds"))
 
-upshift_vec <- readRDS(paste0(Dir[2],"/upshift_param_vectors.rds"))
+#upshift_vec <- readRDS(paste0(Dir[2],"/upshift_param_vectors.rds"))
+
+#### Calculate upshift parameter
+
+upshift <- read.csv("output/upshift_calcs.csv")
+
+#### Simulation
 
 n_sim <- 100
+up    <- as.numeric(upshift[,"upshift"])
+seed  <- 2021
+div   <- 0.93
+illicit_prop <- as.numeric(upshift[,"illicit_prop"])
 
 ########### LOCAL AUTHORITY LEVEL #############
 
-for (j in 1:length(upshift_vec)) {
-
-  cat(crayon::yellow("Simulation for Upshift Parameter ",j," of ",length(upshift_vec),"\n"))
-
 la_results <- smkfreediv::CalcDividend_la_sim(data,
-                                              upshift = upshift_vec[j],
-                                              div = 0.93,
+                                              upshift = up,
+                                              div = div,
                                               n_sim = n_sim,
-                                              seed = 2021)
+                                              seed = seed,
+                                              illicit_prop = illicit_prop)
 
-assign(paste0("la_results_",j), la_results)
-
-saveRDS(la_results,paste0(Dir[2],"/results_local_authority_",j,".rds"))
-
-rm(la_results)
-}
+saveRDS(la_results,paste0(Dir[2],"/results_local_authority.rds"))
 
 ########### REGION LEVEL #############
 
-for (j in 1:length(upshift_vec)) {
+gor_results <- smkfreediv::CalcDividend_gor_sim(data,
+                                                upshift = up,
+                                                div = div,
+                                                n_sim = n_sim,
+                                                seed = seed,
+                                                illicit_prop = illicit_prop)
 
-  cat(crayon::yellow("Simulation for Upshift Parameter ",j," of ",length(upshift_vec),"\n"))
-
-  gor_results <- smkfreediv::CalcDividend_gor_sim(data,
-                                                  upshift = upshift_vec[j],
-                                                  div = 0.93,
-                                                  n_sim = n_sim,
-                                                  seed = 2021)
-
-  assign(paste0("gor_results_",j), gor_results)
-
-  saveRDS(gor_results,paste0(Dir[2],"/results_region_",j,".rds"))
-
-  rm(gor_results)
-}
+saveRDS(gor_results,paste0(Dir[2],"/results_region.rds"))

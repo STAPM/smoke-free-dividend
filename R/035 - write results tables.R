@@ -21,16 +21,12 @@ library(dplyr)
 
 cons <- readRDS(paste0(Dir[2],"/results_consumption.rds"))
 
-upshift_vec <- readRDS(paste0(Dir[2],"/upshift_param_vectors.rds"))
-
-## loop over upshift parameters
-
-for (i in 1:length(upshift_vec)) {
-
 ### read in local authority results data
 
-results <- readRDS(paste0(Dir[2],"/results_local_authority_",i,".rds"))
+results <- readRDS(paste0(Dir[2],"/results_local_authority.rds"))
 la_results <- results[order(UTLAname)]
+
+gor_results <- readRDS(paste0(Dir[2],"/results_region.rds"))
 
 rm(results)
 
@@ -43,11 +39,6 @@ exp_grade <- read.csv(paste0(Dir[2],"/weekly_spend_grade.csv"))
 
 setDT(exp) ; setDT(exp_age) ; setDT(exp_sex) ; setDT(exp_grade)
 
-exp <- exp[upshift == i,]
-exp_age <- exp_age[upshift == i,]
-exp_sex <- exp_sex[upshift == i,]
-exp_grade <- exp_grade[upshift == i,]
-
 ############################################
 ## Store results in the workbook template ##
 
@@ -56,8 +47,7 @@ wb <- openxlsx::loadWorkbook("templates/results_template.xlsx")
 
 ### ---------------- Upshift Calcs Tab ---------- ###
 
-if (i %in% 3:5) {
-calcs <-  read.csv(paste0(Dir[3],"/upshift_calcs_",i,".csv"))
+calcs <-  read.csv(paste0(Dir[3],"/upshift_calcs.csv"))
 setDT(calcs)
 
 openxlsx::writeData(wb,
@@ -111,11 +101,15 @@ openxlsx::writeData(wb,
 
 openxlsx::writeData(wb,
                     sheet = "Upshift Calcs",
-                    x = round( as.numeric(calcs[,"tot_spend_fm"]) ),
+                    x = round( as.numeric(calcs[,"tot_legal_spend_fm"]) ),
                     startCol = 4,
                     startRow = 12)
 
-
+openxlsx::writeData(wb,
+                    sheet = "Upshift Calcs",
+                    x = round( as.numeric(calcs[,"tot_illicit_spend_fm"]) ),
+                    startCol = 4,
+                    startRow = 13)
 
 
 openxlsx::writeData(wb,
@@ -158,13 +152,19 @@ openxlsx::writeData(wb,
                     sheet = "Upshift Calcs",
                     x = round( as.numeric(calcs[,"excise_pct_ryo"]) , 4) ,
                     startCol = 7,
-                    startRow = 10)
+                    startRow = 11)
 
 openxlsx::writeData(wb,
                     sheet = "Upshift Calcs",
-                    x = round( as.numeric(calcs[,"tot_spend_ryo"]) ),
+                    x = round( as.numeric(calcs[,"tot_legal_spend_ryo"]) ),
                     startCol = 7,
-                    startRow = 11)
+                    startRow = 12)
+
+openxlsx::writeData(wb,
+                    sheet = "Upshift Calcs",
+                    x = round( as.numeric(calcs[,"tot_illicit_spend_ryo"]) ),
+                    startCol = 7,
+                    startRow = 13)
 
 
 
@@ -173,7 +173,7 @@ openxlsx::writeData(wb,
                     sheet = "Upshift Calcs",
                     x = round( as.numeric(calcs[,"total_annual_spend_hmrc"]) ),
                     startCol = 8,
-                    startRow = 13)
+                    startRow = 14)
 
 openxlsx::writeData(wb,
                     sheet = "Upshift Calcs",
@@ -199,10 +199,6 @@ openxlsx::writeData(wb,
                     x = round( as.numeric(calcs[,"upshift"]) , 3),
                     startCol = 3,
                     startRow = 19)
-
-
-}
-
 
 ### ----------------- LA Data Tab --------------- ###
 
@@ -378,6 +374,127 @@ openxlsx::writeData(wb,
                     startCol = 14,
                     startRow = 3)
 
+### ----------------- Region Data Tab --------------- ###
+
+
+#############################
+### fill in region names ####
+
+gor <- as.vector(as.matrix(gor_results[,"gor"]))
+
+openxlsx::writeData(wb,
+                    sheet = "Region data",
+                    x = gor,
+                    startCol = 2,
+                    startRow = 3)
+
+
+##################################
+###  fill in mean weekly spending
+
+gor_results[is.nan(mean_week_spend), mean_week_spend := NA]
+x <- as.vector(as.matrix( round(gor_results[,"mean_week_spend"],2 )))
+
+openxlsx::writeData(wb,
+                    sheet = "Region data",
+                    x = x,
+                    startCol = 3,
+                    startRow = 3)
+
+##################################
+###  fill in average income
+
+x <- as.vector(as.matrix( round(gor_results[,"income"],2 )))
+
+openxlsx::writeData(wb,
+                    sheet = "Region data",
+                    x = x,
+                    startCol = 4,
+                    startRow = 3)
+
+##################################
+###  fill in smoking prevalence
+
+x <- as.vector(as.matrix( round(gor_results[,"smk_prev"],2 )))
+
+openxlsx::writeData(wb,
+                    sheet = "Region data",
+                    x = x,
+                    startCol = 5,
+                    startRow = 3)
+
+##################################
+###  fill in number of smokers
+
+x <- as.vector(as.matrix( round(gor_results[,"n_smokers"],2 )))
+
+openxlsx::writeData(wb,
+                    sheet = "Region data",
+                    x = x,
+                    startCol = 6,
+                    startRow = 3)
+
+##################################
+###  fill in total weekly expenditure
+
+gor_results[is.nan(total_wk_exp), total_wk_exp := NA]
+x <- as.vector(as.matrix( gor_results[,"total_wk_exp"]))
+
+openxlsx::writeData(wb,
+                    sheet = "Region data",
+                    x = x,
+                    startCol = 7,
+                    startRow = 3)
+
+##################################
+###  fill in total annual expenditure
+
+gor_results[is.nan(total_annual_exp), total_annual_exp := NA]
+x <- as.vector(as.matrix( round(gor_results[,"total_annual_exp"],3)))
+
+openxlsx::writeData(wb,
+                    sheet = "Region data",
+                    x = x,
+                    startCol = 8,
+                    startRow = 3)
+
+##################################
+###  fill in average weekly income
+
+x <- as.vector(as.matrix(gor_results[,"income"] ))/52
+x <- round(x)
+
+openxlsx::writeData(wb,
+                    sheet = "Region data",
+                    x = x,
+                    startCol = 9,
+                    startRow = 3)
+
+##################################
+###  fill in percentage of income spent on tobacco
+
+gor_results[is.nan(spend_prop), spend_prop := NA]
+x <- as.vector(as.matrix( 100*round(gor_results[,"spend_prop"],4 )))
+
+openxlsx::writeData(wb,
+                    sheet = "Region data",
+                    x = x,
+                    startCol = 10,
+                    startRow = 3)
+
+##################################
+###  fill in smoke free dividend
+
+gor_results[is.nan(dividend), dividend := NA]
+x <- as.vector(as.matrix(round(gor_results[,"dividend"],0 ) ))
+
+openxlsx::writeData(wb,
+                    sheet = "Region data",
+                    x = x,
+                    startCol = 11,
+                    startRow = 3)
+
+
 ### ----------------- Consumption Tab --------------- ###
 
 ### fill in local authorities ####
@@ -470,7 +587,7 @@ openxlsx::writeData(wb,
 
 ### --------------- Expenditure % of Income Tab -------------- ###
 
-results <- readRDS(paste0(Dir[2],"/results_local_authority_",i,".rds"))
+results <- readRDS(paste0(Dir[2],"/results_local_authority.rds"))
 la_results <- results[order(UTLAname)]
 
 merge <- merge(results, smkfreediv::utla_gor_lookup, by = "UTLAname")
@@ -524,7 +641,7 @@ openxlsx::writeData(wb,
 
 ### --------------- Expenditure % of Income  LAs Tab -------------- ###
 
-results <- readRDS(paste0(Dir[2],"/results_local_authority_",i,".rds"))
+results <- readRDS(paste0(Dir[2],"/results_local_authority.rds"))
 top_la_results <- results[order(-spend_prop)]
 top_la_results <- top_la_results[1:10,]
 
@@ -570,6 +687,5 @@ openxlsx::writeData(wb,
 ###########################
 ## save out the workbook ##
 
-saveWorkbook(wb,paste0("output/summary_table_",i,".xlsx"), overwrite = T)
+saveWorkbook(wb,paste0("output/summary_table.xlsx"), overwrite = T)
 
-}
