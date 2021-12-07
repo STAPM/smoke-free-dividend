@@ -4,7 +4,7 @@
 library(smkfreediv)
 library(ggplot2)
 
-div_la <- readRDS(paste0(Dir[2],"/results_local_authority_",4,".rds"))
+div_la <- readRDS(paste0(Dir[2],"/results_local_authority.rds"))
 
 ############
 ## HEAT MAPS
@@ -102,6 +102,25 @@ ggplot(data = merge) +
        fill = "Prevalence") +
   scale_fill_viridis_d()
 
+### plot by spend as % of income
+
+ggplot(data = merge) +
+  aes(x = long,
+      y = lat,
+      group = group,
+      fill = cut(spend_prop,
+                 breaks = c(0,0.05,0.07,0.09,0.1,1),
+                 labels = c("Under 5%",
+                            "5 - 7%",
+                            "7 - 9%",
+                            "9 - 10%",
+                            "Over 10%"))) +
+  geom_polygon() + coord_equal() + theme_void() +
+  labs(title = ' ',
+       subtitle = ' ',
+       fill = "Prevalence") +
+  scale_fill_viridis_d()
+
 ### plot by income
 
 ggplot(data = merge) +
@@ -120,31 +139,5 @@ ggplot(data = merge) +
   labs(title = ' ',
        subtitle = ' ',
        fill = "Annual Income") +
-  scale_colour_viridis_b()
+  scale_colour_viridis_d()
 
-## plot by expenditure
-
-choropleth <- merge
-choropleth$text <- with(choropleth, paste0(UTLAname,": £", round(mean_week_spend_up,2) ))
-
-p <- ggplot(data = choropleth) +
-  aes(x = long, y = lat, group = group, text = text,
-      fill = cut(mean_week_spend,
-                 breaks = c(0,20,22,25,28,30,35,100),
-                 labels = c("Under £20",
-                            "£20 - £22",
-                            "£22 - £25",
-                            "£25 - £28",
-                            "£28 - £30",
-                            "£30 - £35",
-                            "Over £35")) ) +
-  geom_polygon() +
-  coord_equal() +
-  theme_void() +
-  labs(title = 'Weekly Tobacco Expenditure by Local Authority',
-       subtitle = 'England, 2014-2019',
-       fill = "Mean Weekly Spend") +
-  scale_fill_viridis_d()
-
-
-plotly::ggplotly(p, tooltip = "text")
