@@ -118,7 +118,7 @@ ggplot(data = merge) +
   geom_polygon() + coord_equal() + theme_void() +
   labs(title = ' ',
        subtitle = ' ',
-       fill = "Prevalence") +
+       fill = "Spend as % of Income") +
   scale_fill_viridis_d()
 
 ### plot by income
