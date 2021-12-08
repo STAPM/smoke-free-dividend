@@ -4,7 +4,7 @@ rm(list = ls())
 
 ### ----- (0) Setup -------------- ###
 data_file <- "omni174_39.1_65.2cot_31.3a_25.4s_recodes_60.5sa.sav" # data
-version <- "1.3.3"            # smkfreediv package version to use
+version <- "1.3.4"            # smkfreediv package version to use
 user <- "djmorris1989"        # GitLab user name for package installation
 
 source("R/000 - create directories.R")
@@ -20,19 +20,22 @@ library(maptools)   # map packages
 ### ----- (1) Data Cleaning -------- ###
 source("R/011 - clean toolkit data.R")
 source("R/012 - read and clean shapefiles.R")
+source("R/015 - toolkit descriptives.R")
+source("R/016 - consumption patterns.R")
 
 ### ----- (2) Run the Analysis --------- ###
-source("R/020 - estimate the upshift.R")
-source("R/021 - local authority and region level analysis.R")
+source("R/021 - estimate the upshift.R")
 source("R/022 - average weekly spending.R")
-source("R/023 - consumption patterns.R")
+source("R/023 - local authority and region level analysis.R")
+source("R/024 - local authority and region level analysis OHID upshift.R")
 
-### ----- (3) Results Processing ------- ###
+### ----- (3) descriptive and results plots ------- ###
 source("R/031 - correlation plots prevalance and expenditure.R")
 source("R/032 - correlation plots consumption.R")
 source("R/033 - heat map plots.R")
 
-source("R/035 - write results tables.R")
+### ----- (4) process results ------- ###
+source("R/041 - write results tables.R")
+source("R/042 - write results tables OHID upshift.R")
 
-### ----- (4) Markdowns ------- ###
-source("R/040 - render markdowns.R")
+source("R/045 - render markdowns.R")
