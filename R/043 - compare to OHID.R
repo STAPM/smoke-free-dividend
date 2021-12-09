@@ -28,6 +28,11 @@ ohid[, tot_weekly_exp := tot_weekly_exp/1000]
 ## dividend: 000s -> millions
 ohid[, dividend := dividend/1000]
 
+## put in alpha order
+ohid <- ohid[order(region),]
+
+write.csv(ohid,"output/comparisons/comparison sheet - ohid.csv")
+
 ########################
 # read in my results ###
 
@@ -40,12 +45,16 @@ setDT(myresults)
 setnames(myresults, names(myresults), c("region","mean_spend","sample_size","annual_income","prevalence","n_smokers",
                                         "tot_weekly_exp","tot_annual_exp","weekly_income","prop_income","dividend"))
 
-myresults[, c("sample_size","annual_income","prevalence") := NULL]
+
+myresults <- myresults[,c("region","mean_spend","prop_income","tot_annual_exp","dividend",
+                          "n_smokers","tot_weekly_exp","weekly_income")]
+
+write.csv(myresults,"output/comparisons/comparison sheet - damons.csv")
 
 setnames(myresults,
          names(myresults),
-         c("region","mean_spend_my","n_smokers_my",
-           "tot_weekly_exp_my","tot_annual_exp_my","weekly_income_my","prop_income_my","dividend_my"))
+         c("region","mean_spend_my","prop_income_my","tot_annual_exp_my","dividend_my",
+           "n_smokers_my","tot_weekly_exp_my","weekly_income_my"))
 
 ########################
 # read in my results ###
@@ -59,13 +68,15 @@ setDT(myresults_ohidup)
 setnames(myresults_ohidup, names(myresults_ohidup), c("region","mean_spend","sample_size","annual_income","prevalence","n_smokers",
                                         "tot_weekly_exp","tot_annual_exp","weekly_income","prop_income","dividend"))
 
-myresults_ohidup[, c("sample_size","annual_income","prevalence") := NULL]
+myresults_ohidup <- myresults_ohidup[,c("region","mean_spend","prop_income","tot_annual_exp","dividend",
+                          "n_smokers","tot_weekly_exp","weekly_income")]
+
+write.csv(myresults_ohidup,"output/comparisons/comparison sheet - damons with ohid upshift.csv")
 
 setnames(myresults_ohidup,
          names(myresults_ohidup),
-         c("region","mean_spend_my_ohidup","n_smokers_my_ohidup",
-           "tot_weekly_exp_my_ohidup","tot_annual_exp_my_ohidup","weekly_income_my_ohidup",
-           "prop_income_my_ohidup","dividend_my_ohidup"))
+         c("region","mean_spend_my_ohidup","prop_income_my_ohidup","tot_annual_exp_my_ohidup","dividend_my_ohidup",
+           "n_smokers_my_ohidup","tot_weekly_exp_my_ohidup","weekly_income_my_ohidup"))
 
 
 
