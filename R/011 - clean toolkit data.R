@@ -13,6 +13,8 @@ toolkit_raw <- smkfreediv::ReadToolkit(path = paste0(Dir[1],"/"),
 ## (2) Clean the data, retain only needed variables and waves, and save the
 ##     cleaned data back to the raw inputs folder
 
+## Use period April 2014 - February 2020
+
 toolkit_raw <- readRDS(paste0(Dir[1],"/STS_data_raw.rds"))
 
 toolkit_clean <- smkfreediv::CleanToolkit(data = toolkit_raw,

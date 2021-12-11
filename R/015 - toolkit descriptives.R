@@ -25,15 +25,32 @@ ggsave("output/descriptives/spending distribution.png")
 
 #### Distribution of weekly spending by region
 
+# manually adjust ordering of gor so the colors in the box plot line up properly
+data[, gor := factor(gor,
+                     levels = c("North East", "West Midlands", "London",
+                                "Yorkshire and the Humber", "East of England",
+                                "East Midlands", "North West", "South East", "South West") )]
+
 ggplot(data) +
-  aes(x=reorder(gor,-weekspend, FUN = "median", na.rm = TRUE),
+  aes(x=reorder(gor,weekspend, FUN = "median", na.rm = TRUE),
       y = weekspend,
       fill = gor) +
   theme_minimal() +
   coord_flip() +
-  geom_boxplot() +
+  geom_boxplot(outlier.alpha = 0.5) +
+  scale_fill_viridis_d(option = "mako") +
+  theme(legend.position = "none") +
+  labs(x = " ", y = "Weekly Tobacco Spending (£)",
+       caption = "outliers are points more than 1.5*IQR above the 3rd quartile")
+ggsave("output/descriptives/spending distribution by region.png")
+
+ggplot(data) +
+  aes(x=reorder(gor,weekspend, FUN = "median", na.rm = TRUE),
+      y = weekspend,
+      fill = gor) +
+  theme_minimal() +
+  coord_flip() +
+  geom_boxplot(outlier.shape = NA) +
   scale_fill_viridis_d(option = "mako") +
   theme(legend.position = "none") +
   labs(x = " ", y = "Weekly Tobacco Spending (£)")
-ggsave("output/descriptives/spending distribution by region.png")
-
