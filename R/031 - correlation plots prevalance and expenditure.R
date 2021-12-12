@@ -4,43 +4,15 @@
 library(smkfreediv)
 library(ggplot2)
 
-div_la <- readRDS(paste0(Dir[2],"/results_local_authority_",4,".rds"))
+div_la <- readRDS(paste0(Dir[2],"/results_local_authority.rds"))
 con_la <- readRDS(paste0(Dir[2],"/results_consumption.rds"))
 
 ##########################################
 ## CORRELATION PLOTS - PREVALENCE/INCOME
 
-plot_data <- merge(div_la, smkfreediv::utla_gor_lookup, by = "UTLAname")
-
-
 ###### plot prevalence against income
 
-
-plot_data$text <- with(plot_data,
-                       paste0("Local Authority: ", UTLAname,
-                              "<br>Average Income: £", round(income),
-                              "<br>Smoking Prevalence: ",round(smk_prev,2),"%") )
-
-## plotly
-plotly::ggplotly(
-
-ggplot(plot_data) +
-  aes(x = income/1000, y = smk_prev, text = text) +
-  geom_point(color='navy') +
-  geom_smooth(method='lm', se = F, linetype = 5, na.rm = T) +
-  theme_minimal() +
-  labs(x = "Average Income (£000s)",
-       y = "Smoking Prevalence (%)",
-       title = "",
-       color = "Region") +
-  scale_y_continuous(breaks = seq(6,26,2), minor_breaks = NULL) +
-  scale_x_continuous(breaks = seq(5,45,5), minor_breaks = NULL) , tooltip = c("text")
-
-)
-
-## regular plot
-
-ggplot(plot_data) +
+ggplot(div_la) +
   aes(x = income/1000, y = smk_prev) +
   geom_point(color='black') +
   geom_smooth(method='loess', se = F, linetype = 5, na.rm = T) +
@@ -55,8 +27,8 @@ ggsave("output/corr_smkprev_income.png")
 
 ######### plot prevalence against income, colour by region
 
-ggplot(plot_data) +
-  aes(x = income/1000, y = smk_prev , color = region) +
+ggplot(div_la) +
+  aes(x = income/1000, y = smk_prev , color = gor) +
   geom_point() +
   theme_minimal() +
   labs(x = "Average Income (£000s)",
@@ -70,8 +42,8 @@ ggsave("output/corr_smkprev_income_byregion.png")
 
 ## as above, but allow for a regression line in each region
 
-ggplot(plot_data) +
-  aes(x = income/1000, y = smk_prev , color = region, linetype = region) +
+ggplot(div_la) +
+  aes(x = income/1000, y = smk_prev , color = gor, linetype = gor) +
   geom_point() +
   geom_smooth(method='lm', se = F, color='black') +
   theme_minimal() +
@@ -92,9 +64,9 @@ ggsave("output/corr_smkprev_income_byregion_regs.png")
 ## read in the sample size from the mean expenditure calculations
 sampsize <- read.csv(paste0(Dir[2],"/weekly_spend_la.csv"))
 setDT(sampsize)
-sampsize <- sampsize[upshift == 1,c("UTLAname","sample_tkit")]
+sampsize <- sampsize[,c("UTLAname","sample_tkit")]
 
-exp_plot_data <- merge(plot_data, sampsize, by = "UTLAname")
+exp_plot_data <- merge(div_la, sampsize, by = "UTLAname")
 
 
 ## restrict the plots to local authorities with at least 5 observations

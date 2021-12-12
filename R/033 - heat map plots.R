@@ -100,7 +100,7 @@ ggplot(data = merge) +
   labs(title = ' ',
        subtitle = ' ',
        fill = "Prevalence") +
-  scale_fill_viridis_d()
+  scale_fill_viridis_d(option = "mako")
 
 ### plot by spend as % of income
 
@@ -119,25 +119,6 @@ ggplot(data = merge) +
   labs(title = ' ',
        subtitle = ' ',
        fill = "Spend as % of Income") +
-  scale_fill_viridis_d()
+  scale_fill_viridis_d(option = "mako")
 
-### plot by income
-
-ggplot(data = merge) +
-  aes(x = long,
-      y = lat,
-      group = group,
-      fill = cut(income,
-                 breaks = c(0,20,25,30,35,40,100),
-                 labels = c("Under £20,000",
-                            "£20,000 - £25,000",
-                            "£25,000 - £30,000",
-                            "£30,000 - £35,000",
-                            "£35,000 - £40,000",
-                            "Over £40,000"))) +
-  geom_polygon() + coord_equal() + theme_void() +
-  labs(title = ' ',
-       subtitle = ' ',
-       fill = "Annual Income") +
-  scale_colour_viridis_d()
 
