@@ -21,7 +21,8 @@ library(maptools)   # map packages
 source("R/011 - clean toolkit data.R")
 source("R/012 - read and clean shapefiles.R")
 source("R/015 - toolkit descriptives.R")
-source("R/016 - consumption patterns.R")
+source("R/016 - tobacco duty descriptives.R")
+source("R/017 - consumption patterns.R")
 
 ### ----- (2) Run the Analysis --------- ###
 source("R/021 - estimate the upshift.R")
