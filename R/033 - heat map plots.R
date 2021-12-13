@@ -6,6 +6,10 @@ library(ggplot2)
 
 div_la <- readRDS(paste0(Dir[2],"/results_local_authority.rds"))
 
+div_la[, inc_decile := ntile(income,10)]
+div_la[, inc_prop_decile := ntile(spend_prop,10)]
+
+
 ############
 ## HEAT MAPS
 
@@ -72,7 +76,6 @@ setDT(shape)
 
 # merge all to the shapefile
 
-#### ---------------------------------------------------------------------------------------------------------------------
 
 #############################
 ### Merge to the full shapefile, note all.y = F to remove Scottish/Welsh LAs
@@ -80,6 +83,10 @@ setDT(shape)
 
 merge <- merge(data_mapping_merge, shape, by.x = "LAcode", by.y = "id", all.y = F)
 merge <- arrange(merge,order)
+
+
+
+#### ---------------------------------------------------------------------------------------------------------------------
 
 ### plot by smoking prevalence
 
@@ -121,4 +128,34 @@ ggplot(data = merge) +
        fill = "Spend as % of Income") +
   scale_fill_viridis_d(option = "mako")
 
+### plot by income decile
+
+hm1 <- ggplot(data = merge) +
+  aes(x = long,
+      y = lat,
+      group = group,
+      fill = inc_decile) +
+  geom_polygon() + coord_equal() + theme_void() +
+  labs(title = '  ',
+       subtitle = ' ',
+       fill = "Decile") +
+  scale_fill_viridis_c(option = "magma") +
+  theme(legend.position = "bottom")
+
+
+hm2 <- ggplot(data = merge) +
+  aes(x = long,
+      y = lat,
+      group = group,
+      fill = inc_prop_decile) +
+  geom_polygon() + coord_equal() + theme_void() +
+  labs(title = ' ',
+       subtitle = ' ',
+       fill = "Decile") +
+  scale_fill_viridis_c(option = "magma") +
+  theme(legend.position = "bottom")
+
+
+ggarrange(hm1, hm2,labels = c("Average Income", "Spend % of Income"), ncol = 2, nrow = 1)
+ggsave("output/map_income.png")
 
