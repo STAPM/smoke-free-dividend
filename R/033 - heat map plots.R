@@ -8,6 +8,9 @@ div_la <- readRDS(paste0(Dir[2],"/results_local_authority.rds"))
 
 div_la[, inc_decile := ntile(income,10)]
 div_la[, inc_prop_decile := ntile(spend_prop,10)]
+div_la[, dividend_decile := ntile(dividend/pop_n,10)]
+div_la[, prev_decile := ntile(smk_prev,10)]
+
 
 
 ############
@@ -88,47 +91,8 @@ merge <- arrange(merge,order)
 
 #### ---------------------------------------------------------------------------------------------------------------------
 
-### plot by smoking prevalence
-
-ggplot(data = merge) +
-  aes(x = long,
-      y = lat,
-      group = group,
-      fill = cut(smk_prev,
-                 breaks = c(0,10,12,14,16,18,20,100),
-                 labels = c("Under 10%",
-                            "10-12%",
-                            "12-14%",
-                            "14-16%",
-                            "16-18%",
-                            "18-20%",
-                            "Over 20%"))) +
-  geom_polygon() + coord_equal() + theme_void() +
-  labs(title = ' ',
-       subtitle = ' ',
-       fill = "Prevalence") +
-  scale_fill_viridis_d(option = "mako")
-
-### plot by spend as % of income
-
-ggplot(data = merge) +
-  aes(x = long,
-      y = lat,
-      group = group,
-      fill = cut(spend_prop,
-                 breaks = c(0,0.05,0.07,0.09,0.1,1),
-                 labels = c("Under 5%",
-                            "5 - 7%",
-                            "7 - 9%",
-                            "9 - 10%",
-                            "Over 10%"))) +
-  geom_polygon() + coord_equal() + theme_void() +
-  labs(title = ' ',
-       subtitle = ' ',
-       fill = "Spend as % of Income") +
-  scale_fill_viridis_d(option = "mako")
-
-### plot by income decile
+#######################
+### plot income #######
 
 hm1 <- ggplot(data = merge) +
   aes(x = long,
@@ -140,8 +104,10 @@ hm1 <- ggplot(data = merge) +
        subtitle = ' ',
        fill = "Decile") +
   scale_fill_viridis_c(option = "magma") +
-  theme(legend.position = "bottom")
+  theme(legend.position = "none")
 
+#####################################
+### plot spend as % of income #######
 
 hm2 <- ggplot(data = merge) +
   aes(x = long,
@@ -153,9 +119,50 @@ hm2 <- ggplot(data = merge) +
        subtitle = ' ',
        fill = "Decile") +
   scale_fill_viridis_c(option = "magma") +
-  theme(legend.position = "bottom")
+  theme(legend.position = "none")
 
 
-ggarrange(hm1, hm2,labels = c("Average Income", "Spend % of Income"), ncol = 2, nrow = 1)
+#########################
+### plot dividend #######
+
+hm3 <- ggplot(data = merge) +
+  aes(x = long,
+      y = lat,
+      group = group,
+      fill = dividend_decile) +
+  geom_polygon() + coord_equal() + theme_void() +
+  labs(title = ' ',
+       subtitle = ' ',
+       fill = "Decile") +
+  scale_fill_viridis_c(option = "magma") +
+  theme(legend.position = "none")
+
+###########################
+### plot prevalence #######
+
+hm4 <- ggplot(data = merge) +
+  aes(x = long,
+      y = lat,
+      group = group,
+      fill = prev_decile) +
+  geom_polygon() + coord_equal() + theme_void() +
+  labs(title = ' ',
+       subtitle = ' ',
+       fill = "Decile") +
+  scale_fill_viridis_c(option = "magma") +
+  theme(legend.position = "none")
+
+
+
+##### make the plots
+
+
+ggarrange(hm1, hm2,labels = c("Average Income", "Spend % of Income"), ncol = 2, nrow = 1,  common.legend = TRUE, legend = "bottom")
 ggsave("output/map_income.png")
+
+ggarrange(hm1, hm3,labels = c("Average Income", "Dividend per capita"), ncol = 2, nrow = 1,  common.legend = TRUE, legend = "bottom")
+ggsave("output/map_dividend.png")
+
+ggarrange(hm1, hm4,labels = c("Average Income", "Smoking prevalence"), ncol = 2, nrow = 1)
+ggsave("output/map_prev.png")
 
