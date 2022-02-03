@@ -21,6 +21,7 @@ library(maptools)   # map packages
 ### ----- (1) Data Cleaning -------- ###
 source("R/011 - clean toolkit data.R")
 source("R/012 - read and clean shapefiles.R")
+source("R/014 - income descriptives.R")
 source("R/015 - toolkit descriptives.R")
 source("R/016 - tobacco duty descriptives.R")
 source("R/017 - consumption patterns.R")
