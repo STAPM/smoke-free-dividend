@@ -20,6 +20,7 @@ price <- as.numeric(smkfreediv::price_cigs_oecd[country == "United Kingdom","pri
 
 upshift <- smkfreediv::CalcUpshift(data = data,
                                    LCFS = FALSE,
+                                   vat = 0.2,
                                    price_fm = price,
                                    duty_fm = 228.29,
                                    avt_fm = 0.165,
