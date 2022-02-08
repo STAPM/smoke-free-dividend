@@ -1,8 +1,8 @@
 ### The aim of this code is to produce results tables and plots from the
 ### local authority level analysis
 
-library(smkfreediv)
-library(ggplot2)
+source("R/000 - create directories.R")
+source("R/003 - load packages.R")
 
 div_la <- readRDS(paste0(Dir[2],"/results_local_authority.rds"))
 con_la <- readRDS(paste0(Dir[2],"/results_consumption.rds"))
@@ -32,7 +32,7 @@ ggplot(div_la) +
        color = "Region") +
   scale_y_continuous(breaks = seq(6,26,2), minor_breaks = NULL) +
   scale_x_continuous(breaks = seq(5,45,5), minor_breaks = NULL)
-ggsave("output/corr_smkprev_income.png")
+#ggsave("output/corr_smkprev_income.png")
 
 ######### plot prevalence against income, colour by region
 
@@ -47,7 +47,7 @@ ggplot(div_la) +
   scale_y_continuous(breaks = seq(6,26,2), minor_breaks = NULL) +
   scale_x_continuous(breaks = seq(5,45,5), minor_breaks = NULL) +
   scale_colour_viridis_d()
-ggsave("output/corr_smkprev_income_byregion.png")
+#ggsave("output/corr_smkprev_income_byregion.png")
 
 ## as above, but allow for a regression line in each region
 
@@ -64,7 +64,7 @@ ggplot(div_la) +
   scale_y_continuous(breaks = seq(6,26,2), minor_breaks = NULL) +
   scale_x_continuous(breaks = seq(5,45,5), minor_breaks = NULL) +
   scale_colour_viridis_d()
-ggsave("output/corr_smkprev_income_byregion_regs.png")
+#ggsave("output/corr_smkprev_income_byregion_regs.png")
 
 
 ##########################################
@@ -82,8 +82,7 @@ ggplot(exp_plot_data) +
        caption = "Note: Plot restricted to local authorities with 10 or more observations (smokers) in the toolkit data") +
   scale_y_continuous(breaks = seq(0,140,5), minor_breaks = NULL) +
   scale_x_continuous(breaks = seq(5,45,5), minor_breaks = NULL)
-
-ggsave("output/corr_meanspend_income.png")
+#ggsave("output/corr_meanspend_income.png")
 
 ## plot spend % of income (upshifted) against income
 
@@ -99,4 +98,4 @@ ggplot(exp_plot_data) +
        caption = "Note: Plot restricted to local authorities with 10 or more observations (smokers) in the toolkit data") +
   scale_y_continuous(breaks = seq(0,100,1), minor_breaks = NULL) +
   scale_x_continuous(breaks = seq(5,45,5), minor_breaks = NULL)
-ggsave("output/corr_propspend_income.png")
+#ggsave("output/corr_propspend_income.png")

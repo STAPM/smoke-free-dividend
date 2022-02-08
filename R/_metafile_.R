@@ -9,14 +9,7 @@ user <- "djmorris1989"        # GitLab user name for package installation
 
 source("R/000 - create directories.R")
 #source("R/001 - package installation.R")
-
-library(smkfreediv)
-library(data.table)
-library(tidyverse)
-library(ggpubr)     # for combining multiple ggplots
-library(rgeos)      # map packages
-library(rgdal)      # map packages
-library(maptools)   # map packages
+source("R/003 - load packages.R")
 
 ### ----- (1) Data Cleaning -------- ###
 source("R/011 - clean toolkit data.R")
@@ -36,6 +29,7 @@ source("R/024 - local authority and region level analysis OHID upshift.R")
 source("R/031 - correlation plots prevalance and expenditure.R")
 source("R/032 - correlation plots consumption.R")
 source("R/033 - heat map plots.R")
+source("R/035 - final figures for the paper.R")
 
 ### ----- (4) process results ------- ###
 source("R/041 - write results tables.R")
