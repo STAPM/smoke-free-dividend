@@ -137,3 +137,24 @@ ggplot(cons_plots_long) +
   scale_x_continuous(breaks = seq(5,45,5), minor_breaks = NULL) +
   theme(legend.position = "bottom")
 ggsave("output/consumption_avgtot_inc_by_product.png")
+
+
+
+######################################
+####### EXTRA FIGURES ################
+
+div_corr <- round( cor.test(div_la$income, div_la$dividend/div_la$pop_n, method = "pearson")$estimate , 3)
+div_corr_ci <- round( cor.test(div_la$income, div_la$dividend/div_la$pop_n, method = "pearson")$conf.int , 3)
+
+ggplot(div_la) +
+  aes(x = income/1000, y = dividend*1000000/pop_n) +
+  geom_point() +
+  geom_smooth(method='lm', se = F, linetype = 5, na.rm = T) +
+  theme_minimal() +
+  labs(x = "Average Income (£000s)",
+       y = "Smokefree Dividend per capita",
+       title = "",
+       caption = paste0("Pearson correlation coefficient: ", div_corr, ". 95% CI: (", div_corr_ci[1], " , ", div_corr_ci[2], ")" )) +
+  scale_x_continuous(breaks = seq(5,45,5), minor_breaks = NULL)
+ggsave("output/corr_divpc_income.png")
+
