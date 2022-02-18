@@ -21,7 +21,7 @@ ggplot(data) +
   scale_fill_viridis_d(option = "mako") +
   labs(y = " ", x = "Weekly Tobacco Spending (£)",
        caption = paste0("Median Weekly Spend = £",round(med,2),". Mean Weekly Spend = £",round(mean,2),"."))
-ggsave("output/descriptives/spending distribution.png")
+#ggsave("output/descriptives/spending distribution.png")
 
 #### Distribution of weekly spending by region
 
@@ -42,7 +42,7 @@ ggplot(data) +
   theme(legend.position = "none") +
   labs(x = " ", y = "Weekly Tobacco Spending (£)",
        caption = "outliers are points more than 1.5*IQR above the 3rd quartile")
-ggsave("output/descriptives/spending distribution by region.png")
+#ggsave("output/descriptives/spending distribution by region.png")
 
 ggplot(data) +
   aes(x=reorder(gor,weekspend, FUN = "median", na.rm = TRUE),
