@@ -25,14 +25,15 @@ source("R/022 - average weekly spending.R")
 source("R/023 - local authority and region level analysis.R")
 source("R/024 - local authority and region level analysis OHID upshift.R")
 
-### ----- (3) descriptive and results plots ------- ###
+### ----- (3) results plots ------- ###
 source("R/031 - correlation plots prevalance and expenditure.R")
 source("R/032 - correlation plots consumption.R")
-source("R/033 - heat map plots.R")
-source("R/035 - final figures for the paper.R")
+source("R/033 - heat map plots setup.R")
+source("R/034 - heat map plots.R")
 
 ### ----- (4) process results ------- ###
 source("R/041 - write results tables.R")
 source("R/042 - write results tables OHID upshift.R")
+source("R/045 - final figures for the paper.R")
 
-source("R/045 - render markdowns.R")
+source("R/050 - render markdowns.R")
