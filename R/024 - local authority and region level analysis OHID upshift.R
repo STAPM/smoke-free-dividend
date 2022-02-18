@@ -4,11 +4,13 @@
 
 data <- readRDS(paste0(Dir[1],"/toolkit_clean.rds"))
 
-#upshift_vec <- readRDS(paste0(Dir[2],"/upshift_param_vectors.rds"))
+### The aim of this code is to make the smoke free dividend calculations with my
+### data and methodology but using the OHID upshift factor.
 
-#### Calculate upshift parameter
+## read in toolkit data and upshift factor
 
-upshift <- read.csv("output/upshift_calcs.csv")
+data <- readRDS(paste0(Dir[1],"/toolkit_clean.rds"))
+upshift <- read.csv(paste0(Dir[2],"/upshift_calcs.csv"))
 
 #### Simulation
 

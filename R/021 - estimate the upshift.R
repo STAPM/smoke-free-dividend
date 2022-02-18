@@ -30,5 +30,5 @@ upshift <- smkfreediv::CalcUpshift(data = data,
 
 
 write.csv(upshift,
-          paste0(Dir[3],"/upshift_calcs.csv"),
+          paste0(Dir[2],"/upshift_calcs.csv"),
           row.names = FALSE)

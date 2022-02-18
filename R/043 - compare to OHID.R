@@ -31,12 +31,12 @@ ohid[, dividend := dividend/1000]
 ## put in alpha order
 ohid <- ohid[order(region),]
 
-write.csv(ohid,"output/comparisons/comparison sheet - ohid.csv")
+write.csv(ohid,"output/OHID comparisons/comparison sheet - ohid.csv")
 
 ########################
 # read in my results ###
 
-myresults <- readxl::read_excel("output/summary_table.xlsx",
+myresults <- readxl::read_excel("output/main results/summary_table.xlsx",
                                  sheet = "Region data",
                                  range = "B2:L11")
 
@@ -49,7 +49,7 @@ setnames(myresults, names(myresults), c("region","mean_spend","sample_size","ann
 myresults <- myresults[,c("region","mean_spend","prop_income","tot_annual_exp","dividend",
                           "n_smokers","tot_weekly_exp","weekly_income")]
 
-write.csv(myresults,"output/comparisons/comparison sheet - damons.csv")
+write.csv(myresults,"output/OHID comparisons/comparison sheet - damons.csv")
 
 setnames(myresults,
          names(myresults),
@@ -59,7 +59,7 @@ setnames(myresults,
 ########################
 # read in my results ###
 
-myresults_ohidup <- readxl::read_excel("output/summary_table_OHID_upshift.xlsx",
+myresults_ohidup <- readxl::read_excel("output/OHID comparisons/summary_table.xlsx",
                                 sheet = "Region data",
                                 range = "B2:L11")
 

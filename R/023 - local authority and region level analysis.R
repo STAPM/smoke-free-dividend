@@ -1,14 +1,10 @@
-### The aim of this code is to use the smkfreediv functions to make the
-### smoke free dividend calculations. Loop over different values of upshift
-### parameter
+
+### The aim of this code is to make the smoke free dividend calculations.
+
+## read in toolkit data and upshift factor
 
 data <- readRDS(paste0(Dir[1],"/toolkit_clean.rds"))
-
-#upshift_vec <- readRDS(paste0(Dir[2],"/upshift_param_vectors.rds"))
-
-#### Calculate upshift parameter
-
-upshift <- read.csv("output/upshift_calcs.csv")
+upshift <- read.csv(paste0(Dir[2],"/upshift_calcs.csv"))
 
 #### Simulation
 
@@ -40,6 +36,7 @@ gor_results <- smkfreediv::CalcDividend_gor_sim(data,
 
 saveRDS(gor_results,paste0(Dir[2],"/results_region.rds"))
 
+###############################################################################################
 ### further processing of gor results to compare to OHID results (sent in Dec 2021 by Tessa)
 
 gor_results[, gor := factor(gor,
@@ -54,3 +51,6 @@ gor_results <- gor_results[, c("gor","spend_prop","n_smokers","dividend")]
 
 gor_results[, dividend := dividend * 1000]
 gor_results[, spend_prop := round(spend_prop * 100, 2)]
+
+saveRDS(gor_results,paste0(Dir[2],"/results_region_OHID_comparison.rds"))
+

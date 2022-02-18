@@ -7,7 +7,7 @@
 
 data <- readRDS(paste0(Dir[1],"/toolkit_clean.rds"))
 
-upshift <- read.csv("output/upshift_calcs.csv")
+upshift <- read.csv(paste0(Dir[2],"/upshift_calcs.csv"))
 up <- as.numeric(upshift[,"upshift"])
 
 ## overall
@@ -64,6 +64,7 @@ write.csv(exp_gor,   paste0(Dir[2],"/weekly_spend_gor.csv"))
 
 rm(exp, exp_age, exp_grade, exp_sex, exp_la, exp_gor, data)
 
+#############################################################################
 #### --------------- USE OHID CALCULATED UPSHIFT -------------------------###
 
 

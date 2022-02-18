@@ -1,20 +1,8 @@
 
 # The aim of this code is to summarise the model data to
-# fit into the summary tables
+# fit into the summary tables for the results using the OHID upshift factor
 
-# the intermediate step to this is to write the summary tables
-# to an excel workbook that has some pre-formatting to produce
-# the right tables
-
-library(here)
-library(data.table)
-library(stringr)
-library(flextable)
-library(magrittr)
-library(plyr)
-library(readxl)
-library(openxlsx)
-library(dplyr)
+source("R/003 - load packages.R")
 
 ############################################
 ## Read in the results of the analysis
@@ -58,7 +46,8 @@ wb <- openxlsx::loadWorkbook("templates/results_template.xlsx")
 
 ### ---------------- Upshift Calcs Tab ---------- ###
 
-# N/A - using OHID upshift
+
+## leave blank in the OHID version
 
 ### ----------------- LA Data Tab --------------- ###
 
@@ -240,7 +229,6 @@ openxlsx::writeData(wb,
                     x = x,
                     startCol = 16,
                     startRow = 3)
-
 
 ### ----------------- Region Data Tab --------------- ###
 
@@ -483,52 +471,129 @@ openxlsx::writeData(wb,
                     startCol = 4,
                     startRow = 3)
 
-### --------------- Expenditure % of Income  LAs Tab -------------- ###
-
-results <- readRDS(paste0(Dir[2],"/results_local_authority.rds"))
-top_la_results <- results[order(-spend_prop)]
-top_la_results <- top_la_results[1:10,]
+### --------------- Top 10 Exp % of Income LA Tab -------------- ###
 
 rm(results)
 
-reg <- as.vector(as.matrix(top_la_results[,"UTLAname"]))
-mean <- round(as.vector(as.matrix(top_la_results[,"mean_week_spend"])) , 2)
-prop <- round(as.vector(as.matrix(top_la_results[,"spend_prop"])) , 4)*100
-tot_exp <- round(as.vector(as.matrix(top_la_results[,"total_annual_exp"])) , 3)
-tot_div <- round(as.vector(as.matrix(top_la_results[,"dividend"])) , 3)
+la         <- as.vector(as.matrix(la_results_top[,"UTLAname"]))
+region     <- as.vector(as.matrix(la_results_top[,"gor"]))
+prev       <- as.vector(as.matrix(la_results_top[,"smk_prev"]/100))
+mean       <- as.vector(as.matrix(la_results_top[,"mean_week_spend"]))
+inc        <- as.vector(as.matrix(la_results_top[,"income"]))
+prop       <- as.vector(as.matrix(la_results_top[,"spend_prop"]))
+tot_div    <- as.vector(as.matrix(la_results_top[,"dividend"]))
+tot_div_pc <- as.vector(as.matrix(la_results_top[,"dividend_pc"]))
 
 
 openxlsx::writeData(wb,
-                    sheet = "Expenditure % of Income LA",
-                    x = reg,
+                    sheet = "Top 10 Exp % of Income LA",
+                    x = la,
                     startCol = 1,
                     startRow = 3)
 
 openxlsx::writeData(wb,
-                    sheet = "Expenditure % of Income LA",
-                    x = mean,
+                    sheet = "Top 10 Exp % of Income LA",
+                    x = region,
                     startCol = 2,
                     startRow = 3)
 
 openxlsx::writeData(wb,
-                    sheet = "Expenditure % of Income LA",
-                    x = prop,
+                    sheet = "Top 10 Exp % of Income LA",
+                    x = prev,
                     startCol = 3,
                     startRow = 3)
 
 openxlsx::writeData(wb,
-                    sheet = "Expenditure % of Income LA",
-                    x = tot_exp,
+                    sheet = "Top 10 Exp % of Income LA",
+                    x = mean,
                     startCol = 4,
                     startRow = 3)
 
 openxlsx::writeData(wb,
-                    sheet = "Expenditure % of Income LA",
-                    x = tot_div,
+                    sheet = "Top 10 Exp % of Income LA",
+                    x = prop,
                     startCol = 5,
+                    startRow = 3)
+
+openxlsx::writeData(wb,
+                    sheet = "Top 10 Exp % of Income LA",
+                    x = inc,
+                    startCol = 6,
+                    startRow = 3)
+
+openxlsx::writeData(wb,
+                    sheet = "Top 10 Exp % of Income LA",
+                    x = tot_div,
+                    startCol = 7,
+                    startRow = 3)
+
+openxlsx::writeData(wb,
+                    sheet = "Top 10 Exp % of Income LA",
+                    x = tot_div_pc,
+                    startCol = 8,
+                    startRow = 3)
+
+### --------------- Top 10 Exp % of Income LA Tab -------------- ###
+
+la         <- as.vector(as.matrix(la_results_bottom[,"UTLAname"]))
+region     <- as.vector(as.matrix(la_results_bottom[,"gor"]))
+prev       <- as.vector(as.matrix(la_results_bottom[,"smk_prev"]/100))
+mean       <- as.vector(as.matrix(la_results_bottom[,"mean_week_spend"]))
+inc        <- as.vector(as.matrix(la_results_bottom[,"income"]))
+prop       <- as.vector(as.matrix(la_results_bottom[,"spend_prop"]))
+tot_div    <- as.vector(as.matrix(la_results_bottom[,"dividend"]))
+tot_div_pc <- as.vector(as.matrix(la_results_top[,"dividend_pc"]))
+
+
+openxlsx::writeData(wb,
+                    sheet = "Bottom 10 Exp % of Income LA",
+                    x = la,
+                    startCol = 1,
+                    startRow = 3)
+
+openxlsx::writeData(wb,
+                    sheet = "Bottom 10 Exp % of Income LA",
+                    x = region,
+                    startCol = 2,
+                    startRow = 3)
+
+openxlsx::writeData(wb,
+                    sheet = "Bottom 10 Exp % of Income LA",
+                    x = prev,
+                    startCol = 3,
+                    startRow = 3)
+
+openxlsx::writeData(wb,
+                    sheet = "Bottom 10 Exp % of Income LA",
+                    x = mean,
+                    startCol = 4,
+                    startRow = 3)
+
+openxlsx::writeData(wb,
+                    sheet = "Bottom 10 Exp % of Income LA",
+                    x = prop,
+                    startCol = 5,
+                    startRow = 3)
+
+openxlsx::writeData(wb,
+                    sheet = "Bottom 10 Exp % of Income LA",
+                    x = inc,
+                    startCol = 6,
+                    startRow = 3)
+
+openxlsx::writeData(wb,
+                    sheet = "Bottom 10 Exp % of Income LA",
+                    x = tot_div,
+                    startCol = 7,
+                    startRow = 3)
+
+openxlsx::writeData(wb,
+                    sheet = "Top 10 Exp % of Income LA",
+                    x = tot_div_pc,
+                    startCol = 8,
                     startRow = 3)
 
 ###########################
 ## save out the workbook ##
 
-saveWorkbook(wb,paste0("output/summary_table_OHID_upshift.xlsx"), overwrite = T)
+saveWorkbook(wb,paste0("output/OHID comparisons/summary_table.xlsx"), overwrite = T)

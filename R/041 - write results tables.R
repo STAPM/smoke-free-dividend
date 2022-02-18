@@ -2,6 +2,7 @@
 # The aim of this code is to summarise the model data to
 # fit into the summary tables
 
+source("R/000 - create directories.R")
 source("R/003 - load packages.R")
 
 ############################################
@@ -65,7 +66,7 @@ wb <- openxlsx::loadWorkbook("templates/results_template.xlsx")
 
 ### ---------------- Upshift Calcs Tab ---------- ###
 
-calcs <-  read.csv(paste0(Dir[3],"/upshift_calcs.csv"))
+calcs <-  read.csv(paste0(Dir[2],"/upshift_calcs.csv"))
 setDT(calcs)
 
 openxlsx::writeData(wb,
@@ -765,5 +766,5 @@ openxlsx::writeData(wb,
 ###########################
 ## save out the workbook ##
 
-saveWorkbook(wb,paste0("output/summary_table.xlsx"), overwrite = T)
+saveWorkbook(wb,paste0("output/main results/summary_table.xlsx"), overwrite = T)
 
