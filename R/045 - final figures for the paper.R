@@ -4,13 +4,49 @@
 source("R/000 - create directories.R")
 source("R/003 - load packages.R")
 
+######################
+### READ IN DATA #####
+
+### figure 1 data
+toolkit <- readRDS(paste0(Dir[1],"/toolkit_clean.rds"))
+toolkit <- toolkit[!(is.na(gor)),]
+
+### figures 2 and 3 data
 div_la <- readRDS(paste0(Dir[2],"/results_local_authority.rds"))
 con_la <- readRDS(paste0(Dir[2],"/results_consumption.rds"))
 
-## read in the sample size from the mean expenditure calculations
 sampsize <- read.csv(paste0(Dir[2],"/weekly_spend_la.csv"))
 setDT(sampsize)
 sampsize <- sampsize[,c("UTLAname","sample_tkit")]
+
+### figures 4 and 4 data
+source("R/033 - heat map plots setup.R")
+
+
+######################
+### FIGURE 1 #########
+
+#### Distribution of weekly spending
+
+exp <- smkfreediv::CalcWeekSpend(toolkit, strat_vars = NULL, upshift = 1)
+
+med <- as.numeric(exp[,"median_week_spend"])
+mean   <- as.numeric(exp[,"mean_week_spend"])
+
+ggplot(toolkit) +
+  aes(x = weekspend) +
+  geom_density(alpha = 0.2) +
+  geom_vline(xintercept = mean, color = "navy", linetype = 2) +
+  geom_vline(xintercept = med, color = "maroon", linetype = 2) +
+  theme_minimal() +
+  scale_fill_viridis_d(option = "mako") +
+  labs(y = " ", x = "Weekly Tobacco Spending (£)",
+       caption = paste0("Median Weekly Spend = £",round(med,2),". Mean Weekly Spend = £",round(mean,2),"."))
+ggsave("output/main results/FIG_1_spending_distribution.png")
+
+
+
+
 
 ######################
 ### FIGURE 2 #########
@@ -57,16 +93,15 @@ prop <- ggplot(exp_plot_data) +
 ### combine plots
 
 
-figure <- ggarrange(spend, prop + font("x.text", size = 10),
+figure <- ggarrange(spend, prop,
                     ncol = 1, nrow = 2)
 annotate_figure(figure,
                 bottom = text_grob("Note: Plot restricted to local authorities with 10 or more smokers in the STS", color = "black",
-                                   hjust = 1, x = 1, face = "italic", size = 10)
+                                   hjust = 1, x = 1, size = 9)
 )
 
 
-ggsave("output/corr_spend_income.png")
-
+ggsave("output/main results/FIG_2_corr_spend_income.png")
 
 
 
@@ -83,35 +118,7 @@ sampsize <- sampsize[,c("UTLAname","sample_tkit")]
 cons_plots <- merge(cons_plots, sampsize, by = "UTLAname")
 cons_plots <- cons_plots[sample_tkit >= 10, ]
 
-## correlation coefficients
 
-fm_corr <- round( cor.test(cons_plots$income, cons_plots$mean_cigs_fm, method = "pearson")$estimate , 3)
-fm_corr_ci <- round( cor.test(cons_plots$income, cons_plots$mean_cigs_fm, method = "pearson")$conf.int , 3)
-
-ryo_corr <- round( cor.test(cons_plots$income, cons_plots$mean_cigs_ryo, method = "pearson")$estimate , 3)
-ryo_corr_ci <- round( cor.test(cons_plots$income, cons_plots$mean_cigs_ryo, method = "pearson")$conf.int , 3)
-
-tot_corr <- round( cor.test(cons_plots$income, cons_plots$mean_cigs_tot, method = "pearson")$estimate , 3)
-tot_corr_ci <- round( cor.test(cons_plots$income, cons_plots$mean_cigs_tot, method = "pearson")$conf.int , 3)
-
-## income / average total tobacco consumption
-
-ggplot(cons_plots) +
-  aes(x = income/1000, y = mean_cigs_tot) +
-  geom_point() +
-  geom_smooth(method='lm', se = F, color='turquoise4', linetype = 5) +
-  theme_minimal() +
-  labs(x = "Average Income (£000s)",
-       y = "Average Daily Cigarette Consumption",
-       title = "",
-       color = "Region",
-       caption = "Note: Plot restricted to local authorities with 10 or more smokers in the STS") +
-  scale_y_continuous(breaks = seq(3,26,1), minor_breaks = NULL) +
-  scale_x_continuous(breaks = seq(5,45,2))
-ggsave("output/consumption_avgtot_inc.png")
-
-
-###
 cons_plots_long <- cons_plots[,c("UTLAcode","UTLAname","mean_cigs_fm","mean_cigs_ryo","mean_cigs_tot","income")]
 cons_plots_long <- melt(cons_plots_long,
                         id.vars = c("UTLAcode","UTLAname","income"),
@@ -136,12 +143,94 @@ ggplot(cons_plots_long) +
   scale_y_continuous(breaks = seq(0,26,2), minor_breaks = NULL) +
   scale_x_continuous(breaks = seq(5,45,5), minor_breaks = NULL) +
   theme(legend.position = "bottom")
-ggsave("output/consumption_avgtot_inc_by_product.png")
+ggsave("output/main results/FIG_3_consumption_avgtot_inc_by_product.png")
+
+############################
+##### FIGURE 4 #############
+
+### plot income
+
+hm1 <- ggplot(heat_map_data) +
+  aes(x = long,
+      y = lat,
+      group = group,
+      fill = inc_decile) +
+  geom_polygon() + coord_equal() + theme_void() +
+  labs(title = '  ',
+       subtitle = ' ',
+       fill = "Decile") +
+  scale_fill_viridis_c(option = "magma") +
+  theme(legend.position = "none")
+
+
+### plot spend as % of income
+
+hm2 <- ggplot(heat_map_data) +
+  aes(x = long,
+      y = lat,
+      group = group,
+      fill = inc_prop_decile) +
+  geom_polygon() + coord_equal() + theme_void() +
+  labs(title = ' ',
+       subtitle = ' ',
+       fill = "Decile") +
+  scale_fill_viridis_c(option = "magma") +
+  theme(legend.position = "none")
+
+
+ggarrange(hm1, hm2,labels = c("Average Income", "Spend % of Income"),
+          ncol = 2, nrow = 1,  common.legend = TRUE, legend = "bottom")
+ggsave("output/main results/FIG_4_map_income.png")
+
+
+############################
+##### FIGURE 5 #############
+
+
+hm3 <- ggplot(heat_map_data) +
+  aes(x = long,
+      y = lat,
+      group = group,
+      fill = dividend_decile) +
+  geom_polygon() + coord_equal() + theme_void() +
+  labs(title = ' ',
+       subtitle = ' ',
+       fill = "Decile") +
+  scale_fill_viridis_c(option = "magma") +
+  theme(legend.position = "none")
+
+ggarrange(hm1, hm3,labels = c("Average Income", "Dividend per capita"),
+          ncol = 2, nrow = 1,  common.legend = TRUE, legend = "bottom")
+ggsave("output/main results/FIG_5_map_dividend.png")
 
 
 
 ######################################
 ####### EXTRA FIGURES ################
+
+####### Distribution of spending by region
+
+# manually adjust ordering of gor so the colors in the box plot line up properly
+toolkit[, gor := factor(gor,
+                     levels = c("North East", "West Midlands", "London",
+                                "Yorkshire and the Humber", "East of England",
+                                "East Midlands", "North West", "South East", "South West") )]
+
+ggplot(toolkit) +
+  aes(x=reorder(gor,weekspend, FUN = "median", na.rm = TRUE),
+      y = weekspend,
+      fill = gor) +
+  theme_minimal() +
+  coord_flip() +
+  geom_boxplot(outlier.alpha = 0.5) +
+  scale_fill_viridis_d(option = "mako") +
+  theme(legend.position = "none") +
+  labs(x = " ", y = "Weekly Tobacco Spending (£)",
+       caption = "outliers are points more than 1.5*IQR above the 3rd quartile")
+ggsave("output/main results/FIG_EXTRA_spending_distribution_by_region.png")
+
+
+####### Income / Smoke free dividend per capita
 
 div_corr <- round( cor.test(div_la$income, div_la$dividend/div_la$pop_n, method = "pearson")$estimate , 3)
 div_corr_ci <- round( cor.test(div_la$income, div_la$dividend/div_la$pop_n, method = "pearson")$conf.int , 3)
@@ -155,6 +244,7 @@ ggplot(div_la) +
        y = "Smokefree Dividend per capita",
        title = "",
        caption = paste0("Pearson correlation coefficient: ", div_corr, ". 95% CI: (", div_corr_ci[1], " , ", div_corr_ci[2], ")" )) +
-  scale_x_continuous(breaks = seq(5,45,5), minor_breaks = NULL)
-ggsave("output/corr_divpc_income.png")
+  scale_x_continuous(breaks = seq(5,45,5), minor_breaks = NULL) +
+  scale_y_continuous(labels=dollar_format(prefix="£"))
+ggsave("output/main results/FIG_EXTRA_corr_divpc_income.png")
 
