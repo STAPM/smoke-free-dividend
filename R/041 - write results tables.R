@@ -2,19 +2,7 @@
 # The aim of this code is to summarise the model data to
 # fit into the summary tables
 
-# the intermediate step to this is to write the summary tables
-# to an excel workbook that has some pre-formatting to produce
-# the right tables
-
-library(here)
-library(data.table)
-library(stringr)
-library(flextable)
-library(magrittr)
-library(plyr)
-library(readxl)
-library(openxlsx)
-library(dplyr)
+source("R/003 - load packages.R")
 
 ############################################
 ## Read in the results of the analysis
@@ -40,11 +28,13 @@ sampsize <- sampsize[,c("UTLAname","sample_tkit")]
 la_results <- merge(la_results, sampsize, by = "UTLAname", sort = F)
 la_results <- la_results[sample_tkit >= 10, ]
 
+la_results[, dividend_pc := dividend*1000000/pop_n ]
+
 la_results_top    <- la_results[order(-spend_prop),]
 la_results_bottom <- la_results[order(spend_prop),]
 
-la_results_top    <- la_results_top[1:10,c("UTLAname","gor","smk_prev","mean_week_spend","income","spend_prop","dividend")]
-la_results_bottom <- la_results_bottom[1:10,c("UTLAname","gor","smk_prev","mean_week_spend","income","spend_prop","dividend")]
+la_results_top    <- la_results_top[1:10,c("UTLAname","gor","smk_prev","mean_week_spend","income","spend_prop","dividend","dividend_pc")]
+la_results_bottom <- la_results_bottom[1:10,c("UTLAname","gor","smk_prev","mean_week_spend","income","spend_prop","dividend","dividend_pc")]
 
 
 ### read in weekly spend by demographics data
@@ -661,6 +651,7 @@ mean       <- as.vector(as.matrix(la_results_top[,"mean_week_spend"]))
 inc        <- as.vector(as.matrix(la_results_top[,"income"]))
 prop       <- as.vector(as.matrix(la_results_top[,"spend_prop"]))
 tot_div    <- as.vector(as.matrix(la_results_top[,"dividend"]))
+tot_div_pc <- as.vector(as.matrix(la_results_top[,"dividend_pc"]))
 
 
 openxlsx::writeData(wb,
@@ -703,6 +694,12 @@ openxlsx::writeData(wb,
                     sheet = "Top 10 Exp % of Income LA",
                     x = tot_div,
                     startCol = 7,
+                    startRow = 3)
+
+openxlsx::writeData(wb,
+                    sheet = "Top 10 Exp % of Income LA",
+                    x = tot_div_pc,
+                    startCol = 8,
                     startRow = 3)
 
 ### --------------- Top 10 Exp % of Income LA Tab -------------- ###
@@ -714,6 +711,7 @@ mean       <- as.vector(as.matrix(la_results_bottom[,"mean_week_spend"]))
 inc        <- as.vector(as.matrix(la_results_bottom[,"income"]))
 prop       <- as.vector(as.matrix(la_results_bottom[,"spend_prop"]))
 tot_div    <- as.vector(as.matrix(la_results_bottom[,"dividend"]))
+tot_div_pc <- as.vector(as.matrix(la_results_top[,"dividend_pc"]))
 
 
 openxlsx::writeData(wb,
@@ -758,6 +756,11 @@ openxlsx::writeData(wb,
                     startCol = 7,
                     startRow = 3)
 
+openxlsx::writeData(wb,
+                    sheet = "Top 10 Exp % of Income LA",
+                    x = tot_div_pc,
+                    startCol = 8,
+                    startRow = 3)
 
 ###########################
 ## save out the workbook ##
