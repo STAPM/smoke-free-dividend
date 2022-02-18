@@ -712,7 +712,7 @@ mean       <- as.vector(as.matrix(la_results_bottom[,"mean_week_spend"]))
 inc        <- as.vector(as.matrix(la_results_bottom[,"income"]))
 prop       <- as.vector(as.matrix(la_results_bottom[,"spend_prop"]))
 tot_div    <- as.vector(as.matrix(la_results_bottom[,"dividend"]))
-tot_div_pc <- as.vector(as.matrix(la_results_top[,"dividend_pc"]))
+tot_div_pc <- as.vector(as.matrix(la_results_bottom[,"dividend_pc"]))
 
 
 openxlsx::writeData(wb,
@@ -758,7 +758,7 @@ openxlsx::writeData(wb,
                     startRow = 3)
 
 openxlsx::writeData(wb,
-                    sheet = "Top 10 Exp % of Income LA",
+                    sheet = "Bottom 10 Exp % of Income LA",
                     x = tot_div_pc,
                     startCol = 8,
                     startRow = 3)
