@@ -116,3 +116,27 @@ ggplot(exp_plot_data) +
   scale_y_continuous(breaks = seq(0,100,1), minor_breaks = NULL) +
   scale_x_continuous(breaks = seq(5,45,5), minor_breaks = NULL)
 #ggsave("output/corr_propspend_income.png")
+
+
+
+
+# manually adjust ordering of gor by mean income
+exp_plot_data[, gor := factor(gor,
+                     levels = c("North East", "North West", "West Midlands",
+                                "Yorkshire and the Humber", "South West",
+                                "East Midlands", "East of England", "South East", "London") )]
+
+
+
+ggplot(exp_plot_data) +
+  aes(x = income/1000, y = spend_prop*100, colour = gor) +
+  geom_point() +
+  theme_minimal() +
+  labs(x = "Average Income (£000s)",
+       y = "Mean Spend as % of Disposable Income",
+       title = "",
+       color = "Region",
+       caption = "Note: Plot restricted to local authorities with 10 or more observations (smokers) in the toolkit data") +
+  scale_y_continuous(breaks = seq(0,100,1), minor_breaks = NULL) +
+  scale_x_continuous(breaks = seq(5,45,5), minor_breaks = NULL) +
+  scale_color_viridis_d(option = "magma")
