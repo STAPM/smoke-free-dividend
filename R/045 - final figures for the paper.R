@@ -20,7 +20,7 @@ setDT(sampsize)
 sampsize <- sampsize[,c("UTLAname","sample_tkit")]
 
 ### figures 4 and 4 data
-source("R/033 - heat map plots setup.R")
+#source("R/033 - heat map plots setup.R")
 
 
 ######################
