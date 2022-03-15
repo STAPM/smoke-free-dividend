@@ -38,8 +38,9 @@ ggplot(toolkit) +
   geom_density(alpha = 0.2) +
   geom_vline(xintercept = mean, color = "navy", linetype = 2) +
   geom_vline(xintercept = med, color = "maroon", linetype = 2) +
-  theme_minimal() +
+  theme_custom() +
   scale_fill_viridis_d(option = "mako") +
+  scale_x_continuous(breaks = seq(0,120,10)) +
   labs(y = " ", x = "Weekly Tobacco Spending (£)",
        caption = paste0("Median Weekly Spend = £",round(med,2),". Mean Weekly Spend = £",round(mean,2),"."))
 ggsave("output/main results/FIG_1_spending_distribution.png")
@@ -68,12 +69,12 @@ spend <- ggplot(exp_plot_data) +
   aes(x = income/1000, y = mean_week_spend) +
   geom_point() +
   geom_smooth(method='lm', se = F, color='turquoise4', linetype = 5) +
-  theme_minimal() +
+  theme_custom() +
   labs(x = "Average Income (£000s)",
-       y = "Mean Weekly Spend (£)",
+       y = "Mean Weekly Spend",
        title = "",
        caption = paste0("Pearson correlation coefficient: ", spend_corr, ". 95% CI: (", spend_corr_ci[1], " , ", spend_corr_ci[2], ")" )) +
-  scale_y_continuous(breaks = seq(0,140,5), minor_breaks = NULL) +
+  scale_y_continuous(breaks = seq(0,100,10), minor_breaks = NULL, labels=dollar_format(prefix="£")) +
   scale_x_continuous(breaks = seq(5,45,5), minor_breaks = NULL)
 
 ### Mean weekly spending as a % of household income
@@ -82,7 +83,7 @@ prop <- ggplot(exp_plot_data) +
   aes(x = income/1000, y = spend_prop*100) +
   geom_point() +
   geom_smooth(method='lm', se = F, color='turquoise4', linetype = 5) +
-  theme_minimal() +
+  theme_custom() +
   labs(x = "Average Income (£000s)",
        y = "% of Disposable Income",
        title = "",
@@ -135,7 +136,7 @@ ggplot(cons_plots_long) +
   geom_point() +
   geom_smooth(method='lm', se = F, linetype = 5) +
   facet_wrap(~product) +
-  theme_minimal() +
+  theme_custom() +
   labs(x = "Average Income (£000s)",
        y = "Average Daily Cigarette Consumption",
        title = "",
@@ -220,7 +221,7 @@ ggplot(toolkit) +
   aes(x=reorder(gor,weekspend, FUN = "median", na.rm = TRUE),
       y = weekspend,
       fill = gor) +
-  theme_minimal() +
+  theme_custom() +
   coord_flip() +
   geom_boxplot(outlier.alpha = 0.5) +
   scale_fill_viridis_d(option = "mako") +
@@ -239,12 +240,12 @@ ggplot(div_la) +
   aes(x = income/1000, y = dividend*1000000/pop_n) +
   geom_point() +
   geom_smooth(method='lm', se = F, linetype = 5, na.rm = T) +
-  theme_minimal() +
+  theme_custom() +
   labs(x = "Average Income (£000s)",
-       y = "Smokefree Dividend per capita",
+       y = "Smokefree Dividend per capita (£)",
        title = "",
        caption = paste0("Pearson correlation coefficient: ", div_corr, ". 95% CI: (", div_corr_ci[1], " , ", div_corr_ci[2], ")" )) +
   scale_x_continuous(breaks = seq(5,45,5), minor_breaks = NULL) +
-  scale_y_continuous(labels=dollar_format(prefix="£"))
+  scale_y_continuous(breaks = seq(150,550,50))
 ggsave("output/main results/FIG_EXTRA_corr_divpc_income.png")
 
