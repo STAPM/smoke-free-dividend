@@ -230,6 +230,22 @@ ggplot(toolkit) +
        caption = "outliers are points more than 1.5*IQR above the 3rd quartile")
 ggsave("output/main results/FIG_EXTRA_spending_distribution_by_region.png")
 
+######### income / percent of smokers who smoke RYO
+
+ggplot(cons_plots) +
+  aes(x = income/1000, y = prop_ryo*100) +
+  geom_point(color='black') +
+  geom_smooth(method='lm', se = F, color='turquoise4', linetype = 5) +
+  theme_custom() +
+  labs(x = "Average Income (£000s)",
+       y = "% of Smokers who Smoke HRT",
+       title = "",
+       color = "Region",
+       caption = "Note: Plot restricted to local authorities with 10 or more smokers in the STS") +
+  scale_y_continuous(breaks = seq(0,100,5), minor_breaks = NULL) +
+  scale_x_continuous(breaks = seq(5,45,2))
+ggsave("output/main results/FIG_EXTRA_consumption_prop_ryo.png")
+
 
 ####### Income / Smoke free dividend per capita
 
