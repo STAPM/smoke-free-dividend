@@ -209,6 +209,36 @@ ggsave("output/main results/FIG_5_map_dividend.png")
 ######################################
 ####### EXTRA FIGURES ################
 
+####### Smokefree dividend per capita by region
+
+gor_results <- readRDS(paste0(Dir[2],"/results_region.rds"))
+
+gor_results[, dividend_pc := dividend*1000000/pop_n]
+gor_results[, income := income/1000]
+
+gor_plot <- gor_results[, c("gor","spend_prop","dividend_pc","income")]
+
+gor_plot[, gor := factor(gor,
+                         levels = c("North East", "West Midlands", "North West",
+                                    "Yorkshire and the Humber", "East Midlands",
+                                    "East of England", "London", "South West", "South East") )]
+
+
+ggplot(gor_plot) +
+  aes(x = reorder(gor,spend_prop, FUN = "median", na.rm = TRUE),
+      y = dividend_pc,
+      alpha = income) +
+  theme_custom() +
+  coord_flip() +
+  geom_bar(stat = "identity", position = "dodge", fill = "darkgreen") +
+  scale_fill_viridis_c(option = "mako") +
+  theme(legend.position = "bottom") +
+  labs(x = "", y = "Smoke-free dividend per 18+ population (£)",
+       alpha = "Average Income (£000's)",
+       caption = "Note: regions ordered by smoking prevalence") +
+  scale_y_continuous(breaks = seq(0,400,50))
+ggsave("output/main results/FIG_EXTRA_dividend_pc_by_region.png")
+
 ####### Distribution of spending by region
 
 # manually adjust ordering of gor so the colors in the box plot line up properly
