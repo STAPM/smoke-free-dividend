@@ -27,12 +27,16 @@ setDT(sampsize)
 sampsize <- sampsize[,c("UTLAname","sample_tkit")]
 
 la_results <- merge(la_results, sampsize, by = "UTLAname", sort = F)
-la_results <- la_results[sample_tkit >= 10, ]
 
 la_results[, dividend_pc := dividend*1000000/pop_n ]
 
-la_results_top    <- la_results[order(-spend_prop),]
-la_results_bottom <- la_results[order(spend_prop),]
+## create top and bottom 10 LAs
+
+la_results_split <- la_results[sample_tkit >= 10, ]
+
+
+la_results_top    <- la_results_split[order(-spend_prop),]
+la_results_bottom <- la_results_split[order(spend_prop),]
 
 la_results_top    <- la_results_top[1:10,c("UTLAname","gor","smk_prev","mean_week_spend","income","spend_prop","dividend","dividend_pc")]
 la_results_bottom <- la_results_bottom[1:10,c("UTLAname","gor","smk_prev","mean_week_spend","income","spend_prop","dividend","dividend_pc")]

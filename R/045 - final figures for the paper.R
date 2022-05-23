@@ -3,6 +3,7 @@
 
 source("R/000 - create directories.R")
 source("R/003 - load packages.R")
+source("R/033 - heat map plots setup.R")
 
 ######################
 ### READ IN DATA #####
@@ -26,27 +27,33 @@ sampsize <- sampsize[,c("UTLAname","sample_tkit")]
 ######################
 ### FIGURE 1 #########
 
-#### Distribution of weekly spending
+####### Smokefree dividend per capita by region
 
-exp <- smkfreediv::CalcWeekSpend(toolkit, strat_vars = NULL, upshift = 1)
+gor_results <- readRDS(paste0(Dir[2],"/results_region.rds"))
 
-med <- as.numeric(exp[,"median_week_spend"])
-mean   <- as.numeric(exp[,"mean_week_spend"])
+gor_results[, dividend_pc := dividend*1000000/pop_n]
+gor_results[, income := income/1000]
 
-ggplot(toolkit) +
-  aes(x = weekspend) +
-  geom_density(alpha = 0.2) +
-  geom_vline(xintercept = mean, color = "navy", linetype = 2) +
-  geom_vline(xintercept = med, color = "maroon", linetype = 2) +
+gor_plot <- gor_results[, c("gor","spend_prop","dividend_pc","income")]
+
+gor_plot[, gor := factor(gor,
+                         levels = c("North East","Yorkshire and the Humber", "East Midlands", "West Midlands", "North West",
+                                    "East of England", "London", "South West", "South East") )]
+
+
+ggplot(gor_plot) +
+  aes(x = reorder(gor,dividend_pc, FUN = "median", na.rm = TRUE),
+      y = dividend_pc,
+      alpha = income) +
   theme_custom() +
-  scale_fill_viridis_d(option = "mako") +
-  scale_x_continuous(breaks = seq(0,120,10)) +
-  labs(y = " ", x = "Weekly Tobacco Spending (£)",
-       caption = paste0("Median Weekly Spend = £",round(med,2),". Mean Weekly Spend = £",round(mean,2),"."))
-ggsave("output/main results/FIG_1_spending_distribution.png")
-
-
-
+  coord_flip() +
+  geom_bar(stat = "identity", position = "dodge", fill = "#023e8a") +
+  scale_fill_viridis_c(option = "G") +
+  theme(legend.position = "bottom") +
+  labs(x = "", y = "Smoke-free dividend per 18+ population (£)",
+       alpha = "Average Income (£000's)") +
+  scale_y_continuous(breaks = seq(0,400,50))
+ggsave("output/main results/FIG_1_dividend_pc_by_region.png")
 
 
 ######################
@@ -120,9 +127,9 @@ cons_plots <- merge(cons_plots, sampsize, by = "UTLAname")
 cons_plots <- cons_plots[sample_tkit >= 10, ]
 
 
-cons_plots_long <- cons_plots[,c("UTLAcode","UTLAname","mean_cigs_fm","mean_cigs_ryo","mean_cigs_tot","income")]
+cons_plots_long <- cons_plots[,c("UTLAcode","UTLAname","mean_cigs_fm","mean_cigs_ryo","mean_cigs_tot","income","smk_prev")]
 cons_plots_long <- melt(cons_plots_long,
-                        id.vars = c("UTLAcode","UTLAname","income"),
+                        id.vars = c("UTLAcode","UTLAname","income","smk_prev"),
                         variable.name = "product",
                         value.name = "cigarettes")
 
@@ -132,14 +139,14 @@ cons_plots_long[product == "mean_cigs_tot", product := "Total"]
 
 
 ggplot(cons_plots_long) +
-  aes(x = income/1000, y = cigarettes) +
-  geom_point() +
-  geom_smooth(method='lm', se = F, linetype = 5) +
+  geom_point(aes(x = income/1000, y = cigarettes, alpha = smk_prev), size = 2.5) +
+  geom_smooth(aes(x = income/1000, y = cigarettes), method='lm', se = F, linetype = 5) +
   facet_wrap(~product) +
   theme_custom() +
   labs(x = "Average Income (£000s)",
-       y = "Average Daily Cigarette Consumption",
+       y = "Average Daily Cigarette Consumption\n by smokers",
        title = "",
+       alpha = "Smoking Prevalence (%)",
        caption = "Note: Plot restricted to local authorities with 10 or more smokers in the STS") +
   scale_y_continuous(breaks = seq(0,26,2), minor_breaks = NULL) +
   scale_x_continuous(breaks = seq(5,45,5), minor_breaks = NULL) +
@@ -209,35 +216,7 @@ ggsave("output/main results/FIG_5_map_dividend.png")
 ######################################
 ####### EXTRA FIGURES ################
 
-####### Smokefree dividend per capita by region
 
-gor_results <- readRDS(paste0(Dir[2],"/results_region.rds"))
-
-gor_results[, dividend_pc := dividend*1000000/pop_n]
-gor_results[, income := income/1000]
-
-gor_plot <- gor_results[, c("gor","spend_prop","dividend_pc","income")]
-
-gor_plot[, gor := factor(gor,
-                         levels = c("North East", "West Midlands", "North West",
-                                    "Yorkshire and the Humber", "East Midlands",
-                                    "East of England", "London", "South West", "South East") )]
-
-
-ggplot(gor_plot) +
-  aes(x = reorder(gor,spend_prop, FUN = "median", na.rm = TRUE),
-      y = dividend_pc,
-      alpha = income) +
-  theme_custom() +
-  coord_flip() +
-  geom_bar(stat = "identity", position = "dodge", fill = "darkgreen") +
-  scale_fill_viridis_c(option = "mako") +
-  theme(legend.position = "bottom") +
-  labs(x = "", y = "Smoke-free dividend per 18+ population (£)",
-       alpha = "Average Income (£000's)",
-       caption = "Note: regions ordered by smoking prevalence") +
-  scale_y_continuous(breaks = seq(0,400,50))
-ggsave("output/main results/FIG_EXTRA_dividend_pc_by_region.png")
 
 ####### Distribution of spending by region
 
