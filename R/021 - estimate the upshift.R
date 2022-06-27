@@ -68,34 +68,34 @@ data <- readRDS(paste0(Dir[1],"/toolkit_clean.rds"))
 ### - expressed as price per 1000 sticks)
 ### https://ec.europa.eu/taxation_customs/tedb/taxDetails.html?id=4155/1546297200
 
-price_wap <- 404.15*(20/1000)
+#price_wap <- 404.15*(20/1000)
 
 ### price (most sold brand)
 ### https://www.who.int/data/gho/data/indicators/indicator-details/GHO/gho-tobacco-control-raise-taxes-r-price-mp-estimate
 
-price_msb <- 9.40
+#price_msb <- 9.40
 
-upshift <- smkfreediv::CalcUpshift(data = data,
-                                   LCFS = FALSE,
-                                   vat = 0.2,
-                                   price_fm = price_wap,
-                                   duty_fm = 228.29,
-                                   avt_fm = 0.165,
-                                   price_ryo = 51.6,
-                                   duty_ryo = 234.65,
-                                   deflate_from = c(12, 2020),
-                                   deflate_to = c(12, 2018),
-                                   adjust = TRUE,
-                                   prop_duty_ENG = 0.766)
+#upshift <- smkfreediv::CalcUpshift(data = data,
+#                                   LCFS = FALSE,
+#                                   vat = 0.2,
+#                                   price_fm = price_wap,
+#                                   duty_fm = 228.29,
+#                                   avt_fm = 0.165,
+#                                   price_ryo = 51.6,
+#                                   duty_ryo = 234.65,
+#                                   deflate_from = c(12, 2020),
+#                                   deflate_to = c(12, 2018),
+#                                   adjust = TRUE,
+#                                   prop_duty_ENG = 0.766)
 
 
-write.csv(upshift,
-          paste0(Dir[2],"/upshift_calcs.csv"),
-          row.names = FALSE)
+#write.csv(upshift,
+#          paste0(Dir[2],"/upshift_calcs.csv"),
+#          row.names = FALSE)
 
 
 ################################################################################
-####### -------------- Used in paper version 5 ---??/??/2022-- #################
+####### -------------- Used in paper version 5 --- 27/06/2022-- ################
 
 ## use a new adjustment to UK tax revenues. from the 82% (proportion of smokers
 ## who are English from the APS) to proportion of tobacco duty which is paid from
@@ -122,6 +122,6 @@ upshift <- smkfreediv::CalcUpshift(data = data,
                                    prop_duty_ENG = 0.766)
 
 
-#write.csv(upshift,
-#          paste0(Dir[2],"/upshift_calcs.csv"),
-#          row.names = FALSE)
+write.csv(upshift,
+          paste0(Dir[2],"/upshift_calcs.csv"),
+          row.names = FALSE)
