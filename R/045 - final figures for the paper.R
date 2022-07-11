@@ -9,7 +9,7 @@ source("R/033 - heat map plots setup.R")
 ### READ IN DATA #####
 
 ### figure 1 data
-toolkit <- readRDS(paste0(Dir[1],"/toolkit_clean.rds"))
+toolkit <- readRDS(paste0(Dir[1],"/toolkit_clean_2022.rds"))
 toolkit <- toolkit[!(is.na(gor)),]
 
 ### figures 2 and 3 data
@@ -109,7 +109,7 @@ annotate_figure(figure,
 )
 
 
-ggsave("output/main results/FIG_2_corr_spend_income.png")
+ggsave("output/main results/FIG_4_corr_spend_income.png")
 
 
 
@@ -151,7 +151,7 @@ ggplot(cons_plots_long) +
   scale_y_continuous(breaks = seq(0,26,2), minor_breaks = NULL) +
   scale_x_continuous(breaks = seq(5,45,5), minor_breaks = NULL) +
   theme(legend.position = "bottom")
-ggsave("output/main results/FIG_3_consumption_avgtot_inc_by_product.png")
+ggsave("output/main results/FIG_5_consumption_avgtot_inc_by_product.png")
 
 ############################
 ##### FIGURE 4 #############
@@ -188,7 +188,7 @@ hm2 <- ggplot(heat_map_data) +
 
 ggarrange(hm1, hm2,labels = c("Average Income", "Spend % of Income"),
           ncol = 2, nrow = 1,  common.legend = TRUE, legend = "bottom")
-ggsave("output/main results/FIG_4_map_income.png")
+ggsave("output/main results/FIG_3_map_income.png")
 
 
 ############################
@@ -209,7 +209,7 @@ hm3 <- ggplot(heat_map_data) +
 
 ggarrange(hm1, hm3,labels = c("Average Income", "Dividend per capita"),
           ncol = 2, nrow = 1,  common.legend = TRUE, legend = "bottom")
-ggsave("output/main results/FIG_5_map_dividend.png")
+ggsave("output/main results/FIG_2_map_dividend.png")
 
 
 

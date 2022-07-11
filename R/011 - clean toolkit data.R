@@ -21,13 +21,23 @@ toolkit_clean <- smkfreediv::CleanToolkit(data = toolkit_raw,
                                           start_month = 90,
                                           end_month = 160)
 
-## (3) Deflate expenditure to December 2018
+## (3) Deflate expenditure to December 2018 for the upshift calculations
+##     and to January 2022 for the smoke free dividend analysis
 
-toolkit_clean <- smkfreediv::DeflateToolkit(data = toolkit_clean,
-                                            index = smkfreediv::cpi_tobacco,
-                                            base_month = 12,
-                                            base_year = 2018)
+toolkit_clean_2018 <- smkfreediv::DeflateToolkit(data = toolkit_clean,
+                                                 index = smkfreediv::cpi_tobacco,
+                                                 base_month = 12,
+                                                 base_year = 2018)
 
 
-saveRDS(toolkit_clean, paste0(Dir[1],"/toolkit_clean.rds"))
+saveRDS(toolkit_clean_2018, paste0(Dir[1],"/toolkit_clean_2018.rds"))
+
+
+toolkit_clean_2022 <- smkfreediv::DeflateToolkit(data = toolkit_clean,
+                                                 index = smkfreediv::cpi_tobacco,
+                                                 base_month = 1,
+                                                 base_year = 2022)
+
+saveRDS(toolkit_clean_2022, paste0(Dir[1],"/toolkit_clean_2022.rds"))
+
 rm(toolkit_raw)
