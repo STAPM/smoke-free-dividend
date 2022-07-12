@@ -9,7 +9,7 @@ source("R/033 - heat map plots setup.R")
 ### READ IN DATA #####
 
 ### figure 1 data
-toolkit <- readRDS(paste0(Dir[1],"/toolkit_clean_2022.rds"))
+toolkit <- readRDS(paste0(Dir[1],"/toolkit_clean.rds"))
 toolkit <- toolkit[!(is.na(gor)),]
 
 ### figures 2 and 3 data

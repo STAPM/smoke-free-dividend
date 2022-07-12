@@ -1,7 +1,7 @@
 ### The aim of this code is to calculate the upshift factor to match
 ### Toolkit expenditure info to HMRC duties
 
-data <- readRDS(paste0(Dir[1],"/toolkit_clean_2018.rds"))
+data <- readRDS(paste0(Dir[1],"/toolkit_clean.rds"))
 
 ################################################################################
 ######## ------------- Used in paper version 1 --------------- #################

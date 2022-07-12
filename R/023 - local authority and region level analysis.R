@@ -3,12 +3,12 @@
 
 ## read in toolkit data and upshift factor
 
-data <- readRDS(paste0(Dir[1],"/toolkit_clean_2022.rds"))
+data <- readRDS(paste0(Dir[1],"/toolkit_clean.rds"))
 upshift <- read.csv(paste0(Dir[2],"/upshift_calcs.csv"))
 
 #### Simulation
 
-n_sim <- 100
+n_sim <- 1000
 up    <- as.numeric(upshift[,"upshift"])
 seed  <- 2021
 div   <- 0.93
