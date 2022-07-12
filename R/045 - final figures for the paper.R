@@ -1,7 +1,7 @@
 ### The aim of this code is to produce results tables and plots from the
 ### local authority level analysis
 
-source("R/000 - create directories.R")
+source("R/002 - create directories.R")
 source("R/003 - load packages.R")
 source("R/033 - heat map plots setup.R")
 

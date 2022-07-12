@@ -9,8 +9,8 @@ data_file <- "omni174_39.1_65.2cot_31.3a_25.4s_recodes_60.5sa.sav" # Toolkit dat
 version <- "1.5.0"            # smkfreediv package version which replicates the paper results
 user <- "djmorris1989"        # GitLab user name for package installation
 
-source("R/000 - create directories.R")
 source("R/001 - package installation.R")
+source("R/002 - create directories.R")
 source("R/003 - load packages.R")
 
 ### ----- (1) Data Cleaning -------- ###
