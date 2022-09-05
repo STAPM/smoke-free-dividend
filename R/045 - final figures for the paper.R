@@ -49,9 +49,9 @@ ggplot(gor_plot) +
   coord_flip() +
   geom_bar(stat = "identity", position = "dodge", fill = "#023e8a") +
   theme(legend.position = "bottom") +
-  labs(x = "", y = "Smoke-free dividend per 18+ population (£)",
+  labs(x = "", y = "Annual smoke-free dividend per 18+ population",
        alpha = "Average equivalised household income \n after housing costs (£000s)") +
-  scale_y_continuous(breaks = seq(0,400,50))
+  scale_y_continuous(breaks = seq(0,400,50), labels = dollar_format(prefix="£"))
 ggsave("output/main results/FIG_1_dividend_pc_by_region.png")
 
 
