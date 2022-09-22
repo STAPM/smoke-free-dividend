@@ -1,9 +1,14 @@
 ### The aim of this code is to use the smkfreediv functions to make the
 ### smokefree dividend calculations. Loop over different values of upshift
 
+### ------------- RAW HEADLINE AVERAGE SPEND FROM TOOLKIT -----------###
 
+## overall
+exp_raw <- smkfreediv::CalcWeekSpend(data,
+                                     strat_vars = NULL,
+                                     upshift = 1)
 
-#### --------------- USE MY CALCULATED UPSHIFT -------------------------###
+#### --------------- USE CALCULATED UPSHIFT -------------------------###
 
 data <- readRDS(paste0(Dir[1],"/toolkit_clean.rds"))
 
