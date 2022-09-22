@@ -66,7 +66,7 @@ setDT(exp) ; setDT(exp_age) ; setDT(exp_sex) ; setDT(exp_grade) ; setDT(exp_la) 
 ## Store results in the workbook template ##
 
 # load the template workbook
-wb <- openxlsx::loadWorkbook("templates/results_template.xlsx")
+wb <- openxlsx::loadWorkbook("templates/results_template_final.xlsx")
 
 ### ---------------- Upshift Calcs Tab ---------- ###
 
