@@ -1,6 +1,5 @@
 ### This aim of this code is to run the individual R scripts that make up the
 ### full workflow for the smoke free dividend analysis used in the paper
-### Morris, Gillespie, Dockrell, and Langley.
 
 rm(list = ls())
 
@@ -16,6 +15,7 @@ source("R/003 - load packages.R")
 ### ----- (1) Data Cleaning -------- ###
 source("R/011 - clean toolkit data.R")
 source("R/012 - read and clean shapefiles.R")
+source("R/017 - consumption patterns.R")
 
 ### ----- (2) Run the Analysis --------- ###
 source("R/021 - estimate the upshift.R")

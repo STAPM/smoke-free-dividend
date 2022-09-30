@@ -10,9 +10,9 @@ exp_raw <- smkfreediv::CalcWeekSpend(data,
 
 #### --------------- USE CALCULATED UPSHIFT -------------------------###
 
-data <- readRDS(paste0(Dir[1],"/toolkit_clean.rds"))
+data <- readRDS("input_data/toolkit_clean.rds")
 
-upshift <- read.csv(paste0(Dir[2],"/upshift_calcs.csv"))
+upshift <- read.csv("intermediate_data/upshift_calcs.csv")
 up <- as.numeric(upshift[,"upshift"])
 
 ## overall
@@ -60,12 +60,12 @@ exp_gor[, upshift := up]
 
 ## save out results
 
-write.csv(exp,       paste0(Dir[2],"/weekly_spend_all.csv"))
-write.csv(exp_age,   paste0(Dir[2],"/weekly_spend_age.csv"))
-write.csv(exp_sex,   paste0(Dir[2],"/weekly_spend_sex.csv"))
-write.csv(exp_grade, paste0(Dir[2],"/weekly_spend_grade.csv"))
-write.csv(exp_la,    paste0(Dir[2],"/weekly_spend_la.csv"))
-write.csv(exp_gor,   paste0(Dir[2],"/weekly_spend_gor.csv"))
+write.csv(exp,       "intermediate_data/weekly_spend_all.csv")
+write.csv(exp_age,   "intermediate_data/weekly_spend_age.csv")
+write.csv(exp_sex,   "intermediate_data/weekly_spend_sex.csv")
+write.csv(exp_grade, "intermediate_data/weekly_spend_grade.csv")
+write.csv(exp_la,    "intermediate_data/weekly_spend_la.csv")
+write.csv(exp_gor,   "intermediate_data/weekly_spend_gor.csv")
 
 rm(exp, exp_age, exp_grade, exp_sex, exp_la, exp_gor, data)
 
@@ -73,7 +73,7 @@ rm(exp, exp_age, exp_grade, exp_sex, exp_la, exp_gor, data)
 #### --------------- USE OHID CALCULATED UPSHIFT -------------------------###
 
 
-data <- readRDS(paste0(Dir[1],"/toolkit_clean.rds"))
+data <- readRDS("input_data/toolkit_clean.rds")
 
 up <- 1.7187398690
 
@@ -124,12 +124,12 @@ exp_gor[, upshift := up]
 
 ## save out results
 
-write.csv(exp,       paste0(Dir[2],"/weekly_spend_all_OHID.csv"))
-write.csv(exp_age,   paste0(Dir[2],"/weekly_spend_age_OHID.csv"))
-write.csv(exp_sex,   paste0(Dir[2],"/weekly_spend_sex_OHID.csv"))
-write.csv(exp_grade, paste0(Dir[2],"/weekly_spend_grade_OHID.csv"))
-write.csv(exp_la,    paste0(Dir[2],"/weekly_spend_la_OHID.csv"))
-write.csv(exp_gor,   paste0(Dir[2],"/weekly_spend_gor_OHID.csv"))
+write.csv(exp,       paste0("intermediate_data/weekly_spend_all_OHID.csv"))
+write.csv(exp_age,   paste0("intermediate_data/weekly_spend_age_OHID.csv"))
+write.csv(exp_sex,   paste0("intermediate_data/weekly_spend_sex_OHID.csv"))
+write.csv(exp_grade, paste0("intermediate_data/weekly_spend_grade_OHID.csv"))
+write.csv(exp_la,    paste0("intermediate_data/weekly_spend_la_OHID.csv"))
+write.csv(exp_gor,   paste0("intermediate_data/weekly_spend_gor_OHID.csv"))
 
 rm(exp, exp_age, exp_grade, exp_sex, exp_la, exp_gor, data)
 
@@ -138,7 +138,7 @@ rm(exp, exp_age, exp_grade, exp_sex, exp_la, exp_gor, data)
 #### --------------- BASELINE CALCS WITH NO UPSHIFT -------------------------###
 
 
-data <- readRDS(paste0(Dir[1],"/toolkit_clean.rds"))
+data <- readRDS("input_data/toolkit_clean.rds")
 
 up <- 1
 
@@ -189,11 +189,11 @@ exp_gor[, upshift := up]
 
 ## save out results
 
-write.csv(exp,       paste0(Dir[2],"/weekly_spend_all_no_upshift.csv"))
-write.csv(exp_age,   paste0(Dir[2],"/weekly_spend_age_no_upshift.csv"))
-write.csv(exp_sex,   paste0(Dir[2],"/weekly_spend_sex_no_upshift.csv"))
-write.csv(exp_grade, paste0(Dir[2],"/weekly_spend_grade_no_upshift.csv"))
-write.csv(exp_la,    paste0(Dir[2],"/weekly_spend_la_no_upshift.csv"))
-write.csv(exp_gor,   paste0(Dir[2],"/weekly_spend_gor_no_upshift.csv"))
+write.csv(exp,       "intermediate_data/weekly_spend_all_no_upshift.csv")
+write.csv(exp_age,   "intermediate_data/weekly_spend_age_no_upshift.csv")
+write.csv(exp_sex,   "intermediate_data/weekly_spend_sex_no_upshift.csv")
+write.csv(exp_grade, "intermediate_data/weekly_spend_grade_no_upshift.csv")
+write.csv(exp_la,    "intermediate_data/weekly_spend_la_no_upshift.csv")
+write.csv(exp_gor,   "intermediate_data/weekly_spend_gor_no_upshift.csv")
 
 rm(exp, exp_age, exp_grade, exp_sex, exp_la, exp_gor, data)

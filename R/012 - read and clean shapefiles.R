@@ -21,4 +21,4 @@ shp <- fortify(shp, region = 'lad19cd')
 #shp_dat <- unique(shp_dat[,"id"])
 #shp_dat <- shp_dat[substring(id,1,1) == "E",]
 
-saveRDS(shp,paste0(Dir[1],"/shapefile_la.rds"))
+saveRDS(shp, "input_data/shapefile_la.rds")

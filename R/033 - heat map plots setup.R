@@ -4,7 +4,7 @@
 library(smkfreediv)
 library(ggplot2)
 
-div_la <- readRDS(paste0(Dir[2],"/results_local_authority.rds"))
+div_la <- readRDS("intermediate_data/results_local_authority.rds")
 
 div_la[, inc_decile := ntile(income,10)]
 div_la[, inc_prop_decile := ntile(spend_prop,10)]
@@ -68,7 +68,7 @@ data_mapping_merge <- unique(data_mapping_merge)
 
 ## check shapefile and results file local authorities match properly 1:1 for 317 LAs
 
-shape <- readRDS(paste0(Dir[1],"/shapefile_la.rds"))
+shape <- readRDS("input_data/shapefile_la.rds")
 setDT(shape)
 #shape_test <- shape[substring(id, 1, 1) == "E",]
 #shape_test <- data.frame(unique(shape[,"id"]))

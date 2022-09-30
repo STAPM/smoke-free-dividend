@@ -52,11 +52,69 @@ ggplot(gor_plot) +
   labs(x = "", y = "Annual smoke-free dividend per 18+ population",
        alpha = "Average equivalised household income \n after housing costs (£000s)") +
   scale_y_continuous(breaks = seq(0,400,50), labels = dollar_format(prefix="£"))
-ggsave("output/main results/FIG_1_dividend_pc_by_region.png")
+ggsave("output/main results/fig_1.pdf", dpi = 600, units = "mm", width = 180)
 
+############################
+##### FIGURE 2 #############
+
+
+hm3 <- ggplot(heat_map_data) +
+  aes(x = long,
+      y = lat,
+      group = group,
+      fill = dividend_decile) +
+  geom_polygon() + coord_equal() + theme_void() +
+  labs(title = ' ',
+       subtitle = ' ',
+       fill = "Decile") +
+  scale_fill_viridis_c(option = "magma") +
+  theme(legend.position = "none")
+
+ggarrange(hm1, hm3,labels = c("Average Income", "Dividend per capita"),
+          ncol = 2, nrow = 1,  common.legend = TRUE, legend = "bottom")
+ggsave("output/main results/fig_2.pdf", dpi = 600, units = "mm", width = 180)
+
+
+
+############################
+##### FIGURE 3 #############
+
+### plot income
+
+hm1 <- ggplot(heat_map_data) +
+  aes(x = long,
+      y = lat,
+      group = group,
+      fill = inc_decile) +
+  geom_polygon() + coord_equal() + theme_void() +
+  labs(title = '  ',
+       subtitle = ' ',
+       fill = "Decile") +
+  scale_fill_viridis_c(option = "magma") +
+  theme(legend.position = "none")
+
+
+### plot spend as % of income
+
+hm2 <- ggplot(heat_map_data) +
+  aes(x = long,
+      y = lat,
+      group = group,
+      fill = inc_prop_decile) +
+  geom_polygon() + coord_equal() + theme_void() +
+  labs(title = ' ',
+       subtitle = ' ',
+       fill = "Decile") +
+  scale_fill_viridis_c(option = "magma") +
+  theme(legend.position = "none")
+
+
+ggarrange(hm1, hm2,labels = c("Average Income", "Spend % of Income"),
+          ncol = 2, nrow = 1,  common.legend = TRUE, legend = "bottom")
+ggsave("output/main results/fig_3.pdf", dpi = 600, units = "mm", width = 180)
 
 ######################
-### FIGURE 2 #########
+### FIGURE 4 #########
 
 exp_plot_data <- merge(div_la, sampsize, by = "UTLAname")
 exp_plot_data <- exp_plot_data[sample_tkit >= 10, ]
@@ -108,12 +166,11 @@ annotate_figure(figure,
 )
 
 
-ggsave("output/main results/FIG_4_corr_spend_income.png")
-
+ggsave("output/main results/fig_4.pdf", dpi = 600, units = "mm", width = 80)
 
 
 ######################
-### FIGURE 3 #########
+### FIGURE 5 #########
 
 cons_plots <- merge(div_la, con_la, by = c("UTLAcode","UTLAname"))
 
@@ -134,7 +191,7 @@ cons_plots_long <- melt(cons_plots_long,
 
 cons_plots_long[product == "mean_cigs_fm", product := "Factory Made"]
 cons_plots_long[product == "mean_cigs_ryo", product := "Hand-Rolled Tobacco"]
-cons_plots_long[product == "mean_cigs_tot", product := "Total"]
+cons_plots_long[product == "mean_cigs_tot", product := "All Tobacco"]
 
 
 ggplot(cons_plots_long) +
@@ -150,65 +207,16 @@ ggplot(cons_plots_long) +
   scale_y_continuous(breaks = seq(0,26,2), minor_breaks = NULL) +
   scale_x_continuous(breaks = seq(5,45,5), minor_breaks = NULL) +
   theme(legend.position = "bottom")
-ggsave("output/main results/FIG_5_consumption_avgtot_inc_by_product.png")
-
-############################
-##### FIGURE 4 #############
-
-### plot income
-
-hm1 <- ggplot(heat_map_data) +
-  aes(x = long,
-      y = lat,
-      group = group,
-      fill = inc_decile) +
-  geom_polygon() + coord_equal() + theme_void() +
-  labs(title = '  ',
-       subtitle = ' ',
-       fill = "Decile") +
-  scale_fill_viridis_c(option = "magma") +
-  theme(legend.position = "none")
+ggsave("output/main results/fig_5.pdf", dpi = 600, units = "mm", width = 180)
 
 
-### plot spend as % of income
-
-hm2 <- ggplot(heat_map_data) +
-  aes(x = long,
-      y = lat,
-      group = group,
-      fill = inc_prop_decile) +
-  geom_polygon() + coord_equal() + theme_void() +
-  labs(title = ' ',
-       subtitle = ' ',
-       fill = "Decile") +
-  scale_fill_viridis_c(option = "magma") +
-  theme(legend.position = "none")
 
 
-ggarrange(hm1, hm2,labels = c("Average Income", "Spend % of Income"),
-          ncol = 2, nrow = 1,  common.legend = TRUE, legend = "bottom")
-ggsave("output/main results/FIG_3_map_income.png")
 
 
-############################
-##### FIGURE 5 #############
 
 
-hm3 <- ggplot(heat_map_data) +
-  aes(x = long,
-      y = lat,
-      group = group,
-      fill = dividend_decile) +
-  geom_polygon() + coord_equal() + theme_void() +
-  labs(title = ' ',
-       subtitle = ' ',
-       fill = "Decile") +
-  scale_fill_viridis_c(option = "magma") +
-  theme(legend.position = "none")
 
-ggarrange(hm1, hm3,labels = c("Average Income", "Dividend per capita"),
-          ncol = 2, nrow = 1,  common.legend = TRUE, legend = "bottom")
-ggsave("output/main results/FIG_2_map_dividend.png")
 
 
 
@@ -236,7 +244,7 @@ ggplot(toolkit) +
   theme(legend.position = "none") +
   labs(x = " ", y = "Weekly Tobacco Spending (£)",
        caption = "outliers are points more than 1.5*IQR above the 3rd quartile")
-ggsave("output/main results/FIG_EXTRA_spending_distribution_by_region.png")
+ggsave("output/main results/FIG_EXTRA_spending_distribution_by_region.png", dpi = 600)
 
 ######### income / percent of smokers who smoke RYO
 
@@ -252,7 +260,7 @@ ggplot(cons_plots) +
        caption = "Note: Plot restricted to local authorities with 10 or more smokers in the STS") +
   scale_y_continuous(breaks = seq(0,100,5), minor_breaks = NULL) +
   scale_x_continuous(breaks = seq(5,45,2))
-ggsave("output/main results/FIG_EXTRA_consumption_prop_ryo.png")
+ggsave("output/main results/FIG_EXTRA_consumption_prop_ryo.png", dpi = 600)
 
 
 ####### Income / Smoke free dividend per capita
@@ -271,5 +279,5 @@ ggplot(div_la) +
        caption = paste0("Pearson correlation coefficient: ", div_corr, ". 95% CI: (", div_corr_ci[1], " , ", div_corr_ci[2], ")" )) +
   scale_x_continuous(breaks = seq(5,45,5), minor_breaks = NULL) +
   scale_y_continuous(breaks = seq(150,550,50))
-ggsave("output/main results/FIG_EXTRA_corr_divpc_income.png")
+ggsave("output/main results/FIG_EXTRA_corr_divpc_income.png", dpi = 600)
 

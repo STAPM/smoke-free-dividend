@@ -8,21 +8,21 @@ source("R/003 - load packages.R")
 ############################################
 ## Read in the results of the analysis
 
-cons <- readRDS(paste0(Dir[2],"/results_consumption.rds"))
+cons <- readRDS("intermediate_data/results_consumption.rds")
 
 ### read in local authority results data
 
-results <- readRDS(paste0(Dir[2],"/results_local_authority.rds"))
+results <- readRDS("intermediate_data/results_local_authority.rds")
 la_results <- results[order(UTLAname)]
 
-gor_results <- readRDS(paste0(Dir[2],"/results_region.rds"))
+gor_results <- readRDS("intermediate_data/results_region.rds")
 
 rm(results)
 
 ## read in the sample size from the mean expenditure calculations, exclude low obs local authorities
 ## and construct highest/lowest 10 LAs by spend as % of income
 
-sampsize <- read.csv(paste0(Dir[2],"/weekly_spend_la.csv"))
+sampsize <- read.csv("intermediate_data/weekly_spend_la.csv")
 setDT(sampsize)
 sampsize <- sampsize[,c("UTLAname","sample_tkit")]
 
@@ -44,21 +44,21 @@ la_results_bottom <- la_results_bottom[1:10,c("UTLAname","gor","smk_prev","mean_
 
 ### read in weekly spend by demographics data
 
-exp_raw       <- read.csv(paste0(Dir[2],"/weekly_spend_all_no_upshift.csv"))
-exp_age_raw   <- read.csv(paste0(Dir[2],"/weekly_spend_age_no_upshift.csv"))
-exp_sex_raw   <- read.csv(paste0(Dir[2],"/weekly_spend_sex_no_upshift.csv"))
-exp_grade_raw <- read.csv(paste0(Dir[2],"/weekly_spend_grade_no_upshift.csv"))
-exp_la_raw    <- read.csv(paste0(Dir[2],"/weekly_spend_la_no_upshift.csv"))
-exp_gor_raw   <- read.csv(paste0(Dir[2],"/weekly_spend_gor_no_upshift.csv"))
+exp_raw       <- read.csv("intermediate_data/weekly_spend_all_no_upshift.csv")
+exp_age_raw   <- read.csv("intermediate_data/weekly_spend_age_no_upshift.csv")
+exp_sex_raw   <- read.csv("intermediate_data/weekly_spend_sex_no_upshift.csv")
+exp_grade_raw <- read.csv("intermediate_data/weekly_spend_grade_no_upshift.csv")
+exp_la_raw    <- read.csv("intermediate_data/weekly_spend_la_no_upshift.csv")
+exp_gor_raw   <- read.csv("intermediate_data/weekly_spend_gor_no_upshift.csv")
 
 setDT(exp_raw) ; setDT(exp_age_raw) ; setDT(exp_sex_raw) ; setDT(exp_grade_raw) ; setDT(exp_la_raw) ; setDT(exp_gor_raw)
 
-exp       <- read.csv(paste0(Dir[2],"/weekly_spend_all.csv"))
-exp_age   <- read.csv(paste0(Dir[2],"/weekly_spend_age.csv"))
-exp_sex   <- read.csv(paste0(Dir[2],"/weekly_spend_sex.csv"))
-exp_grade <- read.csv(paste0(Dir[2],"/weekly_spend_grade.csv"))
-exp_la    <- read.csv(paste0(Dir[2],"/weekly_spend_la.csv"))
-exp_gor   <- read.csv(paste0(Dir[2],"/weekly_spend_gor.csv"))
+exp       <- read.csv("intermediate_data/weekly_spend_all.csv")
+exp_age   <- read.csv("intermediate_data/weekly_spend_age.csv")
+exp_sex   <- read.csv("intermediate_data/weekly_spend_sex.csv")
+exp_grade <- read.csv("intermediate_data/weekly_spend_grade.csv")
+exp_la    <- read.csv("intermediate_data/weekly_spend_la.csv")
+exp_gor   <- read.csv("intermediate_data/weekly_spend_gor.csv")
 
 setDT(exp) ; setDT(exp_age) ; setDT(exp_sex) ; setDT(exp_grade) ; setDT(exp_la) ; setDT(exp_gor)
 
@@ -70,7 +70,7 @@ wb <- openxlsx::loadWorkbook("templates/results_template_final.xlsx")
 
 ### ---------------- Upshift Calcs Tab ---------- ###
 
-calcs <-  read.csv(paste0(Dir[2],"/upshift_calcs.csv"))
+calcs <-  read.csv("intermediate_data/upshift_calcs.csv")
 setDT(calcs)
 
 openxlsx::writeData(wb,
