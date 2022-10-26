@@ -27,6 +27,7 @@ toolkit_clean_2018 <- smkfreediv::DeflateToolkit(data = toolkit_clean,
                                                  base_month = 12,
                                                  base_year = 2018)
 
+toolkit_clean_2018 <- toolkit_clean_2018[Age >= 18,]
 
 saveRDS(toolkit_clean_2018, "input_data/toolkit_clean.rds")
 

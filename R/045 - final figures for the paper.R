@@ -9,14 +9,14 @@ source("R/033 - heat map plots setup.R")
 ### READ IN DATA #####
 
 ### figure 1 data
-toolkit <- readRDS(paste0(Dir[1],"/toolkit_clean.rds"))
+toolkit <- readRDS("input_data/toolkit_clean.rds")
 toolkit <- toolkit[!(is.na(gor)),]
 
 ### figures 2 and 3 data
-div_la <- readRDS(paste0(Dir[2],"/results_local_authority.rds"))
-con_la <- readRDS(paste0(Dir[2],"/results_consumption.rds"))
+div_la <- readRDS("intermediate_data/results_local_authority.rds")
+con_la <- readRDS("intermediate_data/results_consumption.rds")
 
-sampsize <- read.csv(paste0(Dir[2],"/weekly_spend_la.csv"))
+sampsize <- read.csv("intermediate_data/weekly_spend_la.csv")
 setDT(sampsize)
 sampsize <- sampsize[,c("UTLAname","sample_tkit")]
 
@@ -29,7 +29,7 @@ sampsize <- sampsize[,c("UTLAname","sample_tkit")]
 
 ####### Smokefree dividend per capita by region
 
-gor_results <- readRDS(paste0(Dir[2],"/results_region.rds"))
+gor_results <- readRDS("intermediate_data/results_region.rds")
 
 gor_results[, dividend_pc := dividend*1000000/pop_n]
 gor_results[, income := income/1000]
@@ -53,6 +53,7 @@ ggplot(gor_plot) +
        alpha = "Average equivalised household income \n after housing costs (£000s)") +
   scale_y_continuous(breaks = seq(0,400,50), labels = dollar_format(prefix="£"))
 ggsave("output/main results/fig_1.pdf", dpi = 600, units = "mm", width = 180)
+ggsave("output/main results/fig_1.png", dpi = 600, units = "mm", width = 180)
 
 ############################
 ##### FIGURE 2 #############
@@ -73,6 +74,7 @@ hm3 <- ggplot(heat_map_data) +
 ggarrange(hm1, hm3,labels = c("Average Income", "Dividend per capita"),
           ncol = 2, nrow = 1,  common.legend = TRUE, legend = "bottom")
 ggsave("output/main results/fig_2.pdf", dpi = 600, units = "mm", width = 180)
+ggsave("output/main results/fig_2.png", dpi = 600, units = "mm", width = 180)
 
 
 
@@ -112,6 +114,7 @@ hm2 <- ggplot(heat_map_data) +
 ggarrange(hm1, hm2,labels = c("Average Income", "Spend % of Income"),
           ncol = 2, nrow = 1,  common.legend = TRUE, legend = "bottom")
 ggsave("output/main results/fig_3.pdf", dpi = 600, units = "mm", width = 180)
+ggsave("output/main results/fig_3.png", dpi = 600, units = "mm", width = 180)
 
 ######################
 ### FIGURE 4 #########
@@ -166,7 +169,7 @@ annotate_figure(figure,
 )
 
 
-ggsave("output/main results/fig_4.pdf", dpi = 600, units = "mm", width = 80)
+ggsave("output/main results/fig_4.pdf", dpi = 600, units = "mm", width = 180)
 
 
 ######################
