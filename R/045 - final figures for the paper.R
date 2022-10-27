@@ -59,6 +59,18 @@ ggsave("output/main results/fig_1.png", dpi = 600, units = "mm", width = 180)
 ##### FIGURE 2 #############
 
 
+hm1 <- ggplot(heat_map_data) +
+  aes(x = long,
+      y = lat,
+      group = group,
+      fill = inc_decile) +
+  geom_polygon() + coord_equal() + theme_void() +
+  labs(title = '  ',
+       subtitle = ' ',
+       fill = "Decile") +
+  scale_fill_viridis_c(option = "magma") +
+  theme(legend.position = "none")
+
 hm3 <- ggplot(heat_map_data) +
   aes(x = long,
       y = lat,
@@ -170,6 +182,7 @@ annotate_figure(figure,
 
 
 ggsave("output/main results/fig_4.pdf", dpi = 600, units = "mm", width = 180)
+ggsave("output/main results/fig_4.png", dpi = 600, units = "mm", width = 180)
 
 
 ######################
@@ -211,6 +224,7 @@ ggplot(cons_plots_long) +
   scale_x_continuous(breaks = seq(5,45,5), minor_breaks = NULL) +
   theme(legend.position = "bottom")
 ggsave("output/main results/fig_5.pdf", dpi = 600, units = "mm", width = 180)
+ggsave("output/main results/fig_5.png", dpi = 600, units = "mm", width = 180)
 
 
 

@@ -14,7 +14,7 @@ toolkit_raw <- smkfreediv::ReadToolkit(path = tkit_path,
 
 ## (2) Clean the data and save the cleaned data back to the raw inputs folder. Use period April 2014 - February 2020
 
-toolkit_raw <- readRDS("input_data/STS_data_raw.rds")
+toolkit_raw <- readRDS(paste0(tkit_path, "STS_data_raw.rds"))
 
 toolkit_clean <- smkfreediv::CleanToolkit(data = toolkit_raw,
                                           start_month = 90,
