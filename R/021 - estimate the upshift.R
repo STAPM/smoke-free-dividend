@@ -2,6 +2,7 @@
 ### Toolkit expenditure info to HMRC duties
 
 data <- readRDS("input_data/toolkit_clean.rds")
+data <- data[Smoker == 1 & !is.na(weekspend),]
 
 ################################################################################
 ####### -------------- Final version of the upshift calc --- 27/06/2022-- ######

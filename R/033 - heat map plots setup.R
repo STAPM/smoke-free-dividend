@@ -6,10 +6,10 @@ library(ggplot2)
 
 div_la <- readRDS("intermediate_data/results_local_authority.rds")
 
-div_la[, inc_decile := ntile(income,10)]
-div_la[, inc_prop_decile := ntile(spend_prop,10)]
-div_la[, dividend_decile := ntile(dividend/pop_n,10)]
-div_la[, prev_decile := ntile(smk_prev,10)]
+div_la[, inc_decile := dplyr::ntile(income,10)]
+div_la[, inc_prop_decile := dplyr::ntile(spend_prop,10)]
+div_la[, dividend_decile := dplyr::ntile(dividend/pop_n,10)]
+div_la[, prev_decile := dplyr::ntile(smk_prev,10)]
 
 
 
@@ -85,7 +85,8 @@ setDT(shape)
 
 
 heat_map_data <- merge(data_mapping_merge, shape, by.x = "LAcode", by.y = "id", all.y = F)
-heat_map_data <- arrange(merge,order)
+#heat_map_data <- dplyr::arrange(merge,order)
+heat_map_data <- dplyr::arrange(heat_map_data,order)
 
 
 

@@ -41,17 +41,32 @@ gor_plot[, gor := factor(gor,
                                     "East of England", "London", "South West", "South East") )]
 
 
+#ggplot(gor_plot) +
+#  aes(x = reorder(gor,dividend_pc, FUN = "median", na.rm = TRUE),
+#      y = dividend_pc,
+#      alpha = income) +
+#  theme_custom() +
+#  coord_flip() +
+#  geom_bar(stat = "identity", position = "dodge", fill = "#023e8a") +
+#  theme(legend.position = "bottom") +
+#  labs(x = "", y = "Annual smoke-free dividend per 18+ population",
+#       alpha = "Average equivalised household income \n after housing costs (£000s)") +
+#  scale_y_continuous(breaks = seq(0,400,50), labels = dollar_format(prefix="£"))
+
+
 ggplot(gor_plot) +
   aes(x = reorder(gor,dividend_pc, FUN = "median", na.rm = TRUE),
       y = dividend_pc,
-      alpha = income) +
+      fill = income) +
   theme_custom() +
   coord_flip() +
-  geom_bar(stat = "identity", position = "dodge", fill = "#023e8a") +
+  geom_bar(stat = "identity", position = "dodge") +
   theme(legend.position = "bottom") +
   labs(x = "", y = "Annual smoke-free dividend per 18+ population",
-       alpha = "Average equivalised household income \n after housing costs (£000s)") +
-  scale_y_continuous(breaks = seq(0,400,50), labels = dollar_format(prefix="£"))
+       fill = "Average equivalised household income \n after housing costs (£000s)") +
+  scale_y_continuous(breaks = seq(0,400,50), labels = dollar_format(prefix="£")) +
+  scale_fill_gradient(low = "#ade8f4",
+                      high = "#03045e")
 ggsave("output/main results/fig_1.pdf", dpi = 600, units = "mm", width = 180)
 ggsave("output/main results/fig_1.png", dpi = 600, units = "mm", width = 180)
 
@@ -148,10 +163,11 @@ spend <- ggplot(exp_plot_data) +
   aes(x = income/1000, y = mean_week_spend) +
   geom_point() +
   geom_smooth(method='lm', se = F, color='turquoise4', linetype = 5) +
-  theme_custom() +
+  theme_classic() +
   labs(x = "Average Income (£000s)",
-       y = "Mean Weekly Spend",
+       y = "Average Weekly Spend",
        title = "",
+       subtitle = "(a) Correlation between average income and \nweekly spending",
        caption = paste0("Pearson correlation coefficient: ", spend_corr, ". 95% CI: (", spend_corr_ci[1], " , ", spend_corr_ci[2], ")" )) +
   scale_y_continuous(breaks = seq(0,100,10), minor_breaks = NULL, labels=dollar_format(prefix="£")) +
   scale_x_continuous(breaks = seq(5,45,5), minor_breaks = NULL)
@@ -159,15 +175,16 @@ spend <- ggplot(exp_plot_data) +
 ### Mean weekly spending as a % of household income
 
 prop <- ggplot(exp_plot_data) +
-  aes(x = income/1000, y = spend_prop*100) +
+  aes(x = income/1000, y = spend_prop) +
   geom_point() +
   geom_smooth(method='lm', se = F, color='turquoise4', linetype = 5) +
-  theme_custom() +
+  theme_classic() +
   labs(x = "Average Income (£000s)",
-       y = "% of Disposable Income",
+       y = "Average Weekly Spend \n(% of Income)",
        title = "",
+       subtitle = "(b) Correlation between average income and \nweekly spending as % of income",
        caption = paste0("Pearson correlation coefficient: ", prop_corr, ". 95% CI: (", prop_corr_ci[1], " , ", prop_corr_ci[2], ")" )) +
-  scale_y_continuous(breaks = seq(0,100,2), minor_breaks = NULL) +
+  scale_y_continuous(breaks = seq(0,1,.02), minor_breaks = NULL, labels = scales::percent) +
   scale_x_continuous(breaks = seq(5,45,5), minor_breaks = NULL)
 
 ### combine plots
@@ -180,9 +197,9 @@ annotate_figure(figure,
                                    hjust = 1, x = 1, size = 9)
 )
 
-
-ggsave("output/main results/fig_4.pdf", dpi = 600, units = "mm", width = 180)
-ggsave("output/main results/fig_4.png", dpi = 600, units = "mm", width = 180)
+figure
+ggsave("output/main results/fig_4.pdf", dpi = 600, units = "in", width = 5.5, height = 7)
+ggsave("output/main results/fig_4.png", dpi = 600, units = "in", width = 5.5, height = 7)
 
 
 ######################

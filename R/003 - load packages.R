@@ -10,7 +10,7 @@ library(maptools)   # map packages
 library(scales)
 library(here)
 library(stringr)
-library(flextable)
+#library(flextable)
 library(magrittr)
 library(readxl)
 library(openxlsx)

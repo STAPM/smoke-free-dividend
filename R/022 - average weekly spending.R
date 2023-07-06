@@ -1,6 +1,8 @@
 ### The aim of this code is to use the smkfreediv functions to make the
 ### smokefree dividend calculations. Loop over different values of upshift
 
+data <- readRDS("input_data/toolkit_clean.rds")
+
 ### ------------- RAW HEADLINE AVERAGE SPEND FROM TOOLKIT -----------###
 
 ## overall

@@ -4,12 +4,14 @@
 ## read in toolkit data (011) and upshift factor (021)
 
 data <- readRDS("input_data/toolkit_clean.rds")
+data <- data[Smoker == 1 & !is.na(weekspend),]
+
 upshift <- read.csv("intermediate_data/upshift_calcs.csv")
 
 #### Simulation (draw from distributions of income, prevalence etc based on
 #### standard errors)
 
-n_sim <- 1000                             ## number of simulation reps
+n_sim <- 100                              ## number of simulation reps
 up    <- as.numeric(upshift[,"upshift"])  ## upshift factor on spending data
 seed  <- 2021                             ## random number seed
 div   <- 0.93                             ## proportion of legal spending allocated to dividend

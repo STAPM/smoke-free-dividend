@@ -349,7 +349,7 @@ openxlsx::writeData(wb,
 ###  fill in total annual expenditure
 
 la_results[is.nan(total_annual_exp), total_annual_exp := NA]
-x <- as.vector(as.matrix( round(la_results[,"total_annual_exp"],3)))
+x <- as.vector(as.matrix( la_results[,"total_annual_exp"]))
 
 openxlsx::writeData(wb,
                     sheet = "LA data",
@@ -491,7 +491,7 @@ openxlsx::writeData(wb,
 ###  fill in total annual expenditure
 
 gor_results[is.nan(total_annual_exp), total_annual_exp := NA]
-x <- as.vector(as.matrix( round(gor_results[,"total_annual_exp"],3)))
+x <- as.vector(as.matrix( gor_results[,"total_annual_exp"]))
 
 openxlsx::writeData(wb,
                     sheet = "Region data",
