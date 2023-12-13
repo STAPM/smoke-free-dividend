@@ -2210,18 +2210,18 @@
     },
     "smkfreediv": {
       "Package": "smkfreediv",
-      "Version": "1.6.1",
+      "Version": "1.6.3",
       "Source": "Git",
       "RemoteType": "git2r",
-      "RemoteUrl": "https://gitlab.com/SPECTRUM_Sheffield/r-packages/smkfreediv.git",
-      "RemoteRef": "1.6.1",
-      "RemoteSha": "08524eafbcf46e5a1c284784065413ef49571f1f",
+      "RemoteUrl": "https://github.com/STAPM/smkfreediv.git",
+      "RemoteRef": "1.6.3",
+      "RemoteSha": "195c21e985fdb1243478e382dcf8b09ca00ac332",
       "Requirements": [
         "Hmisc",
         "R",
         "data.table"
       ],
-      "Hash": "db33b7bdabe0905a0427736b3e44f604"
+      "Hash": "046076c707d542dd57d71384c06e0342"
     },
     "sourcetools": {
       "Package": "sourcetools",
