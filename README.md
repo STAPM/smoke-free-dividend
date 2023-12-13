@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# The potential smoke-free dividend from quitting for smokers across local areas in England: A cross-sectional analysis - code repository <img src="logo.png" align="right" style="padding-left:10px;background-color:white;" width="100" height="100" />
+# The potential smoke-free dividend from quitting for smokers across local areas in England: A cross-sectional analysis - code repository
 
 <!-- badges: start -->
 
@@ -25,7 +25,7 @@ Please cite as:
 
 ## Computational environment
 
-This repository was last updated on 2023-12-13 11:59:30 and used the
+This repository was last updated on 2023-12-13 12:07:32 and used the
 following computational environment and dependencies:
 
 ``` r
@@ -66,7 +66,7 @@ if ("devtools" %in% installed.packages()) devtools::session_info()
 #>  fansi         1.0.4   2023-01-22 [1] CRAN (R 4.2.3)
 #>  fastmap       1.1.1   2023-02-24 [1] CRAN (R 4.2.3)
 #>  forcats     * 1.0.0   2023-01-29 [1] CRAN (R 4.2.3)
-#>  foreign       0.8-84  2022-12-06 [2] CRAN (R 4.2.3)
+#>  foreign       0.8-84  2022-12-06 [1] CRAN (R 4.2.3)
 #>  fs            1.6.2   2023-04-25 [1] CRAN (R 4.2.3)
 #>  generics      0.1.3   2022-07-05 [1] CRAN (R 4.2.3)
 #>  ggplot2     * 3.4.2   2023-04-03 [1] CRAN (R 4.2.3)
@@ -81,7 +81,7 @@ if ("devtools" %in% installed.packages()) devtools::session_info()
 #>  httpuv        1.6.11  2023-05-11 [1] CRAN (R 4.2.3)
 #>  knitr         1.43    2023-05-25 [1] CRAN (R 4.2.3)
 #>  later         1.3.1   2023-05-02 [1] CRAN (R 4.2.3)
-#>  lattice       0.20-45 2021-09-22 [2] CRAN (R 4.2.3)
+#>  lattice       0.20-45 2021-09-22 [1] CRAN (R 4.2.3)
 #>  lifecycle     1.0.3   2022-10-07 [1] CRAN (R 4.2.3)
 #>  lubridate   * 1.9.2   2023-02-10 [1] CRAN (R 4.2.3)
 #>  magrittr    * 2.0.3   2022-03-30 [1] CRAN (R 4.2.3)
@@ -106,6 +106,7 @@ if ("devtools" %in% installed.packages()) devtools::session_info()
 #>  readr       * 2.1.4   2023-02-10 [1] CRAN (R 4.2.3)
 #>  readxl      * 1.4.2   2023-02-09 [1] CRAN (R 4.2.3)
 #>  remotes       2.4.2   2021-11-30 [1] CRAN (R 4.2.3)
+#>  renv          1.0.3   2023-09-19 [1] CRAN (R 4.2.3)
 #>  rgdal       * 1.6-7   2023-05-31 [1] CRAN (R 4.2.3)
 #>  rgeos       * 0.6-3   2023-05-24 [1] CRAN (R 4.2.3)
 #>  rlang         1.1.1   2023-04-28 [1] CRAN (R 4.2.3)
@@ -136,8 +137,8 @@ if ("devtools" %in% installed.packages()) devtools::session_info()
 #>  yaml          2.3.7   2023-01-23 [1] CRAN (R 4.2.3)
 #>  zip           2.3.0   2023-04-17 [1] CRAN (R 4.2.3)
 #> 
-#>  [1] X:/ScHARR/PR_SPECTRUM/Workpackages/WP6 Evaluation Langley/Smokefree Dividend/R/R_packages
-#>  [2] C:/Program Files/R/R-4.2.3/library
+#>  [1] X:/ScHARR/PR_SPECTRUM/Workpackages/WP6 Evaluation Langley/Smokefree Dividend/R/smoke-free-dividend/renv/library/R-4.2/x86_64-w64-mingw32
+#>  [2] C:/Users/cm1djm/AppData/Local/R/cache/R/renv/sandbox/R-4.2/x86_64-w64-mingw32/19d6eec0
 #> 
 #> ──────────────────────────────────────────────────────────────────────────────
 ```

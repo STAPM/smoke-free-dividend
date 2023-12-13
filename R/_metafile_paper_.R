@@ -10,7 +10,6 @@ version <- "1.6.1"            # smkfreediv package version which replicates the 
 user <- "djmorris1989"        # GitLab user name for package installation
 
 source("R/001 - package installation.R")
-source("R/002 - create directories.R")
 source("R/003 - load packages.R")
 
 ### ----- (1) Data Cleaning -------- ###
