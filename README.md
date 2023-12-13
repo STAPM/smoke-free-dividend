@@ -19,6 +19,22 @@ inputs to produce the results of the paper “The potential smoke-free
 dividend from quitting for smokers across local areas in England: A
 cross-sectional analysis”.
 
+## Usage
+
+Fork the project on GitHub to create your own repository. This project
+uses [`renv`](https://rstudio.github.io/renv/articles/renv.html) to aid
+reproducibility of results by ensuring users make use of the same
+environment.
+
+When a new user first launches in this project, `renv` should
+automatically bootstrap itself, thereby downloading and installing the
+appropriate version of `renv` into the project library. After this has
+completed, they can then use `renv::restore()` to restore the project
+library locally on their machine.
+
+Once the project library is restored, the repository is ready to be used
+to replicate the analysis once the requirements below are met.
+
 ## Requirements
 
 All data inputs required are available in the repository or part of the
@@ -33,8 +49,10 @@ contains functions and data inputs needed to calculate the amount of
 upshifting required to account for underreporting of spending data in
 the STS and to combine data sources to calculate the smoke free
 dividend. The version of `smkfreediv` which produced the analysis in the
-paper is 1.6.2. It is not guaranteed that the code in this repository
-will still work with later versions of the package.
+paper is **1.6.3**. It is not guaranteed that the code in this
+repository will still work with later versions of the package.
+`smkfreediv` is part of the `renv` environment and is restored with the
+other CRAN packages when using `renv::restore()`
 
 ### Smoking Toolkit Study
 
@@ -57,7 +75,25 @@ reproducible environment for this analysis. see [the package
 website](https://rstudio.github.io/renv/articles/renv.html) for more
 information.
 
-If any packages are updated
+The current versions of the packages used are stored in the `renv.lock`
+file in the top level of the repository, and this is used to populate
+the libraries within the `renv` folder. The .Rprofile file in the top
+level of the repository is automatically run when the project is opened
+and this runs the script file `renv/activate.R` to set the renv folder
+as the source R package library.
+
+The `renv::init()` function sets up a project to work with `renv`. The
+package libraries themselves are ignored by git and are not immediately
+available to a new user. When first launching a project set up with
+`renv`, the function `renv::restore()` will restore the project library
+locally to the correct folder.
+
+If any packages in the environment are added or updated, the code should
+first be re-run to check that there are no bugs introduced to the
+workflow by changing the environment. If the code still runs
+successfully, the `renv::snapshot()` function will update the lock file
+with the updated environment. If the code no longer runs, the previous
+versions of packages can be restored by using `renv::restore`.
 
 ## Citation
 
@@ -65,7 +101,7 @@ Please cite as:
 
 ## Computational environment
 
-This repository was last updated on 2023-12-13 14:13:38 and used the
+This repository was last updated on 2023-12-13 15:22:33 and used the
 following computational environment and dependencies:
 
 ``` r
@@ -181,11 +217,4 @@ if ("devtools" %in% installed.packages()) devtools::session_info()
 #>  [2] C:/Users/cm1djm/AppData/Local/R/cache/R/renv/sandbox/R-4.2/x86_64-w64-mingw32/19d6eec0
 #> 
 #> ──────────────────────────────────────────────────────────────────────────────
-```
-
-The current Git commit details are (currently a private repository):
-
-``` r
-# what commit is this file at? 
-if ("git2r" %in% installed.packages() & git2r::in_repository(path = ".")) git2r::repository(here::here())  
 ```
