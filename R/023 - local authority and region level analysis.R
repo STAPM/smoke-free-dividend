@@ -41,21 +41,4 @@ gor_results <- smkfreediv::CalcDividend_gor_sim(data,
 
 saveRDS(gor_results, "intermediate_data/results_region.rds")
 
-###############################################################################################
-### further processing of gor results to compare to OHID results (sent in Dec 2021 by Tessa)
-
-gor_results[, gor := factor(gor,
-                            levels = c("North East","West Midlands",
-                                       "Yorkshire and the Humber","East Midlands",
-                                       "North West","East of England",
-                                       "South West", "South East", "London")) ]
-
-gor_results <- gor_results[order(gor),]
-
-gor_results <- gor_results[, c("gor","spend_prop","n_smokers","dividend")]
-
-gor_results[, dividend := dividend * 1000]
-gor_results[, spend_prop := round(spend_prop * 100, 2)]
-
-saveRDS(gor_results, "intermediate_data/results_region_OHID_comparison.rds")
 

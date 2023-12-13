@@ -3,8 +3,7 @@
 devtools::install_git(
   "https://github.com/STAPM/smkfreediv.git",
   ref = version,
-  build_vignettes = FALSE,
-  force = TRUE
+  build_vignettes = FALSE
 )
 
 

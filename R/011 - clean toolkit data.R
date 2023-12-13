@@ -5,7 +5,7 @@
 
 ## (1) Read in the data from where the raw toolkit data is stored
 
-tkit_path <- "X:/ScHARR/PR_SPECTRUM/Workpackages/WP6 Evaluation Langley/Smokefree Dividend/Toolkit Data/STS and ATS files Apr 21/Latest omnibus SPSS data file/"
+tkit_path <- "input_data/"
 
 toolkit_raw <- smkfreediv::ReadToolkit(path = tkit_path,
                                        data = data_file,
