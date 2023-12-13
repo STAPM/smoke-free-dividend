@@ -53,6 +53,8 @@ gor_plot[, gor := factor(gor,
 #       alpha = "Average equivalised household income \n after housing costs (£000s)") +
 #  scale_y_continuous(breaks = seq(0,400,50), labels = dollar_format(prefix="£"))
 
+gor_plot[, incround := round(income*1000)]
+gor_plot[, label := format(incround, big.mark = ",", nsmall = 0 )]
 
 ggplot(gor_plot) +
   aes(x = reorder(gor,dividend_pc, FUN = "median", na.rm = TRUE),
@@ -61,12 +63,14 @@ ggplot(gor_plot) +
   theme_custom() +
   coord_flip() +
   geom_bar(stat = "identity", position = "dodge") +
+  geom_text(aes(y = dividend_pc - 10, label = paste0("£",label)  )) +
   theme(legend.position = "bottom") +
   labs(x = "", y = "Annual smoke-free dividend per 18+ population",
-       fill = "Average equivalised household income \n after housing costs (£000s)") +
+       fill = "Average equivalised household income \n after housing costs (£000s)",
+       caption = "Bar labels show the regional average equivalised household income") +
   scale_y_continuous(breaks = seq(0,400,50), labels = dollar_format(prefix="£")) +
   scale_fill_gradient(low = "#ade8f4",
-                      high = "#03045e")
+                      high = "#d9ed92")
 ggsave("output/main results/fig_1.pdf", dpi = 600, units = "mm", width = 180)
 ggsave("output/main results/fig_1.png", dpi = 600, units = "mm", width = 180)
 
