@@ -12,6 +12,44 @@ developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.re
 maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
 <!-- badges: end -->
 
+## Introduction
+
+The purpose of this repository is to provide reproducible code and data
+inputs to produce the results of the paper “The potential smoke-free
+dividend from quitting for smokers across local areas in England: A
+cross-sectional analysis”.
+
+## Requirements
+
+All data inputs required are available in the repository or part of the
+R package `smkfreediv` which is open source and available on
+[GitHub](https://github.com/STAPM/smkfreediv). The exception to this is
+the Smoking Toolkit Study (STS) data which cannot be provided.
+
+### R Package
+
+The analysis requires the use of the `smkfreediv` R package, which
+contains functions and data inputs needed to calculate the amount of
+upshifting required to account for underreporting of spending data in
+the STS and to combine data sources to calculate the smoke free
+dividend. The version of `smkfreediv` which produced the analysis in the
+paper is 1.6.2. It is not guaranteed that the code in this repository
+will still work with later versions of the package.
+
+### Smoking Toolkit Study
+
+In order to run the analysis the user must provide their own version of
+the STS data. The raw SPSS file for the STS data must be stored in the
+`input_data/` directory within the project repository and the name of
+the file (including .sav extension) should be updated in the `data_file`
+object created in the `run_analyses.R` file located in the root
+directory of the repository. e.g. for the April 2021 data the paper was
+produced using:
+
+``` r
+data_file <- "omni174_39.1_65.2cot_31.3a_25.4s_recodes_60.5sa.sav"
+```
+
 ## Reproducibility
 
 Note that this repository uses the `renv` R package to produce a
@@ -19,13 +57,15 @@ reproducible environment for this analysis. see [the package
 website](https://rstudio.github.io/renv/articles/renv.html) for more
 information.
 
+If any packages are updated
+
 ## Citation
 
 Please cite as:
 
 ## Computational environment
 
-This repository was last updated on 2023-12-13 12:07:32 and used the
+This repository was last updated on 2023-12-13 14:13:38 and used the
 following computational environment and dependencies:
 
 ``` r
@@ -117,7 +157,7 @@ if ("devtools" %in% installed.packages()) devtools::session_info()
 #>  scales      * 1.2.1   2022-08-20 [1] CRAN (R 4.2.3)
 #>  sessioninfo   1.2.2   2021-12-06 [1] CRAN (R 4.2.3)
 #>  shiny         1.7.4   2022-12-15 [1] CRAN (R 4.2.3)
-#>  smkfreediv  * 1.6.1   2023-07-05 [1] git2r (https://gitlab.com/SPECTRUM_Sheffield/r-packages/smkfreediv.git@08524ea)
+#>  smkfreediv  * 1.6.3   2023-12-13 [1] git2r (https://github.com/STAPM/smkfreediv.git@195c21e)
 #>  sp          * 2.0-0   2023-06-22 [1] CRAN (R 4.2.3)
 #>  stringi       1.7.12  2023-01-11 [1] CRAN (R 4.2.2)
 #>  stringr     * 1.5.0   2022-12-02 [1] CRAN (R 4.2.3)
