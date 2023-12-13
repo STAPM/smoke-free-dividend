@@ -1,0 +1,58 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+# The potential smoke-free dividend from quitting for smokers across local areas in England: A cross-sectional analysis - code repository
+
+  
+<!-- badges: start -->
+[![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
+[![Lifecycle: maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
+<!-- badges: end -->
+
+```{r}
+#| label: load-packages
+#| include: false
+
+source("R/003 - load packages.R")
+
+```
+
+## Reproducibility 
+
+Note that this repository uses the `renv` R package to produce a reproducible environment for this analysis. see [the package website](https://rstudio.github.io/renv/articles/renv.html) for more information.
+
+## Citation
+Please cite as:
+
+
+## Computational environment
+
+This repository was last updated on `r Sys.time()` and used the following computational environment and dependencies:
+
+```{r}
+#| cache: false
+
+# which R packages and versions?
+if ("devtools" %in% installed.packages()) devtools::session_info()
+```
+
+The current Git commit details are (currently a private repository):
+
+```{r, eval = FALSE}
+# what commit is this file at? 
+if ("git2r" %in% installed.packages() & git2r::in_repository(path = ".")) git2r::repository(here::here())  
+```
+
+
+
