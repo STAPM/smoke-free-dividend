@@ -83,7 +83,7 @@ ggsave("output/main results/fig_2.png", dpi = 600, units = "mm", width = 180)
 cons_plots <- merge(div_la, con_la, by = c("UTLAcode","UTLAname"))
 
 ## read in the sample size from the mean expenditure calculations
-sampsize <- read.csv(paste0(Dir[2],"/weekly_spend_la.csv"))
+sampsize <- read.csv("intermediate_data//weekly_spend_la.csv")
 setDT(sampsize)
 sampsize <- sampsize[,c("UTLAname","sample_tkit")]
 
