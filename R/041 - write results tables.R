@@ -2,7 +2,6 @@
 # The aim of this code is to summarise the model data to
 # fit into the summary tables
 
-source("R/002 - create directories.R")
 source("R/003 - load packages.R")
 
 ############################################
@@ -646,8 +645,6 @@ openxlsx::writeData(wb,
                     startRow = 3)
 
 ### --------------- Top 10 Exp % of Income LA Tab -------------- ###
-
-rm(results)
 
 la         <- as.vector(as.matrix(la_results_top[,"UTLAname"]))
 region     <- as.vector(as.matrix(la_results_top[,"gor"]))
