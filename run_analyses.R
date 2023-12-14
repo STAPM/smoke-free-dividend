@@ -14,7 +14,6 @@ source("R/003 - load packages.R")
 
 ### ----- (1) Data Cleaning -------- ###
 source("R/011 - clean toolkit data.R")
-#source("R/012 - read and clean shapefiles.R") - redundant file since shifting to using the "sf" library
 source("R/017 - consumption patterns.R")
 
 ### ----- (2) Run the Analysis --------- ###
