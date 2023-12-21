@@ -50,6 +50,18 @@ All data inputs required are available in the repository or part of the R packag
 
 The analysis requires the use of the `smkfreediv` R package, which contains functions and data inputs needed to calculate the amount of upshifting required to account for underreporting of spending data in the STS and to combine data sources to calculate the smoke free dividend. The version of `smkfreediv` which produced the analysis in the paper is **1.6.3**. It is not guaranteed that the code in this repository will still work with later versions of the package. `smkfreediv` is part of the `renv` environment and is restored with the other CRAN packages when using `renv::restore()`
 
+To install the package from GitHub with the version used to produce the paper, run the follwowing code (also contained in the `001 - package installation.R` script file).
+
+```{r, eval = FALSE}
+
+devtools::install_git(
+  "https://github.com/STAPM/smkfreediv.git",
+  ref = "1.6.3",
+  build_vignettes = FALSE
+)
+
+```
+
 ### Smoking Toolkit Study
 
 In order to run the analysis the user must provide their own version of the STS data. The raw SPSS file for the STS data must be stored in the `input_data/` directory within the project repository and the name of the file (including .sav extension) should be updated in the `data_file` object created in the `run_analyses.R` file located in the root directory of the repository. e.g. for the April 2021 data the paper was produced using:
@@ -67,22 +79,6 @@ The current versions of the packages used are stored in the `renv.lock` file in 
 The `renv::init()` function sets up a project to work with `renv`. The package libraries themselves are ignored by git and are not immediately available to a new user. When first launching a project set up with `renv`, the function `renv::restore()` will restore the project library locally to the correct folder. 
 
 If any packages in the environment are added or updated, the code should first be re-run to check that there are no bugs introduced to the workflow by changing the environment. If the code still runs successfully, the `renv::snapshot()` function will update the lock file with the updated environment. If the code no longer runs, the previous versions of packages can be restored by using `renv::restore`.
-
-## Citation
-
-Please cite as:
-
-
-## Computational environment
-
-This repository was last updated on `r Sys.time()` and used the following computational environment and dependencies:
-
-```{r}
-#| cache: false
-
-# which R packages and versions?
-if ("devtools" %in% installed.packages()) devtools::session_info()
-```
 
 
 
