@@ -88,27 +88,32 @@ data_file <- "omni174_39.1_65.2cot_31.3a_25.4s_recodes_60.5sa.sav"
 
 ## Reproducibility
 
-Note that this repository uses the `renv` R package to produce a
-reproducible environment for this analysis. see [the package
+Note that this repository uses the renv R package to produce a
+reproducible environment for this analysis. see the [package
 website](https://rstudio.github.io/renv/articles/renv.html) for more
 information.
 
-The current versions of the packages used are stored in the `renv.lock`
-file in the top level of the repository, and this is used to populate
-the libraries within the `renv` folder. The .Rprofile file in the top
-level of the repository is automatically run when the project is opened
-and this runs the script file `renv/activate.R` to set the renv folder
-as the source R package library.
+When first launching the project, the function `renv::restore()` will
+populate the `renv/library` folder, installing the R packages saved in
+the lockfifle.
 
-The `renv::init()` function sets up a project to work with `renv`. The
-package libraries themselves are ignored by git and are not immediately
-available to a new user. When first launching a project set up with
-`renv`, the function `renv::restore()` will restore the project library
-locally to the correct folder.
+The lockfile `renv.lock` is in the top level of the repository, and
+contains the metadata for all R packages used in the project. The
+libraries themselves are ignored by git and not uploaded to GitHub, and
+so a new user needs to install the packages themselves using the
+metadata.
 
-If any packages in the environment are added or updated, the code should
-first be re-run to check that there are no bugs introduced to the
-workflow by changing the environment. If the code still runs
-successfully, the `renv::snapshot()` function will update the lock file
-with the updated environment. If the code no longer runs, the previous
-versions of packages can be restored by using `renv::restore`.
+The .Rprofile file in the top level of the repository is automatically
+run when the project is opened and this runs the script file
+`renv/activate.R` to set the renv folder as the source R package
+library.
+
+The version of R used to produce the analysis is 4.3.1.
+
+## Citation
+
+Please cite this code repository as:
+
+Morris D (2023) The potential smoke-free dividend across local areas in
+England: A cross-sectional analysis - code and data repository 2023.
+*University of Sheffield*. <doi:10.17605/OSF.IO/VZMP7>.
