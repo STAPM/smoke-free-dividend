@@ -56,12 +56,12 @@ the STS and to combine data sources to calculate the smoke free
 dividend. The version of `smkfreediv` which produced the analysis in the
 paper is **1.6.3**. It is not guaranteed that the code in this
 repository will still work with later versions of the package.
-`smkfreediv` is part of the `renv` environment and is restored with the
-other CRAN packages when using `renv::restore()`
 
 To install the package from GitHub with the version used to produce the
 paper, run the follwowing code (also contained in the
-`001 - package installation.R` script file).
+`001 - package installation.R` script file). Note that `smkfreediv` is
+part of the `renv` environment and is restored with the other CRAN
+packages when using `renv::restore()`, so this step is not needed.
 
 ``` r
 

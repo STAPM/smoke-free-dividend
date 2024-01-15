@@ -48,9 +48,10 @@ All data inputs required are available in the repository or part of the R packag
 
 ### R Package
 
-The analysis requires the use of the `smkfreediv` R package, which contains functions and data inputs needed to calculate the amount of upshifting required to account for underreporting of spending data in the STS and to combine data sources to calculate the smoke free dividend. The version of `smkfreediv` which produced the analysis in the paper is **1.6.3**. It is not guaranteed that the code in this repository will still work with later versions of the package. `smkfreediv` is part of the `renv` environment and is restored with the other CRAN packages when using `renv::restore()`
+The analysis requires the use of the `smkfreediv` R package, which contains functions and data inputs needed to calculate the amount of upshifting required to account for underreporting of spending data in the STS and to combine data sources to calculate the smoke free dividend. The version of `smkfreediv` which produced the analysis in the paper is **1.6.3**. It is not guaranteed that the code in this repository will still work with later versions of the package. 
 
-To install the package from GitHub with the version used to produce the paper, run the follwowing code (also contained in the `001 - package installation.R` script file).
+
+To install the package from GitHub with the version used to produce the paper, run the follwowing code (also contained in the `001 - package installation.R` script file). Note that `smkfreediv` is part of the `renv` environment and is restored with the other CRAN packages when using `renv::restore()`, so this step is not needed.
 
 ```{r, eval = FALSE}
 
